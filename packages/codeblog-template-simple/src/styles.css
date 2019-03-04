@@ -1,1 +1,332 @@
-@import "./components/Codeblog.css";
+/* ---- CSS reset ---- */
+#__codeblog, #__codeblog-content, html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-family: inherit;
+    vertical-align: baseline;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* ---- CSS reset ---- */
+
+/* ---- CSS variables ---- */
+
+:root {
+    --monospace-font: "IBM Plex Mono", monospace;
+    --serif-font: "IBM Plex Serif", serif;
+    --sans-serif-font: "IBM Plex Sans", serif;
+    --offset-small: 4px;
+    --offset-normalish: 8px;
+    --offset-normal: 12px;
+    --offset-xnormal: 16px;
+    --offset-medium: 24px;
+    --offset-big: 36px;
+    --offset-large: 48px;
+    --color-black: rgb(32, 31, 31);
+    --color-white: rgb(255, 255, 255);
+    --color-dark-gray: rgb(136, 136, 136);
+    --color-medium-gray: rgb(92, 92, 92);
+    --color-light-gray: rgb(233, 233, 233);
+    --color-primary: rgb(31, 62, 113);
+    --color-primary-muted: rgba(31, 62, 113, 0.45);
+    --color-error: rgb(199, 14, 14);
+    --color-muted:rgb( 99, 109, 117);
+    --border-radius: 4px;
+    --page-background: var(--color-white);
+    --page-background-offset: var(--color-light-gray);
+    --text-color: var(--color-black);
+    --text-medium-color: var(--color-medium-gray);
+    --text-light-color: var(--color-dark-gray);
+    --text-muted-color: var(--color-muted);
+    --text-light-extra-color: var(--color-light-gray);
+    --link-color: var(--color-primary);
+    --blog-width: 550px;
+    --blog-post-width: 550px;
+}
+
+code {
+    font-family: var(--monospace-font);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    color: var(--text-color);
+    background-color: var(--page-background);
+    transition: background-color 0.1s linear;
+    transition-property: background-color, color;
+    font-family: var(--sans-serif-font);
+    font-size: 16px;
+    text-size-adjust: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 600;
+    margin-block-start: var(--offset-medium);
+    margin-block-end: var(--offset-normal);
+    line-height: 1.15;
+}
+
+p {
+    margin-block-end: var(--offset-normal);
+    line-height: 1.5;
+    font-size: 1em;
+}
+
+a,
+a:visited {
+    color: var(--link-color);
+}
+
+.Blog {
+    max-width: var(--blog-width);
+    width: 100%;
+    margin: 0 auto;
+}
+
+.BlogPost {
+    max-width: var(--blog-post-width);
+    width: 100%;
+    font-family: var(--sans-serif-font);
+    margin-top: var(--offset-large);
+    margin-bottom: var(--offset-large);
+}
+
+.BlogPost-Title,
+.BlogPost-Body,
+.BlogPost-Body > div {
+    font-family: var(--sans-serif-font);
+    text-rendering: optimizeLegibility;
+}
+
+.BlogPost-Body > div {
+    position: relative;
+}
+
+.Text--muted {
+    color: var(--color-muted);
+}
+
+.BlogPost img {
+    max-width: 100%;
+}
+
+blockquote {
+    border-left: 3px solid var(--color-primary-muted);
+    padding-left: var(--offset-medium);
+}
+
+ol,
+ul {
+    margin-top: var(--offset-normal);
+    margin-bottom: var(--offset-normal);
+}
+
+li {
+    margin-block-start: var(--offset-normal);
+    padding-top: var(-offset-small);
+    padding-bottom: var(-offset-small);
+    margin-block-end: var(--offset-normal);
+}
+
+.BlogPost-Title {
+    font-size: 2em;
+    margin-block-start: var(--offset-small);
+}
+
+.BlogPost-Subtitle {
+    margin-block-end: 0;
+    margin-block-start: 0;
+    display: flex;
+}
+
+.Separator {
+    background-color: rgba(var(--color-primary), 0.15);
+    border-radius: 50%;
+    content: "";
+    margin-top: auto;
+    margin-bottom: auto;
+    display: inline-block;
+}
+
+.Separator--small {
+    margin-left: var(--offset-small);
+    margin-right: var(--offset-small);
+    width: 4px;
+    height: 4px;
+}
+
+.BlogIndex-description {
+    white-space: pre-line;
+}
+
+.BlogPost--index {
+    margin-top: var(--offset-medium);
+    margin-bottom: var(--offset-medium);
+}
+
+.BlogPost--index .BlogPost-Title {
+    font-size: 1.8em;
+}
+
+@media (max-width: 550px) {
+    .BlogPost-Body {
+        font-size: 18px;
+    }
+
+    .BlogPost-Title {
+        font-size: 1.75em;
+    }
+
+    .BlogIndex-Header,
+    .BlogPost {
+        padding-left: var(--offset-xnormal);
+        padding-right: var(--offset-xnormal);
+    }
+
+    .BlogPost-Body li {
+        line-height: 1.5;
+    }
+}
+
+@media (-webkit-min-device-pixel-ratio: 1.5) {
+    * {
+        -webkit-font-smoothing: antialiased;
+    }
+}
+
+.BlogPost-Body > div > div {
+    margin-bottom: var(--offset-normalish);
+    margin-top: var(--offset-normalish);
+}
+
+.BlogPost-Body > div > div > pre,
+.BlogPost-Body > div > div > pre > .hljs {
+    direction: ltr;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    tab-size: 4;
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+    font-family: var(--monospace-font);
+}
+
+.BlogPost-Body div > p > code:after,
+.BlogPost-Body div > p > code:before {
+    content: " ";
+}
+
+.BlogPost-Body div > p > code {
+    color: #3182bd;
+    font-weight: 600;
+}
+
+/* ---- Syntax highlighting ---- */
+
+.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: var(--offset-normal) var(--offset-xnormal);
+    font-family: var(--monospace-font);
+}
+
+.hljs,
+.hljs-subst {
+    color: #000;
+}
+
+.hljs-string,
+.hljs-meta,
+.hljs-symbol,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-addition {
+    color: #756bb1;
+    font-weight: normal;
+}
+
+.hljs-comment,
+.hljs-quote {
+    color: #636363;
+}
+
+.hljs-number,
+.hljs-regexp,
+.hljs-literal,
+.hljs-link {
+    color: #31a354;
+}
+
+.hljs-deletion,
+.hljs-variable {
+    color: #88f;
+    font-weight: normal;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-title,
+.hljs-built_in,
+.hljs-doctag,
+.hljs-type,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class {
+    color: #3182bd;
+}
+
+.hljs-strong,
+.hljs-tag,
+.hljs-section {
+    font-weight: 600;
+}
+
+.hljs-link {
+    color: var(--link-color);
+}
+
+.xml {
+    font-family: monospace;
+}
+
+.hljs-emphasis {
+    font-style: italic;
+}
+
+.hljs-attr {
+    font-weight: normal;
+}
+
+.hljs-attribute {
+    color: #e6550d;
+}
+
+/* ---- Syntax highlighting ---- */

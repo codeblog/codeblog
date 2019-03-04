@@ -6,9 +6,9 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: {
-    index: path.resolve(__dirname, "src/index.tsx"),
-    BlogPost: path.resolve(__dirname, "src/components/BlogPost.tsx"),
-    Blog: path.resolve(__dirname, "src/components/Blog.tsx"),
+    index: path.resolve(__dirname, "src/index.js"),
+    BlogPost: path.resolve(__dirname, "src/BlogPost.js"),
+    Blog: path.resolve(__dirname, "src/Blog.js"),
     styles: path.resolve(__dirname, "src/styles.css")
   },
   output: {
@@ -30,7 +30,7 @@ module.exports = {
     }
   },
   resolve: {
-    extensions: [".wasm", ".mjs", ".js", ".json", ".tsx", ".ts"]
+    extensions: [".wasm", ".mjs", ".js", ".json"]
   },
   externals: ["react", "react-dom", "object-assign", "codeblog"],
   module: {
@@ -41,15 +41,6 @@ module.exports = {
         loader: "babel-loader",
         options: {
           presets: ["@babel/preset-env", "@babel/react"],
-          plugins: ["@babel/plugin-proposal-class-properties"]
-        }
-      },
-      {
-        test: /\.tsx$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: "babel-loader",
-        options: {
-          presets: ["@babel/preset-env", "@babel/react", "@babel/typescript"],
           plugins: ["@babel/plugin-proposal-class-properties"]
         }
       },

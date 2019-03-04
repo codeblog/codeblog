@@ -8,6 +8,8 @@ import {
   BlogPostComponentType
 } from "./components/Codeblog";
 
+export { BlogSEOTags, BlogPostSEOTags } from "./components/SEOTags";
+
 type CodeblogPostProps = CodeblogContext & {
   children: React.ReactNode;
   BlogComponent?: BlogComponentType;
@@ -55,9 +57,7 @@ export const CodeblogPost = (props: CodeblogPostProps) => {
       >
         <Codeblog>
           {contextProps => (
-            <BlogComponent {...contextProps}>
-              <BlogPostComponent {...contextProps} />
-            </BlogComponent>
+            <BlogComponent {...contextProps}>{props.children}</BlogComponent>
           )}
         </Codeblog>
       </CodeblogProvider>
@@ -103,9 +103,7 @@ export const PreviewCodeblogPost = (props: CodeblogPostProps) => {
       >
         <Codeblog>
           {contextProps => (
-            <BlogComponent {...contextProps}>
-              <BlogPostComponent {...contextProps} />
-            </BlogComponent>
+            <BlogComponent {...contextProps}>{props.children}</BlogComponent>
           )}
         </Codeblog>
       </CodeblogProvider>

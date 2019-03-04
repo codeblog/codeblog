@@ -11,7 +11,8 @@
     "deploy": "yarn build && yarn publish"
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "peerDependencies": {
     "codeblog": "latest"
