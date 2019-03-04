@@ -1,0 +1,14 @@
+.Codeblog-TextBackgroundEffect:after,
+.Codeblog-TextBackgroundEffect:before {
+    content: " ";
+    display: inline;
+}
+
+.Codeblog-TextBackgroundEffect {
+    color: blue;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    letter-spacing: 1px;
+    text-decoration: none;
+}

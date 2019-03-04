@@ -1,4 +1,4 @@
-import { CodeblogContext } from "codeblog";
+import { Codeblog } from "codeblog";
 import * as React from "react";
 
 class BlogIndexPage extends React.Component {
@@ -30,7 +30,7 @@ class BlogIndexPage extends React.Component {
 }
 
 export default props => (
-  <CodeblogContext>
+  <Codeblog>
     {({ blog, posts, header, environment }) => (
       <BlogIndexPage
         header={header}
@@ -41,5 +41,5 @@ export default props => (
         {props.children}
       </BlogIndexPage>
     )}
-  </CodeblogContext>
+  </Codeblog>
 );

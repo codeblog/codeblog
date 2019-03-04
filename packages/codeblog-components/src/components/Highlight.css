@@ -1,0 +1,29 @@
+.Codeblog-Highlight {
+    border-radius: 5px;
+    padding-left: 3px;
+    transition: background-color 0.1s linear;
+}
+
+.Codeblog-Highlight--green {
+    background-color: #99FFCC; /* Default color, all browsers */
+}
+
+.Codeblog-Highlight--green::selection {
+    background-color: #99CCCC; /* Selection color, WebKit/Blink Browsers */
+}
+
+.Codeblog-Highlight--pink {
+    background-color: #FFCCFF; /* Default color, all browsers */
+}
+
+.Codeblog-Highlight--pink::selection {
+    background-color: #FF99FF; /* Selection color, WebKit/Blink Browsers */
+}
+
+.Codeblog-Highlight--yellow {
+    background-color: #FFFFCC; /* Default color, all browsers */
+}
+
+.Codeblog-Highlight--yellow::selection {
+    background-color: #FFFF66; /* Selection color, WebKit/Blink Browsers */
+}

@@ -1,13 +1,12 @@
 import * as React from "react";
 import { HeadProvider } from "react-head";
 import {
-  Codeblog as CodeblogContextConsumer,
+  Codeblog,
   CodeblogContext,
   CodeblogProvider,
   BlogComponentType,
   BlogPostComponentType
 } from "./components/Codeblog";
-import { Blog, BlogPost } from "codeblog-template-simple";
 
 type CodeblogPostProps = CodeblogContext & {
   children: React.ReactNode;
@@ -16,20 +15,20 @@ type CodeblogPostProps = CodeblogContext & {
   headTags?: [];
 };
 
-export { CodeblogContextConsumer as CodeblogContext };
+export { Codeblog };
 export { CodeblogContext as CodeblogContextType };
 
 export { Title, Meta } from "react-head";
+export {
+  Post,
+  Blog,
+  BlogComponentType,
+  BlogPostComponentType,
+  EnvironmentType,
+  PageType
+} from "./components/Codeblog";
 
-export const Codeblog = (props: CodeblogPostProps) => {
-  if (!props.BlogComponent) {
-    props.BlogComponent = Blog;
-  }
-
-  if (!props.BlogPostComponent) {
-    props.BlogPostComponent = BlogPost;
-  }
-
+export const CodeblogRoot = (props: CodeblogPostProps) => {
   if (props.pageType === "show") {
     return <CodeblogPost {...props} />;
   } else if (props.pageType === "preview") {
@@ -54,13 +53,13 @@ export const CodeblogPost = (props: CodeblogPostProps) => {
         BlogComponent={BlogComponent}
         BlogPostComponent={BlogPostComponent}
       >
-        <CodeblogContextConsumer>
+        <Codeblog>
           {contextProps => (
             <BlogComponent {...contextProps}>
               <BlogPostComponent {...contextProps} />
             </BlogComponent>
           )}
-        </CodeblogContextConsumer>
+        </Codeblog>
       </CodeblogProvider>
     </HeadProvider>
   );
@@ -76,19 +75,22 @@ export const CodeblogIndexPage = (props: CodeblogPostProps) => {
         environment={props.environment}
         posts={props.posts}
         blog={props.blog}
-        header={props.header}
         BlogComponent={BlogComponent}
         BlogPostComponent={BlogPostComponent}
       >
-        <CodeblogContextConsumer>
-          {contextProps => <BlogComponent {...contextProps} />}
-        </CodeblogContextConsumer>
+        <Codeblog>
+          {contextProps => (
+            <BlogComponent {...contextProps}>{props.children}</BlogComponent>
+          )}
+        </Codeblog>
       </CodeblogProvider>
     </HeadProvider>
   );
 };
 
 export const PreviewCodeblogPost = (props: CodeblogPostProps) => {
+  const { BlogComponent, BlogPostComponent } = props;
+
   return (
     <HeadProvider headTags={props.headTags}>
       <CodeblogProvider
@@ -96,15 +98,19 @@ export const PreviewCodeblogPost = (props: CodeblogPostProps) => {
         environment={props.environment}
         post={{ ...props.post, body: props.children }}
         blog={props.blog}
+        BlogComponent={BlogComponent}
+        BlogPostComponent={BlogPostComponent}
       >
-        <CodeblogContextConsumer>
+        <Codeblog>
           {contextProps => (
             <BlogComponent {...contextProps}>
               <BlogPostComponent {...contextProps} />
             </BlogComponent>
           )}
-        </CodeblogContextConsumer>
+        </Codeblog>
       </CodeblogProvider>
     </HeadProvider>
   );
 };
+
+export default Codeblog;

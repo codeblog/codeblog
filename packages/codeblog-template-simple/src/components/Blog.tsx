@@ -1,6 +1,5 @@
 import * as React from "react";
-import { Title, Meta } from "react-head";
-import { Blog as BlogType, PageType, CodeblogContext } from "codeblog";
+import { PageType, Codeblog, Title, Meta } from "codeblog";
 import BlogIndexPage from "./BlogIndexPage";
 
 interface Props {
@@ -16,12 +15,11 @@ export const getBlogTitle = (blog: BlogType) => {
   }
 };
 
-class RawBlog extends React.Component<Props> {
+export class Blog extends React.Component<Props> {
   render() {
     const { blog, children, pageType } = this.props;
-
     return (
-      <main
+      <div
         itemScope
         itemID={String(blog.id)}
         itemType="http://schema.org/Blog"
@@ -39,17 +37,9 @@ class RawBlog extends React.Component<Props> {
         ) : (
           children
         )}
-      </main>
+      </div>
     );
   }
 }
-
-export const Blog = props => (
-  <CodeblogContext>
-    {({ blog, pageType }) => (
-      <RawBlog {...props} pageType={pageType} blog={blog} />
-    )}
-  </CodeblogContext>
-);
 
 export default Blog;

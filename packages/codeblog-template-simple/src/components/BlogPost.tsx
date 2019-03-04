@@ -1,12 +1,13 @@
 import * as React from "react";
-import { Title, Meta } from "react-head";
 import classNames from "classnames";
 import {
   Post,
   PageType,
-  CodeblogContext,
+  Codeblog,
   EnvironmentType,
-  CodeblogContextType
+  CodeblogContext,
+  Title,
+  Meta
 } from "codeblog";
 import { formatDistance, format } from "date-fns";
 
@@ -183,8 +184,8 @@ class RawBlogPost extends React.Component<Props> {
 }
 
 export const BlogPost = props => (
-  <CodeblogContext>
-    {({ pageType, post, environment }: CodeblogContextType) => (
+  <Codeblog>
+    {({ pageType, post, environment }: CodeblogContext) => (
       <RawBlogPost
         pageType={pageType}
         environment={environment}
@@ -192,5 +193,5 @@ export const BlogPost = props => (
         body={props.body || post.body}
       />
     )}
-  </CodeblogContext>
+  </Codeblog>
 );

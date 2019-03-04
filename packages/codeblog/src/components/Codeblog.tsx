@@ -17,7 +17,7 @@ export interface Post {
   slug: string;
   url: string;
   title: string;
-  body: React.Node;
+  body: React.ReactNode;
   photoURL: string | null;
   summary: string;
   code: string;
@@ -57,6 +57,7 @@ export type BlogPostComponentType = React.ComponentType<
 
 interface Props {
   blog: Blog;
+  posts?: Array<Post>;
   post: Post;
   pageType: PageType;
   environment: EnvironmentType;
@@ -66,7 +67,7 @@ interface Props {
   BlogPostComponent: BlogPostComponentType;
 }
 
-export const normalizePost = (post, blog) => {
+export const normalizePost = (post: any, blog: any) => {
   let {
     published_at: publishedAt = null,
     editedAt: editedAt = null,
@@ -94,16 +95,22 @@ export const normalizePost = (post, blog) => {
 export class CodeblogProvider extends React.Component<Props, CodeblogContext> {
   state: CodeblogContext;
 
-  static defaultProps = { posts: [], post: null };
+  static defaultProps: { posts: Array<Post>; post: Post | null } = {
+    posts: [],
+    post: null
+  };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     const state: CodeblogContext = {
       blog: { ...props.blog },
-      post: null,
+      posts: props.posts,
+      post: props.post,
       pageType: props.pageType,
-      environment: props.environment
+      environment: props.environment,
+      BlogComponent: props.BlogComponent,
+      BlogPostComponent: props.BlogPostComponent
     };
 
     if (props.post) {

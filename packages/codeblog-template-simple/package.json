@@ -7,32 +7,32 @@
   "scripts": {
     "dev": "webpack --config webpack.config.js --mode development --watch",
     "build": "webpack --config webpack.config.js --mode production",
+    "build-typescript": "yarn tsc -p tsconfig.json",
     "deploy": "yarn build && yarn publish"
   },
   "files": [
     "dist"
   ],
+  "peerDependencies": {
+    "codeblog": "latest"
+  },
   "dependencies": {
-    "@types/lodash": "^4.14.121",
-    "@types/react": "^16.8.3",
     "classnames": "^2.2.6",
-    "clean-webpack-plugin": "^1.0.1",
     "date-fns": "^2.0.0-alpha.27",
     "date-fns-tz": "^1.0.7",
-    "iframe-resizer": "^3.6.5",
-    "lodash": "^4.17.11",
-    "react": "^16.8.1",
-    "react-head": "^3.1.0",
-    "react-helmet-async": "^0.2.0",
-    "react-iframe-resizer-super": "^0.2.2",
-    "webpack-fix-style-only-entries": "^0.2.0"
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
+    "webpack-fix-style-only-entries": "^0.2.0",
+    "clean-webpack-plugin": "^1.0.1",
     "@babel/plugin-proposal-class-properties": "^7.3.0",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.1.0",
+    "@types/classnames": "^2.2.7",
+    "@types/lodash": "^4.14.121",
+    "@types/react": "^16.8.3",
     "babel-loader": "^8.0.5",
     "copy-webpack-plugin": "^4.6.0",
     "css-loader": "^2.1.0",
@@ -43,7 +43,7 @@
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.5.0",
-    "typescript": "^3.3.3",
+    "typescript": "^3.3.3333",
     "webpack": "^4.29.3",
     "webpack-cli": "^3.2.3"
   }

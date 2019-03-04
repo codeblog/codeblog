@@ -7,6 +7,8 @@
   "scripts": {
     "dev": "webpack --config webpack.config.js --mode development --watch",
     "build": "webpack --config webpack.config.js --mode production",
+    "build-typescript": "yarn tsc -p tsconfig.json",
+    "postbuild": "yarn build-typescript",
     "deploy": "yarn build && yarn publish"
   },
   "files": [
@@ -43,7 +45,7 @@
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.5.0",
-    "typescript": "^3.3.3",
+    "typescript": "^3.3.3333",
     "webpack": "^4.29.3",
     "webpack-cli": "^3.2.3"
   }
