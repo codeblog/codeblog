@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { BlogPostSEOTags as SEOTags, Codeblog } from "codeblog";
 import BlogPostHeader from "./BlogPostHeader";
 
-const BlogPost = ({ pageType, post, body, environment }) => (
+const BlogPost = ({ pageType, post, children, environment }) => (
   <article
     itemScope
     itemProp={pageType === "index" ? "blogPosts" : "blogPost"}
@@ -24,7 +24,7 @@ const BlogPost = ({ pageType, post, body, environment }) => (
     </BlogPostHeader>
 
     {/* This is where your post content goes! */}
-    <div className="BlogPost-Body">{body}</div>
+    <div className="BlogPost-Body">{children}</div>
   </article>
 );
 
@@ -33,15 +33,16 @@ const BlogPost = ({ pageType, post, body, environment }) => (
 const BlogPostContainer = props => (
   <Codeblog>
     {({ pageType, post, environment }) => (
-      <RawBlogPost
+      <BlogPost
         pageType={pageType}
         environment={environment}
         post={props.post || post}
-        body={props.body || post.body}
-      />
+      >
+        {props.children}
+      </BlogPost>
     )}
   </Codeblog>
 );
 
 export { BlogPostContainer as BlogPost };
-export default BlogPost;
+export default BlogPostContainer;
