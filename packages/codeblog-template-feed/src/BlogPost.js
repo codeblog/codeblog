@@ -25,8 +25,8 @@ const BlogPost = ({ pageType, post, children, environment }) => (
 // Previewing your post might break if you remove this part.
 const BlogPostContainer = props => (
   <Codeblog>
-    {({ pageType, environment }) => (
-      <BlogPost pageType={pageType} environment={environment} post={props.post}>
+    {({ pageType, environment, post }) => (
+      <BlogPost pageType={pageType} environment={environment} post={post}>
         {props.children}
       </BlogPost>
     )}
