@@ -1,5 +1,5 @@
 {
-  "name": "codeblog-template-simple",
+  "name": "codeblog-template-feed",
   "version": "1.0.3",
   "browser": "dist/index.js",
   "main": "dist/index.js",
@@ -18,8 +18,7 @@
     "codeblog": "latest"
   },
   "dependencies": {
-    "classnames": "^2.2.6",
-    "date-fns": "^2.0.0-alpha.27"
+    "classnames": "^2.2.6"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
