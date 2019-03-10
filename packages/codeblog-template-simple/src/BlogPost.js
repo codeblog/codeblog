@@ -33,7 +33,11 @@ const BlogPost = ({ pageType, post, children, environment }) => (
 const BlogPostContainer = props => (
   <Codeblog>
     {({ pageType, environment, post }) => (
-      <BlogPost pageType={pageType} environment={environment} post={post}>
+      <BlogPost
+        pageType={pageType}
+        environment={environment}
+        post={props.post || post}
+      >
         {props.children}
       </BlogPost>
     )}
