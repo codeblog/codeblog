@@ -16,6 +16,7 @@ const baseConfig = {
     globalObject: "this",
     libraryTarget: "umd"
   },
+  devtool: "none",
   target: "web",
   resolve: {
     extensions: [".wasm", ".mjs", ".js", ".json", ".tsx", ".ts"]
@@ -106,6 +107,13 @@ const baseConfig = {
 const WEB_CONFIG = {
   ...baseConfig,
   target: "web",
+  externals: [
+    ...baseConfig.externals,
+    nodeExternals({
+      modulesDir: path.join(__dirname, "../../node_modules"),
+      whitelist: ["npm-package-arg"]
+    })
+  ],
   resolve: {
     ...baseConfig.resolve,
     alias: {

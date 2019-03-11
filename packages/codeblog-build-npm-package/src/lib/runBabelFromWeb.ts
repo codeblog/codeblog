@@ -1,28 +1,28 @@
 import { transform } from "@babel/standalone";
 
-require("@babel/preset-react");
-require("@babel/preset-env");
-require("@babel/plugin-transform-object-assign");
-require("@babel/plugin-proposal-class-properties");
-require("@babel/plugin-proposal-object-rest-spread");
-require("@babel/plugin-transform-destructuring");
+const react = require("@babel/preset-react");
+const env = require("@babel/preset-env");
+const assign = require("@babel/plugin-transform-object-assign");
+const properties = require("@babel/plugin-proposal-class-properties");
+const spread = require("@babel/plugin-proposal-object-rest-spread");
+const destructuring = require("@babel/plugin-transform-destructuring");
 
 export const runBabel = (jsx: string) => {
   const { code } = transform(jsx, {
     presets: [
       [
-        "env",
+        env,
         {
           modules: "umd"
         }
       ],
-      "react"
+      react
     ],
     plugins: [
-      ["transform-destructuring", { useBuiltIns: true }],
-      "transform-object-assign",
-      "proposal-class-properties",
-      "proposal-object-rest-spread"
+      [destructuring, { useBuiltIns: true }],
+      assign,
+      properties,
+      spread
     ]
   });
 
