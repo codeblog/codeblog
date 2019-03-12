@@ -13,8 +13,9 @@ const baseConfig = {
   output: {
     path: path.resolve(__dirname, "./dist"),
     library: "codeblog-build-npm-package",
-    globalObject: "this",
-    libraryTarget: "umd"
+    globalObject: "typeof self !== 'undefined' ? self : this",
+    libraryTarget: "umd",
+    umdNamedDefine: true
   },
   devtool: "none",
   target: "web",

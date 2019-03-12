@@ -14,7 +14,9 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "./dist"),
     library: "codeblog-template-feed",
-    libraryTarget: "umd"
+    umdNamedDefine: true,
+    libraryTarget: "umd",
+    globalObject: "typeof self !== 'undefined' ? self : this"
   },
   target: "web",
   optimization: {
