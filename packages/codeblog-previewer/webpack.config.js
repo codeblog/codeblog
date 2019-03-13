@@ -3,7 +3,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
-const browserfs = require("browserfs");
+const browserfs = require("codesandbox-browserfs");
 
 module.exports = {
   entry: {
@@ -19,16 +19,17 @@ module.exports = {
     extensions: [".wasm", ".mjs", ".js", ".json", ".tsx", ".ts"],
     alias: {
       osenv: path.resolve(__dirname, "src/osenv-shim.js"),
-      fs: "browserfs/dist/shims/fs.js",
-      buffer: "browserfs/dist/shims/buffer.js",
-      path: "browserfs/dist/shims/path.js",
-      processGlobal: "browserfs/dist/shims/process.js",
-      bufferGlobal: "browserfs/dist/shims/bufferGlobal.js",
-      bfsGlobal: require.resolve("browserfs")
+      fs: "codesandbox-browserfs/dist/shims/fs.js",
+      buffer: "codesandbox-browserfs/dist/shims/buffer.js",
+      browserfs: "codesandbox-browserfs",
+      path: "codesandbox-browserfs/dist/shims/path.js",
+      processGlobal: "codesandbox-browserfs/dist/shims/process.js",
+      bufferGlobal: "codesandbox-browserfs/dist/shims/bufferGlobal.js",
+      bfsGlobal: require.resolve("codesandbox-browserfs")
     }
   },
   module: {
-    noParse: /browserfs\.js/,
+    noParse: /codesandbox-browserfs\.js/,
     rules: [
       {
         test: /\.worker\.tsx?$/,

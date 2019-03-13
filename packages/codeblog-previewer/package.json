@@ -56,10 +56,12 @@
   "dependencies": {
     "@babel/plugin-proposal-object-rest-spread": "^7.3.4",
     "@babel/plugin-syntax-jsx": "^7.2.0",
-    "browserfs": "^1.4.3",
+    "bluebird": "^3.5.3",
     "classnames": "^2.2.6",
     "codeblog-build-npm-package": "1.2.0",
     "codeblog-packager": "latest",
+    "codesandbox-browserfs": "^2.0.1",
+    "lodash": "^4.17.11",
     "object-assign": "*",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",

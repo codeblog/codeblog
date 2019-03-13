@@ -5,19 +5,20 @@ import {
 import { CompiledPackage, ServerStatus } from "./messages";
 import Bluebird from "bluebird";
 import { isEqual } from "lodash";
-import * as BrowserFS from "browserfs";
+import * as BrowserFS from "codesandbox-browserfs";
 
-const createLocalStorageFS = Bluebird.promisify(
-  BrowserFS.FileSystem.LocalStorage.Create
-);
-const createIDBFS = Bluebird.promisify(BrowserFS.FileSystem.IndexedDB.Create);
+// const createLocalStorageFS = Bluebird.promisify(
+//   BrowserFS.FileSystem.LocalStorage.Create
+// );
+// debugger;
+// const createIDBFS = Bluebird.promisify(BrowserFS.FileSystem.IndexedDB.Create);
 const createMemoryFS = Bluebird.promisify(BrowserFS.FileSystem.InMemory.Create);
-const createMountableFS = Bluebird.promisify(
-  BrowserFS.FileSystem.MountableFileSystem.Create
-);
-const createAsyncMirrorFS = Bluebird.promisify(
-  BrowserFS.FileSystem.AsyncMirror.Create
-);
+// const createMountableFS = Bluebird.promisify(
+//   BrowserFS.FileSystem.MountableFileSystem.Create
+// );
+// const createAsyncMirrorFS = Bluebird.promisify(
+//   BrowserFS.FileSystem.AsyncMirror.Create
+// );
 
 const LAST_INSTALLED_DEPENDENCIES_FILEPATH =
   "/last-installed-dependencies.json";
@@ -71,7 +72,7 @@ export class DependencyManager {
 
     this.status = ServerStatus.fs_init;
 
-    // const inMemory = await createMemoryFS();
+    const inMemory = await createMemoryFS();
     // const idbfs = await createIDBFS({ storeName: "codeblog-previewer" });
 
     // const mirrorFS = await createAsyncMirrorFS({
@@ -79,8 +80,7 @@ export class DependencyManager {
     //   async: idbfs
     // });
 
-    // BrowserFS.initialize(await createLocalStorageFS());
-    BrowserFS.initialize(await createMemoryFS());
+    BrowserFS.initialize(inMemory);
     _isFSInitialized = true;
 
     BrowserFS.install(window);
@@ -142,6 +142,7 @@ export class DependencyManager {
         dependencies
       }),
       fs,
+      logger: function() {},
       rootDir: "/"
     });
     this.status = ServerStatus.installing_dependencies_finished;
