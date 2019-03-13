@@ -91,11 +91,324 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/index.ts");
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ "../../node_modules/npm-package-arg/npa.js":
+/*!**********************************************************************************!*\
+  !*** /Users/jarred/Code/codeblog/opensource/node_modules/npm-package-arg/npa.js ***!
+  \**********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process, global) {
+module.exports = npa
+module.exports.resolve = resolve
+module.exports.Result = Result
+
+let url
+let HostedGit
+let semver
+let path
+let validatePackageName
+let osenv
+
+const isWindows = process.platform === 'win32' || global.FAKE_WINDOWS
+const hasSlashes = isWindows ? /\\|[/]/ : /[/]/
+const isURL = /^(?:git[+])?[a-z]+:/i
+const isFilename = /[.](?:tgz|tar.gz|tar)$/i
+
+function npa (arg, where) {
+  let name
+  let spec
+  if (typeof arg === 'object') {
+    if (arg instanceof Result && (!where || where === arg.where)) {
+      return arg
+    } else if (arg.name && arg.rawSpec) {
+      return npa.resolve(arg.name, arg.rawSpec, where || arg.where)
+    } else {
+      return npa(arg.raw, where || arg.where)
+    }
+  }
+  const nameEndsAt = arg[0] === '@' ? arg.slice(1).indexOf('@') + 1 : arg.indexOf('@')
+  const namePart = nameEndsAt > 0 ? arg.slice(0, nameEndsAt) : arg
+  if (isURL.test(arg)) {
+    spec = arg
+  } else if (namePart[0] !== '@' && (hasSlashes.test(namePart) || isFilename.test(namePart))) {
+    spec = arg
+  } else if (nameEndsAt > 0) {
+    name = namePart
+    spec = arg.slice(nameEndsAt + 1)
+  } else {
+    if (!validatePackageName) validatePackageName = __webpack_require__(/*! validate-npm-package-name */ "validate-npm-package-name")
+    const valid = validatePackageName(arg)
+    if (valid.validForOldPackages) {
+      name = arg
+    } else {
+      spec = arg
+    }
+  }
+  return resolve(name, spec, where, arg)
+}
+
+const isFilespec = isWindows ? /^(?:[.]|~[/]|[/\\]|[a-zA-Z]:)/ : /^(?:[.]|~[/]|[/]|[a-zA-Z]:)/
+
+function resolve (name, spec, where, arg) {
+  const res = new Result({
+    raw: arg,
+    name: name,
+    rawSpec: spec,
+    fromArgument: arg != null
+  })
+
+  if (name) res.setName(name)
+
+  if (spec && (isFilespec.test(spec) || /^file:/i.test(spec))) {
+    return fromFile(res, where)
+  } else if (spec && /^npm:/i.test(spec)) {
+    return fromAlias(res, where)
+  }
+  if (!HostedGit) HostedGit = __webpack_require__(/*! hosted-git-info */ "hosted-git-info")
+  const hosted = HostedGit.fromUrl(spec, {noGitPlus: true, noCommittish: true})
+  if (hosted) {
+    return fromHostedGit(res, hosted)
+  } else if (spec && isURL.test(spec)) {
+    return fromURL(res)
+  } else if (spec && (hasSlashes.test(spec) || isFilename.test(spec))) {
+    return fromFile(res, where)
+  } else {
+    return fromRegistry(res)
+  }
+}
+
+function invalidPackageName (name, valid) {
+  const err = new Error(`Invalid package name "${name}": ${valid.errors.join('; ')}`)
+  err.code = 'EINVALIDPACKAGENAME'
+  return err
+}
+function invalidTagName (name) {
+  const err = new Error(`Invalid tag name "${name}": Tags may not have any characters that encodeURIComponent encodes.`)
+  err.code = 'EINVALIDTAGNAME'
+  return err
+}
+
+function Result (opts) {
+  this.type = opts.type
+  this.registry = opts.registry
+  this.where = opts.where
+  if (opts.raw == null) {
+    this.raw = opts.name ? opts.name + '@' + opts.rawSpec : opts.rawSpec
+  } else {
+    this.raw = opts.raw
+  }
+  this.name = undefined
+  this.escapedName = undefined
+  this.scope = undefined
+  this.rawSpec = opts.rawSpec == null ? '' : opts.rawSpec
+  this.saveSpec = opts.saveSpec
+  this.fetchSpec = opts.fetchSpec
+  if (opts.name) this.setName(opts.name)
+  this.gitRange = opts.gitRange
+  this.gitCommittish = opts.gitCommittish
+  this.hosted = opts.hosted
+}
+Result.prototype = {}
+
+Result.prototype.setName = function (name) {
+  if (!validatePackageName) validatePackageName = __webpack_require__(/*! validate-npm-package-name */ "validate-npm-package-name")
+  const valid = validatePackageName(name)
+  if (!valid.validForOldPackages) {
+    throw invalidPackageName(name, valid)
+  }
+  this.name = name
+  this.scope = name[0] === '@' ? name.slice(0, name.indexOf('/')) : undefined
+  // scoped packages in couch must have slash url-encoded, e.g. @foo%2Fbar
+  this.escapedName = name.replace('/', '%2f')
+  return this
+}
+
+Result.prototype.toString = function () {
+  const full = []
+  if (this.name != null && this.name !== '') full.push(this.name)
+  const spec = this.saveSpec || this.fetchSpec || this.rawSpec
+  if (spec != null && spec !== '') full.push(spec)
+  return full.length ? full.join('@') : this.raw
+}
+
+Result.prototype.toJSON = function () {
+  const result = Object.assign({}, this)
+  delete result.hosted
+  return result
+}
+
+function setGitCommittish (res, committish) {
+  if (committish != null && committish.length >= 7 && committish.slice(0, 7) === 'semver:') {
+    res.gitRange = decodeURIComponent(committish.slice(7))
+    res.gitCommittish = null
+  } else {
+    res.gitCommittish = committish === '' ? null : committish
+  }
+  return res
+}
+
+const isAbsolutePath = /^[/]|^[A-Za-z]:/
+
+function resolvePath (where, spec) {
+  if (isAbsolutePath.test(spec)) return spec
+  if (!path) path = __webpack_require__(/*! path */ "../../node_modules/path-browserify/index.js")
+  return path.resolve(where, spec)
+}
+
+function isAbsolute (dir) {
+  if (dir[0] === '/') return true
+  if (/^[A-Za-z]:/.test(dir)) return true
+  return false
+}
+
+function fromFile (res, where) {
+  if (!where) where = process.cwd()
+  res.type = isFilename.test(res.rawSpec) ? 'file' : 'directory'
+  res.where = where
+
+  const spec = res.rawSpec.replace(/\\/g, '/')
+    .replace(/^file:[/]*([A-Za-z]:)/, '$1') // drive name paths on windows
+    .replace(/^file:(?:[/]*([~./]))?/, '$1')
+  if (/^~[/]/.test(spec)) {
+    // this is needed for windows and for file:~/foo/bar
+    if (!osenv) osenv = __webpack_require__(/*! osenv */ "osenv")
+    res.fetchSpec = resolvePath(osenv.home(), spec.slice(2))
+    res.saveSpec = 'file:' + spec
+  } else {
+    res.fetchSpec = resolvePath(where, spec)
+    if (isAbsolute(spec)) {
+      res.saveSpec = 'file:' + spec
+    } else {
+      if (!path) path = __webpack_require__(/*! path */ "../../node_modules/path-browserify/index.js")
+      res.saveSpec = 'file:' + path.relative(where, res.fetchSpec)
+    }
+  }
+  return res
+}
+
+function fromHostedGit (res, hosted) {
+  res.type = 'git'
+  res.hosted = hosted
+  res.saveSpec = hosted.toString({noGitPlus: false, noCommittish: false})
+  res.fetchSpec = hosted.getDefaultRepresentation() === 'shortcut' ? null : hosted.toString()
+  return setGitCommittish(res, hosted.committish)
+}
+
+function unsupportedURLType (protocol, spec) {
+  const err = new Error(`Unsupported URL Type "${protocol}": ${spec}`)
+  err.code = 'EUNSUPPORTEDPROTOCOL'
+  return err
+}
+
+function matchGitScp (spec) {
+  // git ssh specifiers are overloaded to also use scp-style git
+  // specifiers, so we have to parse those out and treat them special.
+  // They are NOT true URIs, so we can't hand them to `url.parse`.
+  //
+  // This regex looks for things that look like:
+  // git+ssh://git@my.custom.git.com:username/project.git#deadbeef
+  //
+  // ...and various combinations. The username in the beginning is *required*.
+  const matched = spec.match(/^git\+ssh:\/\/([^:#]+:[^#]+(?:\.git)?)(?:#(.*))?$/i)
+  return matched && !matched[1].match(/:[0-9]+\/?.*$/i) && {
+    fetchSpec: matched[1],
+    gitCommittish: matched[2] == null ? null : matched[2]
+  }
+}
+
+function fromURL (res) {
+  if (!url) url = __webpack_require__(/*! url */ "url")
+  const urlparse = url.parse(res.rawSpec)
+  res.saveSpec = res.rawSpec
+  // check the protocol, and then see if it's git or not
+  switch (urlparse.protocol) {
+    case 'git:':
+    case 'git+http:':
+    case 'git+https:':
+    case 'git+rsync:':
+    case 'git+ftp:':
+    case 'git+file:':
+    case 'git+ssh:':
+      res.type = 'git'
+      const match = urlparse.protocol === 'git+ssh:' && matchGitScp(res.rawSpec)
+      if (match) {
+        setGitCommittish(res, match.gitCommittish)
+        res.fetchSpec = match.fetchSpec
+      } else {
+        setGitCommittish(res, urlparse.hash != null ? urlparse.hash.slice(1) : '')
+        urlparse.protocol = urlparse.protocol.replace(/^git[+]/, '')
+        delete urlparse.hash
+        res.fetchSpec = url.format(urlparse)
+      }
+      break
+    case 'http:':
+    case 'https:':
+      res.type = 'remote'
+      res.fetchSpec = res.saveSpec
+      break
+
+    default:
+      throw unsupportedURLType(urlparse.protocol, res.rawSpec)
+  }
+
+  return res
+}
+
+function fromAlias (res, where) {
+  const subSpec = npa(res.rawSpec.substr(4), where)
+  if (subSpec.type === 'alias') {
+    throw new Error('nested aliases not supported')
+  }
+  if (!subSpec.registry) {
+    throw new Error('aliases only work for registry deps')
+  }
+  res.subSpec = subSpec
+  res.registry = true
+  res.type = 'alias'
+  res.saveSpec = null
+  res.fetchSpec = null
+  return res
+}
+
+function fromRegistry (res) {
+  res.registry = true
+  const spec = res.rawSpec === '' ? 'latest' : res.rawSpec
+  // no save spec for registry components as we save based on the fetched
+  // version, not on the argument so this can't compute that.
+  res.saveSpec = null
+  res.fetchSpec = spec
+  if (!semver) semver = __webpack_require__(/*! semver */ "semver")
+  const version = semver.valid(spec, true)
+  const range = semver.validRange(spec, true)
+  if (version) {
+    res.type = 'version'
+  } else if (range) {
+    res.type = 'range'
+  } else {
+    if (encodeURIComponent(spec) !== spec) {
+      throw invalidTagName(spec)
+    }
+    res.type = 'tag'
+  }
+  return res
+}
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../process/browser.js */ "../../node_modules/process/browser.js"), __webpack_require__(/*! ./../webpack/buildin/global.js */ "../../node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
+/***/ "../../node_modules/path-browserify/index.js":
+/*!************************************************************************************!*\
+  !*** /Users/jarred/Code/codeblog/opensource/node_modules/path-browserify/index.js ***!
+  \************************************************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -323,331 +636,15 @@ var substr = 'ab'.substr(-1) === 'b'
     }
 ;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../process/browser.js */ "../../node_modules/process/browser.js")))
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/interopRequireDefault");
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-module.exports = require("@babel/runtime/regenerator");
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-module.exports = require("@babel/runtime/helpers/asyncToGenerator");
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process, global) {
-module.exports = npa
-module.exports.resolve = resolve
-module.exports.Result = Result
-
-let url
-let HostedGit
-let semver
-let path
-let validatePackageName
-let osenv
-
-const isWindows = process.platform === 'win32' || global.FAKE_WINDOWS
-const hasSlashes = isWindows ? /\\|[/]/ : /[/]/
-const isURL = /^(?:git[+])?[a-z]+:/i
-const isFilename = /[.](?:tgz|tar.gz|tar)$/i
-
-function npa (arg, where) {
-  let name
-  let spec
-  if (typeof arg === 'object') {
-    if (arg instanceof Result && (!where || where === arg.where)) {
-      return arg
-    } else if (arg.name && arg.rawSpec) {
-      return npa.resolve(arg.name, arg.rawSpec, where || arg.where)
-    } else {
-      return npa(arg.raw, where || arg.where)
-    }
-  }
-  const nameEndsAt = arg[0] === '@' ? arg.slice(1).indexOf('@') + 1 : arg.indexOf('@')
-  const namePart = nameEndsAt > 0 ? arg.slice(0, nameEndsAt) : arg
-  if (isURL.test(arg)) {
-    spec = arg
-  } else if (namePart[0] !== '@' && (hasSlashes.test(namePart) || isFilename.test(namePart))) {
-    spec = arg
-  } else if (nameEndsAt > 0) {
-    name = namePart
-    spec = arg.slice(nameEndsAt + 1)
-  } else {
-    if (!validatePackageName) validatePackageName = __webpack_require__(6)
-    const valid = validatePackageName(arg)
-    if (valid.validForOldPackages) {
-      name = arg
-    } else {
-      spec = arg
-    }
-  }
-  return resolve(name, spec, where, arg)
-}
-
-const isFilespec = isWindows ? /^(?:[.]|~[/]|[/\\]|[a-zA-Z]:)/ : /^(?:[.]|~[/]|[/]|[a-zA-Z]:)/
-
-function resolve (name, spec, where, arg) {
-  const res = new Result({
-    raw: arg,
-    name: name,
-    rawSpec: spec,
-    fromArgument: arg != null
-  })
-
-  if (name) res.setName(name)
-
-  if (spec && (isFilespec.test(spec) || /^file:/i.test(spec))) {
-    return fromFile(res, where)
-  } else if (spec && /^npm:/i.test(spec)) {
-    return fromAlias(res, where)
-  }
-  if (!HostedGit) HostedGit = __webpack_require__(13)
-  const hosted = HostedGit.fromUrl(spec, {noGitPlus: true, noCommittish: true})
-  if (hosted) {
-    return fromHostedGit(res, hosted)
-  } else if (spec && isURL.test(spec)) {
-    return fromURL(res)
-  } else if (spec && (hasSlashes.test(spec) || isFilename.test(spec))) {
-    return fromFile(res, where)
-  } else {
-    return fromRegistry(res)
-  }
-}
-
-function invalidPackageName (name, valid) {
-  const err = new Error(`Invalid package name "${name}": ${valid.errors.join('; ')}`)
-  err.code = 'EINVALIDPACKAGENAME'
-  return err
-}
-function invalidTagName (name) {
-  const err = new Error(`Invalid tag name "${name}": Tags may not have any characters that encodeURIComponent encodes.`)
-  err.code = 'EINVALIDTAGNAME'
-  return err
-}
-
-function Result (opts) {
-  this.type = opts.type
-  this.registry = opts.registry
-  this.where = opts.where
-  if (opts.raw == null) {
-    this.raw = opts.name ? opts.name + '@' + opts.rawSpec : opts.rawSpec
-  } else {
-    this.raw = opts.raw
-  }
-  this.name = undefined
-  this.escapedName = undefined
-  this.scope = undefined
-  this.rawSpec = opts.rawSpec == null ? '' : opts.rawSpec
-  this.saveSpec = opts.saveSpec
-  this.fetchSpec = opts.fetchSpec
-  if (opts.name) this.setName(opts.name)
-  this.gitRange = opts.gitRange
-  this.gitCommittish = opts.gitCommittish
-  this.hosted = opts.hosted
-}
-Result.prototype = {}
-
-Result.prototype.setName = function (name) {
-  if (!validatePackageName) validatePackageName = __webpack_require__(6)
-  const valid = validatePackageName(name)
-  if (!valid.validForOldPackages) {
-    throw invalidPackageName(name, valid)
-  }
-  this.name = name
-  this.scope = name[0] === '@' ? name.slice(0, name.indexOf('/')) : undefined
-  // scoped packages in couch must have slash url-encoded, e.g. @foo%2Fbar
-  this.escapedName = name.replace('/', '%2f')
-  return this
-}
-
-Result.prototype.toString = function () {
-  const full = []
-  if (this.name != null && this.name !== '') full.push(this.name)
-  const spec = this.saveSpec || this.fetchSpec || this.rawSpec
-  if (spec != null && spec !== '') full.push(spec)
-  return full.length ? full.join('@') : this.raw
-}
-
-Result.prototype.toJSON = function () {
-  const result = Object.assign({}, this)
-  delete result.hosted
-  return result
-}
-
-function setGitCommittish (res, committish) {
-  if (committish != null && committish.length >= 7 && committish.slice(0, 7) === 'semver:') {
-    res.gitRange = decodeURIComponent(committish.slice(7))
-    res.gitCommittish = null
-  } else {
-    res.gitCommittish = committish === '' ? null : committish
-  }
-  return res
-}
-
-const isAbsolutePath = /^[/]|^[A-Za-z]:/
-
-function resolvePath (where, spec) {
-  if (isAbsolutePath.test(spec)) return spec
-  if (!path) path = __webpack_require__(0)
-  return path.resolve(where, spec)
-}
-
-function isAbsolute (dir) {
-  if (dir[0] === '/') return true
-  if (/^[A-Za-z]:/.test(dir)) return true
-  return false
-}
-
-function fromFile (res, where) {
-  if (!where) where = process.cwd()
-  res.type = isFilename.test(res.rawSpec) ? 'file' : 'directory'
-  res.where = where
-
-  const spec = res.rawSpec.replace(/\\/g, '/')
-    .replace(/^file:[/]*([A-Za-z]:)/, '$1') // drive name paths on windows
-    .replace(/^file:(?:[/]*([~./]))?/, '$1')
-  if (/^~[/]/.test(spec)) {
-    // this is needed for windows and for file:~/foo/bar
-    if (!osenv) osenv = __webpack_require__(14)
-    res.fetchSpec = resolvePath(osenv.home(), spec.slice(2))
-    res.saveSpec = 'file:' + spec
-  } else {
-    res.fetchSpec = resolvePath(where, spec)
-    if (isAbsolute(spec)) {
-      res.saveSpec = 'file:' + spec
-    } else {
-      if (!path) path = __webpack_require__(0)
-      res.saveSpec = 'file:' + path.relative(where, res.fetchSpec)
-    }
-  }
-  return res
-}
-
-function fromHostedGit (res, hosted) {
-  res.type = 'git'
-  res.hosted = hosted
-  res.saveSpec = hosted.toString({noGitPlus: false, noCommittish: false})
-  res.fetchSpec = hosted.getDefaultRepresentation() === 'shortcut' ? null : hosted.toString()
-  return setGitCommittish(res, hosted.committish)
-}
-
-function unsupportedURLType (protocol, spec) {
-  const err = new Error(`Unsupported URL Type "${protocol}": ${spec}`)
-  err.code = 'EUNSUPPORTEDPROTOCOL'
-  return err
-}
-
-function matchGitScp (spec) {
-  // git ssh specifiers are overloaded to also use scp-style git
-  // specifiers, so we have to parse those out and treat them special.
-  // They are NOT true URIs, so we can't hand them to `url.parse`.
-  //
-  // This regex looks for things that look like:
-  // git+ssh://git@my.custom.git.com:username/project.git#deadbeef
-  //
-  // ...and various combinations. The username in the beginning is *required*.
-  const matched = spec.match(/^git\+ssh:\/\/([^:#]+:[^#]+(?:\.git)?)(?:#(.*))?$/i)
-  return matched && !matched[1].match(/:[0-9]+\/?.*$/i) && {
-    fetchSpec: matched[1],
-    gitCommittish: matched[2] == null ? null : matched[2]
-  }
-}
-
-function fromURL (res) {
-  if (!url) url = __webpack_require__(15)
-  const urlparse = url.parse(res.rawSpec)
-  res.saveSpec = res.rawSpec
-  // check the protocol, and then see if it's git or not
-  switch (urlparse.protocol) {
-    case 'git:':
-    case 'git+http:':
-    case 'git+https:':
-    case 'git+rsync:':
-    case 'git+ftp:':
-    case 'git+file:':
-    case 'git+ssh:':
-      res.type = 'git'
-      const match = urlparse.protocol === 'git+ssh:' && matchGitScp(res.rawSpec)
-      if (match) {
-        setGitCommittish(res, match.gitCommittish)
-        res.fetchSpec = match.fetchSpec
-      } else {
-        setGitCommittish(res, urlparse.hash != null ? urlparse.hash.slice(1) : '')
-        urlparse.protocol = urlparse.protocol.replace(/^git[+]/, '')
-        delete urlparse.hash
-        res.fetchSpec = url.format(urlparse)
-      }
-      break
-    case 'http:':
-    case 'https:':
-      res.type = 'remote'
-      res.fetchSpec = res.saveSpec
-      break
-
-    default:
-      throw unsupportedURLType(urlparse.protocol, res.rawSpec)
-  }
-
-  return res
-}
-
-function fromAlias (res, where) {
-  const subSpec = npa(res.rawSpec.substr(4), where)
-  if (subSpec.type === 'alias') {
-    throw new Error('nested aliases not supported')
-  }
-  if (!subSpec.registry) {
-    throw new Error('aliases only work for registry deps')
-  }
-  res.subSpec = subSpec
-  res.registry = true
-  res.type = 'alias'
-  res.saveSpec = null
-  res.fetchSpec = null
-  return res
-}
-
-function fromRegistry (res) {
-  res.registry = true
-  const spec = res.rawSpec === '' ? 'latest' : res.rawSpec
-  // no save spec for registry components as we save based on the fetched
-  // version, not on the argument so this can't compute that.
-  res.saveSpec = null
-  res.fetchSpec = spec
-  if (!semver) semver = __webpack_require__(16)
-  const version = semver.valid(spec, true)
-  const range = semver.validRange(spec, true)
-  if (version) {
-    res.type = 'version'
-  } else if (range) {
-    res.type = 'range'
-  } else {
-    if (encodeURIComponent(spec) !== spec) {
-      throw invalidTagName(spec)
-    }
-    res.type = 'tag'
-  }
-  return res
-}
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(5), __webpack_require__(12)))
-
-/***/ }),
-/* 5 */
+/***/ "../../node_modules/process/browser.js":
+/*!******************************************************************************!*\
+  !*** /Users/jarred/Code/codeblog/opensource/node_modules/process/browser.js ***!
+  \******************************************************************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -837,18 +834,48 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 6 */
+
+/***/ "../../node_modules/webpack/buildin/global.js":
+/*!***********************************!*\
+  !*** (webpack)/buildin/global.js ***!
+  \***********************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = require("validate-npm-package-name");
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || new Function("return this")();
+} catch (e) {
+	// This works if the window reference is available
+	if (typeof window === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
 
 /***/ }),
-/* 7 */
+
+/***/ "./src/index.ts":
+/*!**********************!*\
+  !*** ./src/index.ts ***!
+  \**********************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(8)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./lib/buildPackage */ "./src/lib/buildPackage.ts")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -886,12 +913,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 8 */
+
+/***/ "./src/lib/buildPackage.ts":
+/*!*********************************!*\
+  !*** ./src/lib/buildPackage.ts ***!
+  \*********************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(3), __webpack_require__(9), __webpack_require__(10), __webpack_require__(11), __webpack_require__(4), __webpack_require__(0), __webpack_require__(17), __webpack_require__(21), __webpack_require__(27)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! @babel/runtime/regenerator */ "@babel/runtime/regenerator"), __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "@babel/runtime/helpers/asyncToGenerator"), __webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "@babel/runtime/helpers/toConsumableArray"), __webpack_require__(/*! @babel/runtime/helpers/objectSpread */ "@babel/runtime/helpers/objectSpread"), __webpack_require__(/*! lodash */ "lodash"), __webpack_require__(/*! npm-package-arg */ "../../node_modules/npm-package-arg/npa.js"), __webpack_require__(/*! path */ "../../node_modules/path-browserify/index.js"), __webpack_require__(/*! ./findImports */ "./src/lib/findImports.ts"), __webpack_require__(/*! ./transformMDX */ "./src/lib/transformMDX.ts"), __webpack_require__(/*! runBabel */ "./src/lib/runBabelFromWeb.ts")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -899,7 +931,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 })(this, function (_exports, _regenerator, _asyncToGenerator2, _toConsumableArray2, _objectSpread2, _lodash, _npmPackageArg, _path, _findImports, _transformMDX, _runBabel2) {
   "use strict";
 
-  var _interopRequireDefault = __webpack_require__(1);
+  var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
@@ -1126,80 +1158,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 9 */
-/***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/toConsumableArray");
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-module.exports = require("@babel/runtime/helpers/objectSpread");
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports) {
-
-module.exports = require("lodash");
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
-} catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports) {
-
-module.exports = require("hosted-git-info");
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports) {
-
-module.exports = require("osenv");
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports) {
-
-module.exports = require("url");
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports) {
-
-module.exports = require("semver");
-
-/***/ }),
-/* 17 */
+/***/ "./src/lib/findImports.ts":
+/*!********************************!*\
+  !*** ./src/lib/findImports.ts ***!
+  \********************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(4), __webpack_require__(18), __webpack_require__(19)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! npm-package-arg */ "../../node_modules/npm-package-arg/npa.js"), __webpack_require__(/*! acorn */ "acorn"), __webpack_require__(/*! acorn-umd */ "acorn-umd")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -1207,9 +1176,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 })(this, function (_exports, _npmPackageArg, acorn, _acornUmd) {
   "use strict";
 
-  var _interopRequireWildcard = __webpack_require__(20);
+  var _interopRequireWildcard = __webpack_require__(/*! @babel/runtime/helpers/interopRequireWildcard */ "@babel/runtime/helpers/interopRequireWildcard");
 
-  var _interopRequireDefault = __webpack_require__(1);
+  var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
@@ -1237,138 +1206,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 18 */
-/***/ (function(module, exports) {
 
-module.exports = require("acorn");
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports) {
-
-module.exports = require("acorn-umd");
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports) {
-
-module.exports = require("@babel/runtime/helpers/interopRequireWildcard");
-
-/***/ }),
-/* 21 */
+/***/ "./src/lib/runBabelFromWeb.ts":
+/*!************************************!*\
+  !*** ./src/lib/runBabelFromWeb.ts ***!
+  \************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(3), __webpack_require__(22)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else { var mod; }
-})(this, function (_exports, _regenerator, _asyncToGenerator2, _mdx) {
-  "use strict";
-
-  var _interopRequireDefault = __webpack_require__(1);
-
-  Object.defineProperty(_exports, "__esModule", {
-    value: true
-  });
-  _exports.transformMDX = void 0;
-  _regenerator = _interopRequireDefault(_regenerator);
-  _asyncToGenerator2 = _interopRequireDefault(_asyncToGenerator2);
-  _mdx = _interopRequireDefault(_mdx);
-
-  var transformMDX =
-  /*#__PURE__*/
-  function () {
-    var _ref = (0, _asyncToGenerator2.default)(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee(children, runBabel) {
-      var jsx;
-      return _regenerator.default.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.prev = 0;
-              _context.next = 3;
-              return (0, _mdx.default)(children, {
-                mdPlugins: [[// Removes front-matter from Markdown output
-                __webpack_require__(23), {
-                  type: "yaml",
-                  marker: "-",
-                  fence: "---",
-                  anywhere: true
-                }], __webpack_require__(24), __webpack_require__(25), __webpack_require__(26)],
-                hastPlugins: [],
-                skipExport: false
-              });
-
-            case 3:
-              jsx = _context.sent;
-              _context.next = 9;
-              break;
-
-            case 6:
-              _context.prev = 6;
-              _context.t0 = _context["catch"](0);
-              console.error(_context.t0);
-
-            case 9:
-              return _context.abrupt("return", runBabel(jsx));
-
-            case 10:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee, null, [[0, 6]]);
-    }));
-
-    return function transformMDX(_x, _x2) {
-      return _ref.apply(this, arguments);
-    };
-  }();
-
-  _exports.transformMDX = transformMDX;
-});
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports) {
-
-module.exports = require("@mdx-js/mdx");
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports) {
-
-module.exports = require("remark-frontmatter");
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports) {
-
-module.exports = require("remark-slug");
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports) {
-
-module.exports = require("remark-images");
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports) {
-
-module.exports = require("remark-emoji");
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-  if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(28)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! @babel/standalone */ "@babel/standalone")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -1381,17 +1229,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   });
   _exports.runBabel = void 0;
 
-  var react = __webpack_require__(29);
+  var react = __webpack_require__(/*! @babel/preset-react */ "@babel/preset-react");
 
-  var env = __webpack_require__(30);
+  var env = __webpack_require__(/*! @babel/preset-env */ "@babel/preset-env");
 
-  var assign = __webpack_require__(31);
+  var assign = __webpack_require__(/*! @babel/plugin-transform-object-assign */ "@babel/plugin-transform-object-assign");
 
-  var properties = __webpack_require__(32);
+  var properties = __webpack_require__(/*! @babel/plugin-proposal-class-properties */ "@babel/plugin-proposal-class-properties");
 
-  var spread = __webpack_require__(33);
+  var spread = __webpack_require__(/*! @babel/plugin-proposal-object-rest-spread */ "@babel/plugin-proposal-object-rest-spread");
 
-  var destructuring = __webpack_require__(34);
+  var destructuring = __webpack_require__(/*! @babel/plugin-transform-destructuring */ "@babel/plugin-transform-destructuring");
 
   var runBabel = function runBabel(jsx) {
     var _transform = (0, _standalone.transform)(jsx, {
@@ -1411,47 +1259,383 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 28 */
-/***/ (function(module, exports) {
 
-module.exports = require("@babel/standalone");
+/***/ "./src/lib/transformMDX.ts":
+/*!*********************************!*\
+  !*** ./src/lib/transformMDX.ts ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! @babel/runtime/regenerator */ "@babel/runtime/regenerator"), __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "@babel/runtime/helpers/asyncToGenerator"), __webpack_require__(/*! @mdx-js/mdx */ "@mdx-js/mdx")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else { var mod; }
+})(this, function (_exports, _regenerator, _asyncToGenerator2, _mdx) {
+  "use strict";
+
+  var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
+
+  Object.defineProperty(_exports, "__esModule", {
+    value: true
+  });
+  _exports.transformMDX = void 0;
+  _regenerator = _interopRequireDefault(_regenerator);
+  _asyncToGenerator2 = _interopRequireDefault(_asyncToGenerator2);
+  _mdx = _interopRequireDefault(_mdx);
+
+  var transformMDX =
+  /*#__PURE__*/
+  function () {
+    var _ref = (0, _asyncToGenerator2.default)(
+    /*#__PURE__*/
+    _regenerator.default.mark(function _callee(children, runBabel) {
+      var jsx, importLines, _children;
+
+      return _regenerator.default.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              importLines = [];
+
+              try {
+                _children = children.split("\n");
+                importLines = _children.filter(function (line) {
+                  return /^import/.test(line);
+                });
+                jsx = _mdx.default.sync(_children.filter(function (line) {
+                  return !/^import/.test(line);
+                }).join("\n"), {
+                  mdPlugins: [[// Removes front-matter from Markdown output
+                  __webpack_require__(/*! remark-frontmatter */ "remark-frontmatter"), {
+                    type: "yaml",
+                    marker: "-",
+                    fence: "---",
+                    anywhere: true
+                  }], __webpack_require__(/*! remark-slug */ "remark-slug"), __webpack_require__(/*! remark-images */ "remark-images"), __webpack_require__(/*! remark-emoji */ "remark-emoji")],
+                  hastPlugins: [],
+                  skipExport: true
+                });
+              } catch (exception) {
+                console.error(exception);
+              }
+
+              if (jsx && importLines.length > 0) {
+                jsx = [importLines.join("\n"), jsx].join("\n\n");
+              }
+
+              if (jsx && jsx.indexOf("function MDXContent") > -1) {
+                jsx = jsx.replace("function MDXContent", "export default function MDXContent");
+              }
+
+              return _context.abrupt("return", runBabel(jsx));
+
+            case 5:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    return function transformMDX(_x, _x2) {
+      return _ref.apply(this, arguments);
+    };
+  }();
+
+  _exports.transformMDX = transformMDX;
+});
 
 /***/ }),
-/* 29 */
-/***/ (function(module, exports) {
 
-module.exports = require("@babel/preset-react");
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports) {
-
-module.exports = require("@babel/preset-env");
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports) {
-
-module.exports = require("@babel/plugin-transform-object-assign");
-
-/***/ }),
-/* 32 */
+/***/ "@babel/plugin-proposal-class-properties":
+/*!**********************************************************!*\
+  !*** external "@babel/plugin-proposal-class-properties" ***!
+  \**********************************************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
 module.exports = require("@babel/plugin-proposal-class-properties");
 
 /***/ }),
-/* 33 */
+
+/***/ "@babel/plugin-proposal-object-rest-spread":
+/*!************************************************************!*\
+  !*** external "@babel/plugin-proposal-object-rest-spread" ***!
+  \************************************************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
 module.exports = require("@babel/plugin-proposal-object-rest-spread");
 
 /***/ }),
-/* 34 */
+
+/***/ "@babel/plugin-transform-destructuring":
+/*!********************************************************!*\
+  !*** external "@babel/plugin-transform-destructuring" ***!
+  \********************************************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
 module.exports = require("@babel/plugin-transform-destructuring");
 
+/***/ }),
+
+/***/ "@babel/plugin-transform-object-assign":
+/*!********************************************************!*\
+  !*** external "@babel/plugin-transform-object-assign" ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/plugin-transform-object-assign");
+
+/***/ }),
+
+/***/ "@babel/preset-env":
+/*!************************************!*\
+  !*** external "@babel/preset-env" ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/preset-env");
+
+/***/ }),
+
+/***/ "@babel/preset-react":
+/*!**************************************!*\
+  !*** external "@babel/preset-react" ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/preset-react");
+
+/***/ }),
+
+/***/ "@babel/runtime/helpers/asyncToGenerator":
+/*!**********************************************************!*\
+  !*** external "@babel/runtime/helpers/asyncToGenerator" ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime/helpers/asyncToGenerator");
+
+/***/ }),
+
+/***/ "@babel/runtime/helpers/interopRequireDefault":
+/*!***************************************************************!*\
+  !*** external "@babel/runtime/helpers/interopRequireDefault" ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime/helpers/interopRequireDefault");
+
+/***/ }),
+
+/***/ "@babel/runtime/helpers/interopRequireWildcard":
+/*!****************************************************************!*\
+  !*** external "@babel/runtime/helpers/interopRequireWildcard" ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime/helpers/interopRequireWildcard");
+
+/***/ }),
+
+/***/ "@babel/runtime/helpers/objectSpread":
+/*!******************************************************!*\
+  !*** external "@babel/runtime/helpers/objectSpread" ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime/helpers/objectSpread");
+
+/***/ }),
+
+/***/ "@babel/runtime/helpers/toConsumableArray":
+/*!***********************************************************!*\
+  !*** external "@babel/runtime/helpers/toConsumableArray" ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime/helpers/toConsumableArray");
+
+/***/ }),
+
+/***/ "@babel/runtime/regenerator":
+/*!*********************************************!*\
+  !*** external "@babel/runtime/regenerator" ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime/regenerator");
+
+/***/ }),
+
+/***/ "@babel/standalone":
+/*!************************************!*\
+  !*** external "@babel/standalone" ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/standalone");
+
+/***/ }),
+
+/***/ "@mdx-js/mdx":
+/*!******************************!*\
+  !*** external "@mdx-js/mdx" ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@mdx-js/mdx");
+
+/***/ }),
+
+/***/ "acorn":
+/*!************************!*\
+  !*** external "acorn" ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("acorn");
+
+/***/ }),
+
+/***/ "acorn-umd":
+/*!****************************!*\
+  !*** external "acorn-umd" ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("acorn-umd");
+
+/***/ }),
+
+/***/ "hosted-git-info":
+/*!**********************************!*\
+  !*** external "hosted-git-info" ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("hosted-git-info");
+
+/***/ }),
+
+/***/ "lodash":
+/*!*************************!*\
+  !*** external "lodash" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("lodash");
+
+/***/ }),
+
+/***/ "osenv":
+/*!************************!*\
+  !*** external "osenv" ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("osenv");
+
+/***/ }),
+
+/***/ "remark-emoji":
+/*!*******************************!*\
+  !*** external "remark-emoji" ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("remark-emoji");
+
+/***/ }),
+
+/***/ "remark-frontmatter":
+/*!*************************************!*\
+  !*** external "remark-frontmatter" ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("remark-frontmatter");
+
+/***/ }),
+
+/***/ "remark-images":
+/*!********************************!*\
+  !*** external "remark-images" ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("remark-images");
+
+/***/ }),
+
+/***/ "remark-slug":
+/*!******************************!*\
+  !*** external "remark-slug" ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("remark-slug");
+
+/***/ }),
+
+/***/ "semver":
+/*!*************************!*\
+  !*** external "semver" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("semver");
+
+/***/ }),
+
+/***/ "url":
+/*!**********************!*\
+  !*** external "url" ***!
+  \**********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("url");
+
+/***/ }),
+
+/***/ "validate-npm-package-name":
+/*!********************************************!*\
+  !*** external "validate-npm-package-name" ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("validate-npm-package-name");
+
 /***/ })
-/******/ ]);
+
+/******/ });
 });

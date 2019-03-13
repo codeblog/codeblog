@@ -112,7 +112,7 @@ const WEB_CONFIG = {
     ...baseConfig.externals,
     nodeExternals({
       modulesDir: path.join(__dirname, "../../node_modules"),
-      whitelist: ["npm-package-arg"]
+      whitelist: ["npm-package-arg", "@babel/plugin-syntax-jsx"]
     })
   ],
   resolve: {

@@ -91,40 +91,21 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/index.ts");
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports) {
+/******/ ({
 
-module.exports = require("@babel/runtime/helpers/interopRequireDefault");
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
-module.exports = require("@babel/runtime/regenerator");
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-module.exports = require("@babel/runtime/helpers/asyncToGenerator");
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-module.exports = require("npm-package-arg");
-
-/***/ }),
-/* 4 */
+/***/ "./src/index.ts":
+/*!**********************!*\
+  !*** ./src/index.ts ***!
+  \**********************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(5)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./lib/buildPackage */ "./src/lib/buildPackage.ts")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -162,12 +143,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 5 */
+
+/***/ "./src/lib/buildPackage.ts":
+/*!*********************************!*\
+  !*** ./src/lib/buildPackage.ts ***!
+  \*********************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(2), __webpack_require__(6), __webpack_require__(7), __webpack_require__(8), __webpack_require__(3), __webpack_require__(9), __webpack_require__(10), __webpack_require__(14), __webpack_require__(20)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! @babel/runtime/regenerator */ "@babel/runtime/regenerator"), __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "@babel/runtime/helpers/asyncToGenerator"), __webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "@babel/runtime/helpers/toConsumableArray"), __webpack_require__(/*! @babel/runtime/helpers/objectSpread */ "@babel/runtime/helpers/objectSpread"), __webpack_require__(/*! lodash */ "lodash"), __webpack_require__(/*! npm-package-arg */ "npm-package-arg"), __webpack_require__(/*! path */ "path"), __webpack_require__(/*! ./findImports */ "./src/lib/findImports.ts"), __webpack_require__(/*! ./transformMDX */ "./src/lib/transformMDX.ts"), __webpack_require__(/*! runBabel */ "./src/lib/runBabelFromNode.ts")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -175,7 +161,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 })(this, function (_exports, _regenerator, _asyncToGenerator2, _toConsumableArray2, _objectSpread2, _lodash, _npmPackageArg, _path, _findImports, _transformMDX, _runBabel2) {
   "use strict";
 
-  var _interopRequireDefault = __webpack_require__(0);
+  var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
@@ -402,36 +388,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 6 */
-/***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/toConsumableArray");
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports) {
-
-module.exports = require("@babel/runtime/helpers/objectSpread");
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports) {
-
-module.exports = require("lodash");
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-module.exports = require("path");
-
-/***/ }),
-/* 10 */
+/***/ "./src/lib/findImports.ts":
+/*!********************************!*\
+  !*** ./src/lib/findImports.ts ***!
+  \********************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(3), __webpack_require__(11), __webpack_require__(12)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! npm-package-arg */ "npm-package-arg"), __webpack_require__(/*! acorn */ "acorn"), __webpack_require__(/*! acorn-umd */ "acorn-umd")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -439,9 +406,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 })(this, function (_exports, _npmPackageArg, acorn, _acornUmd) {
   "use strict";
 
-  var _interopRequireWildcard = __webpack_require__(13);
+  var _interopRequireWildcard = __webpack_require__(/*! @babel/runtime/helpers/interopRequireWildcard */ "@babel/runtime/helpers/interopRequireWildcard");
 
-  var _interopRequireDefault = __webpack_require__(0);
+  var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
@@ -469,138 +436,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 11 */
-/***/ (function(module, exports) {
 
-module.exports = require("acorn");
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports) {
-
-module.exports = require("acorn-umd");
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports) {
-
-module.exports = require("@babel/runtime/helpers/interopRequireWildcard");
-
-/***/ }),
-/* 14 */
+/***/ "./src/lib/runBabelFromNode.ts":
+/*!*************************************!*\
+  !*** ./src/lib/runBabelFromNode.ts ***!
+  \*************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(2), __webpack_require__(15)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else { var mod; }
-})(this, function (_exports, _regenerator, _asyncToGenerator2, _mdx) {
-  "use strict";
-
-  var _interopRequireDefault = __webpack_require__(0);
-
-  Object.defineProperty(_exports, "__esModule", {
-    value: true
-  });
-  _exports.transformMDX = void 0;
-  _regenerator = _interopRequireDefault(_regenerator);
-  _asyncToGenerator2 = _interopRequireDefault(_asyncToGenerator2);
-  _mdx = _interopRequireDefault(_mdx);
-
-  var transformMDX =
-  /*#__PURE__*/
-  function () {
-    var _ref = (0, _asyncToGenerator2.default)(
-    /*#__PURE__*/
-    _regenerator.default.mark(function _callee(children, runBabel) {
-      var jsx;
-      return _regenerator.default.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.prev = 0;
-              _context.next = 3;
-              return (0, _mdx.default)(children, {
-                mdPlugins: [[// Removes front-matter from Markdown output
-                __webpack_require__(16), {
-                  type: "yaml",
-                  marker: "-",
-                  fence: "---",
-                  anywhere: true
-                }], __webpack_require__(17), __webpack_require__(18), __webpack_require__(19)],
-                hastPlugins: [],
-                skipExport: false
-              });
-
-            case 3:
-              jsx = _context.sent;
-              _context.next = 9;
-              break;
-
-            case 6:
-              _context.prev = 6;
-              _context.t0 = _context["catch"](0);
-              console.error(_context.t0);
-
-            case 9:
-              return _context.abrupt("return", runBabel(jsx));
-
-            case 10:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee, null, [[0, 6]]);
-    }));
-
-    return function transformMDX(_x, _x2) {
-      return _ref.apply(this, arguments);
-    };
-  }();
-
-  _exports.transformMDX = transformMDX;
-});
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports) {
-
-module.exports = require("@mdx-js/mdx");
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports) {
-
-module.exports = require("remark-frontmatter");
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports) {
-
-module.exports = require("remark-slug");
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports) {
-
-module.exports = require("remark-images");
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports) {
-
-module.exports = require("remark-emoji");
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-  if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(21)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! @babel/core */ "@babel/core")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -637,11 +483,284 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 21 */
+
+/***/ "./src/lib/transformMDX.ts":
+/*!*********************************!*\
+  !*** ./src/lib/transformMDX.ts ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! @babel/runtime/regenerator */ "@babel/runtime/regenerator"), __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "@babel/runtime/helpers/asyncToGenerator"), __webpack_require__(/*! @mdx-js/mdx */ "@mdx-js/mdx")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else { var mod; }
+})(this, function (_exports, _regenerator, _asyncToGenerator2, _mdx) {
+  "use strict";
+
+  var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "@babel/runtime/helpers/interopRequireDefault");
+
+  Object.defineProperty(_exports, "__esModule", {
+    value: true
+  });
+  _exports.transformMDX = void 0;
+  _regenerator = _interopRequireDefault(_regenerator);
+  _asyncToGenerator2 = _interopRequireDefault(_asyncToGenerator2);
+  _mdx = _interopRequireDefault(_mdx);
+
+  var transformMDX =
+  /*#__PURE__*/
+  function () {
+    var _ref = (0, _asyncToGenerator2.default)(
+    /*#__PURE__*/
+    _regenerator.default.mark(function _callee(children, runBabel) {
+      var jsx, importLines, _children;
+
+      return _regenerator.default.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              importLines = [];
+
+              try {
+                _children = children.split("\n");
+                importLines = _children.filter(function (line) {
+                  return /^import/.test(line);
+                });
+                jsx = _mdx.default.sync(_children.filter(function (line) {
+                  return !/^import/.test(line);
+                }).join("\n"), {
+                  mdPlugins: [[// Removes front-matter from Markdown output
+                  __webpack_require__(/*! remark-frontmatter */ "remark-frontmatter"), {
+                    type: "yaml",
+                    marker: "-",
+                    fence: "---",
+                    anywhere: true
+                  }], __webpack_require__(/*! remark-slug */ "remark-slug"), __webpack_require__(/*! remark-images */ "remark-images"), __webpack_require__(/*! remark-emoji */ "remark-emoji")],
+                  hastPlugins: [],
+                  skipExport: true
+                });
+              } catch (exception) {
+                console.error(exception);
+              }
+
+              if (jsx && importLines.length > 0) {
+                jsx = [importLines.join("\n"), jsx].join("\n\n");
+              }
+
+              if (jsx && jsx.indexOf("function MDXContent") > -1) {
+                jsx = jsx.replace("function MDXContent", "export default function MDXContent");
+              }
+
+              return _context.abrupt("return", runBabel(jsx));
+
+            case 5:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    return function transformMDX(_x, _x2) {
+      return _ref.apply(this, arguments);
+    };
+  }();
+
+  _exports.transformMDX = transformMDX;
+});
+
+/***/ }),
+
+/***/ "@babel/core":
+/*!******************************!*\
+  !*** external "@babel/core" ***!
+  \******************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
 module.exports = require("@babel/core");
 
+/***/ }),
+
+/***/ "@babel/runtime/helpers/asyncToGenerator":
+/*!**********************************************************!*\
+  !*** external "@babel/runtime/helpers/asyncToGenerator" ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime/helpers/asyncToGenerator");
+
+/***/ }),
+
+/***/ "@babel/runtime/helpers/interopRequireDefault":
+/*!***************************************************************!*\
+  !*** external "@babel/runtime/helpers/interopRequireDefault" ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime/helpers/interopRequireDefault");
+
+/***/ }),
+
+/***/ "@babel/runtime/helpers/interopRequireWildcard":
+/*!****************************************************************!*\
+  !*** external "@babel/runtime/helpers/interopRequireWildcard" ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime/helpers/interopRequireWildcard");
+
+/***/ }),
+
+/***/ "@babel/runtime/helpers/objectSpread":
+/*!******************************************************!*\
+  !*** external "@babel/runtime/helpers/objectSpread" ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime/helpers/objectSpread");
+
+/***/ }),
+
+/***/ "@babel/runtime/helpers/toConsumableArray":
+/*!***********************************************************!*\
+  !*** external "@babel/runtime/helpers/toConsumableArray" ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime/helpers/toConsumableArray");
+
+/***/ }),
+
+/***/ "@babel/runtime/regenerator":
+/*!*********************************************!*\
+  !*** external "@babel/runtime/regenerator" ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime/regenerator");
+
+/***/ }),
+
+/***/ "@mdx-js/mdx":
+/*!******************************!*\
+  !*** external "@mdx-js/mdx" ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@mdx-js/mdx");
+
+/***/ }),
+
+/***/ "acorn":
+/*!************************!*\
+  !*** external "acorn" ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("acorn");
+
+/***/ }),
+
+/***/ "acorn-umd":
+/*!****************************!*\
+  !*** external "acorn-umd" ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("acorn-umd");
+
+/***/ }),
+
+/***/ "lodash":
+/*!*************************!*\
+  !*** external "lodash" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("lodash");
+
+/***/ }),
+
+/***/ "npm-package-arg":
+/*!**********************************!*\
+  !*** external "npm-package-arg" ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("npm-package-arg");
+
+/***/ }),
+
+/***/ "path":
+/*!***********************!*\
+  !*** external "path" ***!
+  \***********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("path");
+
+/***/ }),
+
+/***/ "remark-emoji":
+/*!*******************************!*\
+  !*** external "remark-emoji" ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("remark-emoji");
+
+/***/ }),
+
+/***/ "remark-frontmatter":
+/*!*************************************!*\
+  !*** external "remark-frontmatter" ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("remark-frontmatter");
+
+/***/ }),
+
+/***/ "remark-images":
+/*!********************************!*\
+  !*** external "remark-images" ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("remark-images");
+
+/***/ }),
+
+/***/ "remark-slug":
+/*!******************************!*\
+  !*** external "remark-slug" ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("remark-slug");
+
 /***/ })
-/******/ ]);
+
+/******/ });
 });

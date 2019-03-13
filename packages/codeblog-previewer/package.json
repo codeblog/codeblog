@@ -1,0 +1,69 @@
+{
+  "name": "codeblog-previewer",
+  "version": "1.2.0",
+  "main": "dist/index.js",
+  "browser": "dist/index.js",
+  "repository": "git@github.com:codeblog/codeblog.git",
+  "author": "Jarred Sumner <jarred@jarredsumner.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "webpack-dev-server --config webpack.config.js --mode development --watch",
+    "build": "webpack --config webpack.config.js --mode production",
+    "postbuild": "yarn tsc -p tsconfig.json",
+    "deploy": "yarn build && yarn publish"
+  },
+  "peerDependencies": {
+    "object-assign": "*",
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3"
+  },
+  "files": [
+    "dist",
+    "static"
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.3.3",
+    "@babel/plugin-proposal-class-properties": "^7.3.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.3.4",
+    "@babel/plugin-transform-destructuring": "^7.3.2",
+    "@babel/plugin-transform-object-assign": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.3.4",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/classnames": "^2.2.7",
+    "@types/react": "^16.8.4",
+    "babel-loader": "^8.0.5",
+    "clean-webpack-plugin": "^1.0.1",
+    "copy-webpack-plugin": "^5.0.0",
+    "css-loader": "^2.1.0",
+    "cssnano": "^4.1.10",
+    "dts-bundle-webpack": "^1.0.2",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.5.0",
+    "peer-deps-externals-webpack-plugin": "^1.0.4",
+    "postcss-css-variables": "^0.12.0",
+    "postcss-import": "^12.0.1",
+    "postcss-loader": "^3.0.0",
+    "postcss-preset-env": "^6.5.0",
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.3.3333",
+    "webpack": "^4.29.5",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.1",
+    "worker-loader": "^2.0.0"
+  },
+  "dependencies": {
+    "@babel/plugin-proposal-object-rest-spread": "^7.3.4",
+    "@babel/plugin-syntax-jsx": "^7.2.0",
+    "browserfs": "^1.4.3",
+    "classnames": "^2.2.6",
+    "codeblog-build-npm-package": "1.2.0",
+    "codeblog-packager": "latest",
+    "object-assign": "*",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "require-browser": "https://github.com/suchipi/require-browser",
+    "resolve": "^1.10.0"
+  }
+}

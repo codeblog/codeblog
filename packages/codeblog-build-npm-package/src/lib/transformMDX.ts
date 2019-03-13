@@ -5,24 +5,49 @@ export const transformMDX = async (
   runBabel: (code: string) => string
 ) => {
   let jsx;
-  try {
-    jsx = await mdx(children, {
-      mdPlugins: [
-        [
-          // Removes front-matter from Markdown output
-          require("remark-frontmatter"),
-          { type: "yaml", marker: "-", fence: "---", anywhere: true }
-        ],
-        require("remark-slug"),
-        require("remark-images"),
-        require("remark-emoji")
-      ],
+  let importLines = [];
 
-      hastPlugins: [],
-      skipExport: false
+  try {
+    let _children = children.split("\n");
+    importLines = _children.filter(line => {
+      return /^import/.test(line);
     });
+
+    jsx = mdx.sync(
+      _children
+        .filter(line => {
+          return !/^import/.test(line);
+        })
+        .join("\n"),
+      {
+        mdPlugins: [
+          [
+            // Removes front-matter from Markdown output
+            require("remark-frontmatter"),
+            { type: "yaml", marker: "-", fence: "---", anywhere: true }
+          ],
+          require("remark-slug"),
+          require("remark-images"),
+          require("remark-emoji")
+        ],
+
+        hastPlugins: [],
+        skipExport: true
+      }
+    );
   } catch (exception) {
     console.error(exception);
+  }
+
+  if (jsx && importLines.length > 0) {
+    jsx = [importLines.join("\n"), jsx].join("\n\n");
+  }
+
+  if (jsx && jsx.indexOf("function MDXContent") > -1) {
+    jsx = jsx.replace(
+      "function MDXContent",
+      `export default function MDXContent`
+    );
   }
 
   return runBabel(jsx);
