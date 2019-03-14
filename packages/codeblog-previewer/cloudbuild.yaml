@@ -13,6 +13,6 @@ steps:
         "-r",
         "-c",
         "-d",
-        "./packages/codeblog-previewer/dist",
-        "gs://codeblog-previewer",
+        "./packages/codeblog-previewer/dist/",
+        "gs://previewer.codeblog.codes",
       ]

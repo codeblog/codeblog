@@ -9,7 +9,8 @@
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --config webpack.config.js --mode development --watch",
-    "build": "webpack --config webpack.config.js --mode production"
+    "build": "webpack --config webpack.config.js --mode production",
+    "deploy": "gsutil -m rsync -r -c -d dist/ gs://previewer.codeblog.codes"
   },
   "files": [
     "dist",
