@@ -12,6 +12,7 @@
     "postbuild": "yarn tsc -p tsconfig.json",
     "deploy": "yarn build && yarn publish"
   },
+  "style": "dist/index.css",
   "peerDependencies": {
     "object-assign": "*",
     "react": "^16.8.3",

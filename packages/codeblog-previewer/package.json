@@ -54,7 +54,7 @@
     "bluebird": "^3.5.3",
     "classnames": "^2.2.6",
     "codeblog-build-npm-package": "1.2.0",
-    "codeblog-packager": "1.1.0",
+    "codeblog-packager": "1.2.0",
     "codesandbox-browserfs": "^2.0.1",
     "localforage": "^1.7.3",
     "lodash": "^4.17.11",

@@ -152,7 +152,12 @@ export class Server {
 
     try {
       console.time("[Server] Load code");
-      CodeLoader.loadPost(compiledPost, compiledTemplate, props);
+      CodeLoader.loadPost(
+        compiledPost,
+        compiledTemplate,
+        this.dependencyManager.installer.styleURLs(),
+        props
+      );
       console.timeEnd("[Server] Load code");
     } catch (error) {
       this.handleError(error, ServerStatus.loading_code_error);

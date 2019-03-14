@@ -21,6 +21,22 @@ const insertCSSFile = (cssText: string, filename: string, index: number) => {
   }
 };
 
+const insertRemoteStylesheet = (url: string) => {
+  const dataValue = url;
+  const selector = `link[href="${dataValue}"]`;
+
+  let element = document.querySelector(selector);
+  if (element) {
+    return;
+  }
+
+  element = document.createElement("link");
+  element.setAttribute("rel", "stylesheet");
+  element.setAttribute("href", url);
+
+  document.head.appendChild(element);
+};
+
 const getCSSFiles = (pkg: CompiledPackage) => {
   return Object.keys(pkg)
     .filter(file => extname(file) === ".css")
@@ -31,8 +47,10 @@ export class CodeLoader {
   static loadPost = (
     post: CompiledPackage,
     template: CompiledPackage,
+    styleURLs: Array<string>,
     props: any
   ) => {
+    styleURLs.forEach(insertRemoteStylesheet);
     getCSSFiles(template).forEach((cssFile, index) => {
       insertCSSFile(template[cssFile], cssFile, index);
     });

@@ -3273,10 +3273,10 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
-codeblog-packager@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/codeblog-packager/-/codeblog-packager-1.1.0.tgz#f38ca4fb4b6c7ea00a02ebd78c2bd2eefcfd1ade"
-  integrity sha512-rd40u6cz9z+axYmlM8inC689zK8DP8Kuw1AveHUhoZ3+qdBp0ph/aoed8/z4AFjSgpM8HvVR3qWjE0u1O0MU7A==
+codeblog-packager@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/codeblog-packager/-/codeblog-packager-1.2.0.tgz#441343a25d7c65e3a91ad91ba7de4775cc8e9d6a"
+  integrity sha512-xJwU7QiMIA5gAyLXs67dIZxbswFt5daLD2eAOF6HJh//hQFIUc2HLXXuVYXVAFh/CMhX/3VMB6CNNQfeHjKXfQ==
   dependencies:
     async "^2.6.2"
     bluebird "^3.5.3"
