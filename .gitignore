@@ -2,3 +2,5 @@ node_modules
 yarn-error.log
 lerna-debug.log
 .DS_Store
+
+packages/codelbog-previewer/dist
