@@ -37,12 +37,15 @@ export enum ServerStatus {
 
   fs_init = "fs_init",
   fs_error = "fs_error",
+  fs_finished = "fs_finished",
 
   compiling_post = "compiling_post",
   compiling_post_error = "compiling_post_error",
+  compiling_post_finished = "compiling_post_finished",
 
   compiling_template = "compiling_template",
   compiling_template_error = "compiling_template_error",
+  compiling_template_finished = "compiling_template_finished",
 
   installing_dependencies = "installing_dependencies",
   installing_dependencies_error = "installing_dependencies_error",

@@ -1,0 +1,18 @@
+steps:
+  - name: node:10.15.1
+    entrypoint: yarn
+    args: ["install"]
+  - name: node:10.15.1
+    entrypoint: yarn
+    args: ["build"]
+  - name: gcr.io/cloud-builders/gsutil
+    args:
+      [
+        "-m",
+        "rsync",
+        "-r",
+        "-c",
+        "-d",
+        "./packages/codeblog-previewer/dist",
+        "gs://packages/codeblog-previewer",
+      ]

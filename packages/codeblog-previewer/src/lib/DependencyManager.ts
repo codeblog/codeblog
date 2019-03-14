@@ -6,6 +6,7 @@ import { CompiledPackage, ServerStatus } from "./messages";
 import Bluebird from "bluebird";
 import { isEqual } from "lodash";
 import * as BrowserFS from "codesandbox-browserfs";
+import localForage from "localforage";
 
 // const createLocalStorageFS = Bluebird.promisify(
 //   BrowserFS.FileSystem.LocalStorage.Create
@@ -20,41 +21,58 @@ const createMemoryFS = Bluebird.promisify(BrowserFS.FileSystem.InMemory.Create);
 //   BrowserFS.FileSystem.AsyncMirror.Create
 // );
 
+let LAST_MANIFEST = null;
+
 const LAST_INSTALLED_DEPENDENCIES_FILEPATH =
   "/last-installed-dependencies.json";
+const LAST_INSTALLED_DEPENDENCIES_MANIFEST_FILEPATH =
+  "/last-installed-dependencies.manifest.json";
 
 // const configureBrowserFS = Bluebird.promisify(BrowserFS.configure);
 
 const RENDER_CODEBLOG_POST_FILE = `
 const React = require("react");
-const ReactDOM = require("react-dom");
+const ReactDOM = require("@hot-loader/react-dom");
 const MDXProvider = require("@mdx-js/tag").MDXProvider;
 const mdx = require("@mdx-js/mdx/create-element");
+const AppContainer = require("react-hot-loader").AppContainer;
 
-const { Blog, BlogPost } = require("codeblog-template");
+
 const Codeblog = require("codeblog");
 
 window.React = React;
 window.ReactDOM = ReactDOM;
 window.mdx = mdx;
-const Post = require("./post").default;
 
-const CodeblogPreviewer = (props) => (
-  React.createElement(Codeblog.CodeblogRoot,
-    Object.assign({
-      BlogComponent: Blog,
-      BlogPostComponent: BlogPost,
-      environment: 'client',
-    }, props),
-    React.createElement(MDXProvider, {components: {}},
-      React.createElement(Post, {components: {}})
+
+const CodeblogPreviewer = ({props, Blog, BlogPost, Post}) => (
+  React.createElement(
+    AppContainer,
+    {},
+    React.createElement(
+      Codeblog.CodeblogRoot,
+      Object.assign({
+        BlogComponent: Blog,
+        BlogPostComponent: BlogPost,
+        environment: 'client',
+      }, props),
+      React.createElement(
+        MDXProvider,
+        {components: {}},
+        React.createElement(Post, {components: {}})
+      )
     )
   )
 )
 
 module.exports = function renderCodeblog({ props }) {
   const rootElement = document.querySelector("#codeblog");
-  ReactDOM.render(React.createElement(CodeblogPreviewer, props), rootElement);
+
+  const reload = require("require-reload")(require);
+  const { Blog, BlogPost } = reload("codeblog-template");
+  const Post = reload("./post").default;
+
+  ReactDOM.render(React.createElement(CodeblogPreviewer, {props, Blog, BlogPost, Post}), rootElement);
 }`;
 
 let _isFSInitialized = false;
@@ -84,6 +102,26 @@ export class DependencyManager {
     _isFSInitialized = true;
 
     BrowserFS.install(window);
+
+    const lastInstalledDeps = await localForage.getItem(
+      LAST_INSTALLED_DEPENDENCIES_FILEPATH
+    );
+    const lastInstalledDepsManifest = await localForage.getItem(
+      LAST_INSTALLED_DEPENDENCIES_MANIFEST_FILEPATH
+    );
+
+    if (lastInstalledDeps && lastInstalledDepsManifest) {
+      this.installer = new Installer({
+        rootDir: "/",
+        fs: BrowserFS.BFSRequire("fs"),
+        dependencies: lastInstalledDeps,
+        logger: function() {}
+      });
+      await this.installer.install();
+      LAST_MANIFEST = lastInstalledDepsManifest;
+    }
+
+    this.status = ServerStatus.fs_finished;
   };
 
   getDependencies = () => {
@@ -104,6 +142,9 @@ export class DependencyManager {
 
     return Object.assign(deps, {
       codeblog: "1.2.0",
+      "require-reload": "0.2.2",
+      "react-hot-loader": "4.8.0",
+      "@hot-loader/react-dom": "16.8.4",
       "react-dom": "16.8.4",
       react: "16.8.4"
     });
@@ -111,29 +152,12 @@ export class DependencyManager {
 
   installDependencies = async () => {
     const dependencies = this.getDependencies();
-    const fs = BrowserFS.BFSRequire("fs");
-
-    if (fs.existsSync(LAST_INSTALLED_DEPENDENCIES_FILEPATH)) {
-      const installedDepsString = fs.readFileSync(
-        LAST_INSTALLED_DEPENDENCIES_FILEPATH,
-        "utf8"
-      );
-
-      try {
-        const deps = JSON.parse(installedDepsString);
-        if (isEqual(deps, dependencies)) {
-          this.installer = new Installer({
-            rootDir: "/",
-            fs,
-            dependencies: deps
-          });
-          this.status = ServerStatus.installing_dependencies_finished;
-          return;
-        }
-      } catch (exception) {
-        fs.unlinkSync(LAST_INSTALLED_DEPENDENCIES_FILEPATH);
-      }
+    if (isEqual(LAST_MANIFEST, dependencies)) {
+      this.status = ServerStatus.installing_dependencies_finished;
+      return;
     }
+
+    const fs = BrowserFS.BFSRequire("fs");
 
     this.status = ServerStatus.installing_dependencies;
 
@@ -147,10 +171,17 @@ export class DependencyManager {
     });
     this.status = ServerStatus.installing_dependencies_finished;
 
-    await fs.writeFile(
+    await localForage.setItem(
       LAST_INSTALLED_DEPENDENCIES_FILEPATH,
-      JSON.stringify(dependencies)
+      this.installer.dependencies
     );
+
+    await localForage.setItem(
+      LAST_INSTALLED_DEPENDENCIES_MANIFEST_FILEPATH,
+      dependencies
+    );
+
+    LAST_MANIFEST = dependencies;
   };
 
   installPost = async () => {

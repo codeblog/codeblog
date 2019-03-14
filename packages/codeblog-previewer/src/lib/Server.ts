@@ -47,42 +47,77 @@ export class Server {
     });
   };
 
-  sendStatusUpdate = () => {
+  sendStatusUpdate = (status?: ServerStatus) => {
     sendMessage({
       type: ServerCommandType.get_state,
-      value: this.status,
+      value: status || this.status,
       from: "Server",
       error: null
     });
   };
 
-  handleLoadPost = async (post: any, template: any, props: any) => {
-    console.time("[Server] Load post");
-    let compiledPost, compiledTemplate, installer;
-
+  handleCompilePost = async (post: any) => {
     try {
       console.time("[Server] Compile post");
       this.status = ServerStatus.compiling_post;
-      compiledPost = await this.postCompiler.onChangeCode(post);
+      const compiledPost = await this.postCompiler.onChangeCode(post);
       console.timeEnd("[Server] Compile post");
+      this.sendStatusUpdate(ServerStatus.compiling_template_finished);
+      return compiledPost;
     } catch (error) {
-      this.handleError(error, ServerStatus.compiling_post_error);
-      return;
+      return Promise.reject({
+        error,
+        status: ServerStatus.compiling_post_error
+      });
     }
+  };
 
-    this.sendStatusUpdate();
-
+  handleCompileTemplate = async (template: any) => {
     try {
       console.time("[Server] Compile template");
       this.status = ServerStatus.compiling_template;
-      compiledTemplate = await this.templateCompiler.onChangeCode(template);
+      const compiledTemplate = await this.templateCompiler.onChangeCode(
+        template
+      );
       console.timeEnd("[Server] Compile template");
+      this.sendStatusUpdate(ServerStatus.compiling_template_finished);
+      return compiledTemplate;
     } catch (error) {
-      this.handleError(error, ServerStatus.compiling_template_error);
+      return Promise.reject({
+        error,
+        status: ServerStatus.compiling_template_error
+      });
+    }
+  };
+
+  handleInitializeFS = async () => {
+    try {
+      this.status = ServerStatus.fs_init;
+      await this.dependencyManager.initializeFS();
+      this.sendStatusUpdate(ServerStatus.fs_finished);
+      console.timeEnd("[Server] Initialize FS");
+    } catch (error) {
+      return Promise.reject({ error, status: ServerStatus.fs_error });
+    }
+  };
+
+  handleLoadPost = async (post: any, template: any, props: any) => {
+    console.time("[Server] Load post");
+
+    let compiledPost, compiledTemplate;
+
+    try {
+      const result = await Promise.all([
+        this.handleCompilePost(post),
+        this.handleCompileTemplate(template),
+        this.handleInitializeFS()
+      ]);
+      compiledPost = result[0];
+      compiledTemplate = result[1];
+    } catch ({ error, status }) {
+      this.handleError(error, status);
       return;
     }
-
-    this.sendStatusUpdate();
 
     this.status = this.dependencyManager.status;
     this.dependencyManager.templatePkg = compiledTemplate;
@@ -91,22 +126,12 @@ export class Server {
     this.sendStatusUpdate();
 
     try {
-      this.status = ServerStatus.fs_init;
-      console.time("[Server] Initialize FS");
-      await this.dependencyManager.initializeFS();
-      console.timeEnd("[Server] Initialize FS");
-    } catch (error) {
-      this.handleError(error, ServerStatus.fs_error);
-      return;
-    }
-
-    this.sendStatusUpdate();
-
-    try {
       this.status = ServerStatus.installing_dependencies;
       this.sendStatusUpdate();
 
+      console.time("[Server] Load Dependencies");
       await this.dependencyManager.installDependencies();
+      console.timeEnd("[Server] Load Dependencies");
       this.status = this.dependencyManager.status;
       this.sendStatusUpdate();
 
