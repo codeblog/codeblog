@@ -1,5 +1,7 @@
 # MDX to MDX AST
 
+**This is a fork of https://github.com/devular/mdx-to-mdx-ast.**
+
 Hello there,
 
 This library was written for educational purposes.
@@ -23,4 +25,3 @@ Here is the spec: https://github.com/mdx-js/specification
 
 - The EsSyntax tokenizer is taken straight from the MDX-JS/MDX library.
 - Tests to come
-
