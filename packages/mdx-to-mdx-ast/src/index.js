@@ -18,7 +18,7 @@ const processor = unified()
   .use(markdown)
   .use(esSyntax);
 
-const handleMDXAst = function(node => {
+const handleMDXAst = node => {
   try {
     // Parse each node with Acorn JSX parser (powers Babel)
     const jsxCheck = jsxParser.parse(node.value, {
@@ -45,20 +45,19 @@ const handleMDXAst = function(node => {
     // Ignore nodes that are not parseable as JSX
   }
 
-  return [node];                            
-});
-
-
-module.exports.mdxAst = async function(mdxString) {
-  const markdownAstWithTokenizedEsSyntax = processor.parse(mdxString);
-  const partialTree = await unified().run(markdownAstWithTokenizedEsSyntax);
-  const mdxAst = flatMap(partialTree, handleMDXAst);
-
-  return mdxAst;
+  return [node];
 };
 
+module.exports.mdxAst = function(mdxString) {
+  const markdownAstWithTokenizedEsSyntax = processor.parse(mdxString);
+  return unified()
+    .run(markdownAstWithTokenizedEsSyntax)
+    .then(partialTree => {
+      return flatMap(partialTree, handleMDXAst);
+    });
+};
 
-module.exports.mdxAstSync = async function(mdxString) {
+module.exports.mdxAstSync = function(mdxString) {
   const markdownAstWithTokenizedEsSyntax = processor.parse(mdxString);
   const partialTree = unified().runSync(markdownAstWithTokenizedEsSyntax);
   const mdxAst = flatMap(partialTree, handleMDXAst);

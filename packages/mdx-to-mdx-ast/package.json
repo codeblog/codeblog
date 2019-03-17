@@ -5,10 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "node test/index.js",
-    "build": "ncc build index.js -o dist"
+    "build": "yarn babel src --out-dir dist --copy-files --presets=@babel/preset-env"
   },
   "author": "",
   "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "latest",
+    "@babel/core": "latest",
+    "@babel/preset-env": "latest"
+  },
   "dependencies": {
     "@babel/parser": "^7.2.0",
     "@zeit/ncc": "^0.5.3",
