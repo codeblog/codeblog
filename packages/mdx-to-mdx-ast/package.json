@@ -1,8 +1,12 @@
 {
   "name": "codeblog-mdx-to-mdx-ast",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "dist/index.js",
+  "browser": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "node test/index.js",
     "build": "yarn babel src --out-dir dist --copy-files --presets=@babel/preset-env"
