@@ -1,4 +1,5 @@
 import { Server } from "./lib/Server";
+import "iframe-resizer/js/iframeResizer.contentWindow.js";
 
 const startServer = () => {
   const server = new Server();

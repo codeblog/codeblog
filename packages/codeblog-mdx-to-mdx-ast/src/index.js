@@ -1,5 +1,6 @@
 const unified = require("unified");
 const markdown = require("remark-parse");
+const stringify = require("remark-stringify");
 const flatMap = require("unist-util-flatmap");
 const acorn = require("acorn");
 const jsx = require("acorn-jsx");
@@ -16,6 +17,7 @@ const jsxParser = acorn.Parser.extend(jsx());
 
 const processor = unified()
   .use(markdown)
+  .use(stringify)
   .use(esSyntax);
 
 const handleMDXAst = node => {
@@ -64,3 +66,5 @@ module.exports.mdxAstSync = function(mdxString) {
 
   return mdxAst;
 };
+
+module.exports.processor = processor;

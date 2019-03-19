@@ -131,7 +131,15 @@ module.exports = {
       process: "processGlobal",
       Buffer: "bufferGlobal"
     }),
-    new HtmlWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      meta: {
+        viewport: "width=device-width, initial-scale=1, shrink-to-fit=no",
+        title: "Codeblog Previewer"
+      },
+      base: {
+        target: "_blank"
+      }
+    }),
     new CleanWebpackPlugin(path.resolve(__dirname, "dist"), {
       root: path.resolve(__dirname)
     }),

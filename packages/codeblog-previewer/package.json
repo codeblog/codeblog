@@ -56,6 +56,7 @@
     "codeblog-build-npm-package": "^1.2.2",
     "codeblog-packager": "1.2.0",
     "codesandbox-browserfs": "^2.0.1",
+    "iframe-resizer": "^4.0.4",
     "localforage": "^1.7.3",
     "lodash": "^4.17.11",
     "object-assign": "*",
