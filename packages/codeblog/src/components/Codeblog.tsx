@@ -144,7 +144,13 @@ export class CodeblogProvider extends React.Component<Props, CodeblogContext> {
       blog = changes.blog;
     }
 
-    if (!isEqual(normalizePost(props.post, blog), state.post)) {
+    if (!props.post && state.post) {
+      changes.post = null;
+    } else if (
+      props.post &&
+      props.post !== state.post &&
+      !isEqual(normalizePost(props.post, blog), state.post)
+    ) {
       changes.post = normalizePost(props.post, blog);
     }
 
