@@ -59,12 +59,6 @@ export class CodeLoader {
       insertCSSFile(post[cssFile], cssFile, index);
     });
 
-    if (!document.querySelector("#codeblog")) {
-      const root = document.createElement("div");
-      root.id = "codeblog";
-      document.body.append(root);
-    }
-
     const _require = require("../require");
 
     const renderCodeblog = _require("./codeblog.js");

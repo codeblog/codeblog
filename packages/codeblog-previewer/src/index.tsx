@@ -8,6 +8,21 @@ const startServer = () => {
   server.startListening();
 };
 
+const insertContainer = () => {
+  if (!document.querySelector("#codeblog")) {
+    const root = document.createElement("div");
+    root.id = "codeblog";
+    document.body.append(root);
+  }
+
+  if (!document.querySelector("#iframe-resize-div")) {
+    const iframeResizeDiv = document.createElement("div");
+    iframeResizeDiv.id = "iframe-resize-div";
+    iframeResizeDiv.setAttribute("data-iframe-height", "yes-plz");
+    document.body.append(iframeResizeDiv);
+  }
+};
+
 const buildPage = async () => {
   const post = {
     url: "https://codeblog.com/test",
@@ -276,5 +291,11 @@ const buildPage = async () => {
 startServer();
 
 if (typeof window !== "undefined" && location.search.includes("debug")) {
+  try {
+    insertContainer();
+  } catch (exception) {}
+
   buildPage();
 }
+
+window.addEventListener("DOMContentLoaded", insertContainer);
