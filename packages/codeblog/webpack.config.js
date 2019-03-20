@@ -20,7 +20,13 @@ module.exports = {
     "react",
     "react-dom",
     "object-assign",
-    "codeblog-template-simple"
+    "lodash",
+    "date-fns",
+    "date-fns-tz",
+    "codeblog-template-simple",
+    "classnames",
+    "lodash",
+    "iframe-resizer"
   ],
   module: {
     rules: [

@@ -66,6 +66,7 @@ export declare class CodeblogProvider extends React.Component<Props, CodeblogCon
         post: Post | null;
     };
     constructor(props: Props);
+    static getDerivedStateFromProps(props: Props, state: CodeblogContext): Partial<CodeblogContext>;
     render(): JSX.Element;
 }
 export declare const Codeblog: React.ExoticComponent<React.ConsumerProps<CodeblogContext>>;

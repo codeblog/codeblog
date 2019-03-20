@@ -1,4 +1,5 @@
 import * as React from "react";
+import { isEqual } from "lodash";
 
 export type PageType = "index" | "show" | "preview" | null;
 export type EnvironmentType = "server" | "client";
@@ -120,6 +121,38 @@ export class CodeblogProvider extends React.Component<Props, CodeblogContext> {
     state.posts = props.posts.map(post => normalizePost(post, state.blog));
 
     this.state = state;
+  }
+
+  static getDerivedStateFromProps(props: Props, state: CodeblogContext) {
+    const changes: Partial<CodeblogContext> = {};
+
+    if (props.BlogComponent !== state.BlogComponent) {
+      changes.BlogComponent = props.BlogComponent;
+    }
+
+    if (props.BlogPostComponent !== state.BlogPostComponent) {
+      changes.BlogPostComponent = props.BlogPostComponent;
+    }
+
+    if (props.pageType !== state.pageType) {
+      changes.pageType = props.pageType;
+    }
+
+    let blog = state.blog;
+    if (!isEqual(props.blog, state.blog)) {
+      changes.blog = props.blog;
+      blog = changes.blog;
+    }
+
+    if (!isEqual(normalizePost(props.post, blog), state.post)) {
+      changes.post = normalizePost(props.post, blog);
+    }
+
+    changes.posts = (props.posts || []).map(post =>
+      normalizePost(post, props.blog)
+    );
+
+    return changes;
   }
 
   render() {
