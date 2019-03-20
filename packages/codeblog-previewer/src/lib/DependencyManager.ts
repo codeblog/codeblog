@@ -141,7 +141,7 @@ export class DependencyManager {
     }
 
     return Object.assign(deps, {
-      codeblog: "1.2.0",
+      codeblog: "1.3.0",
       "require-reload": "0.2.2",
       "react-hot-loader": "4.8.0",
       "@hot-loader/react-dom": "16.8.4",
