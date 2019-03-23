@@ -7,7 +7,7 @@ const browserfs = require("codesandbox-browserfs");
 
 module.exports = {
   entry: {
-    index: path.resolve(__dirname, "src/index.tsx")
+    codeblog_previewer: path.resolve(__dirname, "src/index.tsx")
   },
   output: {
     path: path.resolve(__dirname, "./dist"),

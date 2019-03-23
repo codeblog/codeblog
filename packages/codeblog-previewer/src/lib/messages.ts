@@ -60,7 +60,8 @@ export enum ServerStatus {
 export enum ServerCommandType {
   load_post = "load_post",
   load_template = "load_post",
-  get_state = "get_state"
+  get_state = "get_state",
+  get_html = "get_html"
 }
 
 export type ServerCommandPackageValue = {
@@ -73,7 +74,7 @@ export type ServerCommandMessageEventData = {
   type: ServerCommandType;
   error: Error | null;
   from: "Server" | "Client";
-  value: ServerCommandPackageValue | ServerStatus | null;
+  value: ServerCommandPackageValue | ServerStatus | string | null;
 };
 
 export type ServerCommandMessageEvent = {

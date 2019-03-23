@@ -169,6 +169,14 @@ export class Server {
   };
 
   handleLoadTemplate = (template: any, props: any) => {};
+  handleSendHTML = () => {
+    sendMessage({
+      type: ServerCommandType.get_html,
+      value: document.documentElement.outerHTML,
+      from: "Server",
+      error: null
+    });
+  };
 
   listenForCommands = (event: ServerCommandMessageEvent) => {
     const { type = null, value = null, from } = event.data;
@@ -191,6 +199,8 @@ export class Server {
       typeof value === "object"
     ) {
       this.handleLoadTemplate(value.template, value.props);
+    } else if (type === "get_html") {
+      this.handleSendHTML();
     } else {
       console.warn("Received unknown message", event.data);
     }
