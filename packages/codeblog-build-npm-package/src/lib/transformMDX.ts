@@ -31,7 +31,7 @@ export const transformMDX = async (
           require("remark-emoji")
         ],
 
-        hastPlugins: [require("@mapbox/rehype-prism")],
+        hastPlugins: [require("rehype-highlight")],
         skipExport: true
       }
     );

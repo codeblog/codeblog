@@ -43,6 +43,12 @@ const getCSSFiles = (pkg: CompiledPackage) => {
     .sort();
 };
 
+const getJSFiles = (pkg: CompiledPackage) => {
+  return Object.keys(pkg)
+    .filter(file => extname(file) === ".js")
+    .sort();
+};
+
 export class CodeLoader {
   static loadPost = (
     post: CompiledPackage,
@@ -62,6 +68,14 @@ export class CodeLoader {
     const _require = require("../require");
 
     const renderCodeblog = _require("./codeblog.js");
-    renderCodeblog({ props });
+    renderCodeblog({
+      props,
+      paths: [
+        ...getJSFiles(post).map(file => "/post/" + file),
+        ...getJSFiles(template).map(
+          file => "/node_modules/codeblog-template/" + file
+        )
+      ]
+    });
   };
 }

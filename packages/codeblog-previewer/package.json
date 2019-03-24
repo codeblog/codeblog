@@ -9,6 +9,7 @@
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --config webpack.config.js --mode development --watch",
+    "prebuild": "rimraf dist",
     "build": "webpack --config webpack.config.js --mode production",
     "deploy": "gsutil -m rsync -r -c -d dist/ gs://previewer.codeblog.codes"
   },
@@ -29,7 +30,6 @@
     "@types/classnames": "^2.2.7",
     "@types/react": "^16.8.4",
     "babel-loader": "^8.0.5",
-    "clean-webpack-plugin": "^1.0.1",
     "copy-webpack-plugin": "^5.0.0",
     "css-loader": "^2.1.0",
     "cssnano": "^4.1.10",
@@ -41,6 +41,7 @@
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.5.0",
+    "rimraf": "^2.6.3",
     "ts-loader": "^5.3.3",
     "typescript": "^3.3.3333",
     "webpack": "^4.29.5",

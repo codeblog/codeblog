@@ -1,6 +1,5 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 const browserfs = require("codesandbox-browserfs");
@@ -139,9 +138,6 @@ module.exports = {
       base: {
         target: "_blank"
       }
-    }),
-    new CleanWebpackPlugin(path.resolve(__dirname, "dist"), {
-      root: path.resolve(__dirname)
     }),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output

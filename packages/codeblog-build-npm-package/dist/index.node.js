@@ -606,7 +606,7 @@ module.exports = require("remark-emoji");
 /* 20 */
 /***/ (function(module, exports) {
 
-module.exports = require("@mapbox/rehype-prism");
+module.exports = require("rehype-highlight");
 
 /***/ }),
 /* 21 */

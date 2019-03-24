@@ -65,10 +65,17 @@ const CodeblogPreviewer = ({props, Blog, BlogPost, Post}) => (
   )
 )
 
-module.exports = function renderCodeblog({ props }) {
+module.exports = function renderCodeblog({ props, paths }) {
   const rootElement = document.querySelector("#codeblog");
 
   const reload = require("require-reload")(require);
+
+  try {
+    paths.forEach(file => reload(file))
+  } catch(exception) {
+    console.error(exception)
+  }
+
   const { Blog, BlogPost } = reload("codeblog-template");
   const Post = reload("./post").default;
 
@@ -141,12 +148,14 @@ export class DependencyManager {
     }
 
     return Object.assign(deps, {
-      codeblog: "1.3.0",
+      codeblog: "1.3.2",
+      "prop-types": "15.7.2",
+      "react-is": "16.8.5",
       "require-reload": "0.2.2",
       "react-hot-loader": "4.8.0",
-      "@hot-loader/react-dom": "16.8.4",
-      "react-dom": "16.8.4",
-      react: "16.8.4"
+      "@hot-loader/react-dom": "16.8.3",
+      "react-dom": "16.8.5",
+      react: "16.8.5"
     });
   };
 
