@@ -7,10 +7,37 @@ import {
   ServerCommandMessageEventData
 } from "./messages";
 import { CodeLoader } from "./CodeLoader";
+import { isEqual } from "lodash";
+
+const VERBOSE_LOGGING = false;
+
+const vlog = (...args) => {
+  if (VERBOSE_LOGGING) {
+    console.log.call(this, args);
+  } else {
+    return;
+  }
+};
+
+const vtime = (...args) => {
+  if (VERBOSE_LOGGING) {
+    console.time.call(this, args);
+  } else {
+    return;
+  }
+};
+
+const vtimeEnd = (...args) => {
+  if (VERBOSE_LOGGING) {
+    console.timeEnd.call(this, args);
+  } else {
+    return;
+  }
+};
 
 const sendMessage = ({ type, value, error }: ServerCommandMessageEventData) => {
   if (process.env.NODE_ENV !== "production") {
-    console.info("[Server] Send message:", value);
+    vlog("[Server] Send message:", value);
   }
   self.parent.postMessage({ type, value, error, from: "Server" }, "*");
 };
@@ -20,6 +47,11 @@ export class Server {
   templateCompiler: CodeCompiler;
   dependencyManager: DependencyManager;
   status: ServerStatus;
+  startedLoadingPostAt: Date | null;
+  lastPost: any;
+  lastCompiledPost: any;
+  lastTemplate: any;
+  lastCompiledTemplate: any;
 
   constructor() {
     this.status = ServerStatus.init;
@@ -58,10 +90,10 @@ export class Server {
 
   handleCompilePost = async (post: any) => {
     try {
-      console.time("[Server] Compile post");
+      vtime("[Server] Compile post");
       this.status = ServerStatus.compiling_post;
       const compiledPost = await this.postCompiler.onChangeCode(post);
-      console.timeEnd("[Server] Compile post");
+      vtimeEnd("[Server] Compile post");
       this.sendStatusUpdate(ServerStatus.compiling_template_finished);
       return compiledPost;
     } catch (error) {
@@ -74,12 +106,12 @@ export class Server {
 
   handleCompileTemplate = async (template: any) => {
     try {
-      console.time("[Server] Compile template");
+      vtime("[Server] Compile template");
       this.status = ServerStatus.compiling_template;
       const compiledTemplate = await this.templateCompiler.onChangeCode(
         template
       );
-      console.timeEnd("[Server] Compile template");
+      vtimeEnd("[Server] Compile template");
       this.sendStatusUpdate(ServerStatus.compiling_template_finished);
       return compiledTemplate;
     } catch (error) {
@@ -93,25 +125,64 @@ export class Server {
   handleInitializeFS = async () => {
     try {
       this.status = ServerStatus.fs_init;
+      vtime("[Server] Initialize FS");
       await this.dependencyManager.initializeFS();
       this.sendStatusUpdate(ServerStatus.fs_finished);
-      console.timeEnd("[Server] Initialize FS");
+      vtimeEnd("[Server] Initialize FS");
     } catch (error) {
       return Promise.reject({ error, status: ServerStatus.fs_error });
     }
   };
 
   handleLoadPost = async (post: any, template: any, props: any) => {
+    if (
+      this.startedLoadingPostAt &&
+      (new Date().getTime() - this.startedLoadingPostAt.getTime()) / 1000 < 30
+    ) {
+      return;
+    }
     console.time("[Server] Load post");
+
+    this.startedLoadingPostAt = new Date();
 
     let compiledPost, compiledTemplate;
 
     try {
-      const result = await Promise.all([
-        this.handleCompilePost(post),
-        this.handleCompileTemplate(template),
-        this.handleInitializeFS()
-      ]);
+      const promises = [];
+
+      if (
+        !this.lastPost ||
+        (!isEqual(post, this.lastPost) && this.lastCompiledPost)
+      ) {
+        promises.push(this.handleCompilePost(post));
+      } else {
+        promises.push(this.lastCompiledPost);
+      }
+
+      if (
+        !this.lastTemplate ||
+        (!isEqual(template, this.lastTemplate) && this.lastCompiledTemplate)
+      ) {
+        promises.push(this.handleCompileTemplate(template));
+      } else {
+        promises.push(this.lastCompiledTemplate);
+      }
+
+      const handleFS = new Promise((resolve, reject) => {
+        self.requestIdleCallback(
+          async () => {
+            await this.handleInitializeFS();
+            resolve();
+          },
+          {
+            timeout: 100
+          }
+        );
+      });
+
+      promises.push(handleFS);
+
+      const result = await Promise.all(promises);
       compiledPost = result[0];
       compiledTemplate = result[1];
     } catch ({ error, status }) {
@@ -129,9 +200,9 @@ export class Server {
       this.status = ServerStatus.installing_dependencies;
       this.sendStatusUpdate();
 
-      console.time("[Server] Load Dependencies");
+      vtime("[Server] Load Dependencies");
       await this.dependencyManager.installDependencies();
-      console.timeEnd("[Server] Load Dependencies");
+      vtimeEnd("[Server] Load Dependencies");
       this.status = this.dependencyManager.status;
       this.sendStatusUpdate();
 
@@ -150,22 +221,36 @@ export class Server {
     this.status = ServerStatus.loading_code;
     this.sendStatusUpdate();
 
-    try {
-      console.time("[Server] Load code");
-      CodeLoader.loadPost(
-        compiledPost,
-        compiledTemplate,
-        this.dependencyManager.installer.styleURLs(),
-        props
-      );
-      console.timeEnd("[Server] Load code");
-    } catch (error) {
-      this.handleError(error, ServerStatus.loading_code_error);
-    }
+    self.requestIdleCallback(
+      async () => {
+        try {
+          vtime("[Server] Load code");
+          CodeLoader.loadPost(
+            compiledPost,
+            compiledTemplate,
+            this.dependencyManager.installer.styleURLs(),
+            props
+          );
+          vtimeEnd("[Server] Load code");
+        } catch (error) {
+          this.handleError(error, ServerStatus.loading_code_error);
+        }
 
-    this.status = ServerStatus.ready;
-    this.sendStatusUpdate();
-    console.timeEnd("[Server] Load post");
+        this.status = ServerStatus.ready;
+        this.sendStatusUpdate();
+        console.timeEnd("[Server] Load post");
+        if (console.timeStamp) {
+          console.timeStamp("Load post");
+        }
+
+        this.startedLoadingPostAt = null;
+        this.lastPost = post;
+        this.lastTemplate = template;
+        this.lastCompiledPost = compiledPost;
+        this.lastCompiledTemplate = compiledTemplate;
+      },
+      { timeout: 1000 }
+    );
   };
 
   handleLoadTemplate = (template: any, props: any) => {};
@@ -185,7 +270,7 @@ export class Server {
       return;
     }
 
-    console.log("[Server] Received command", type);
+    vlog("[Server] Received command", type);
 
     if (type === ServerCommandType.get_state) {
       this.sendStatusUpdate();
