@@ -1,5 +1,6 @@
 import { Server } from "./lib/Server";
 import "iframe-resizer/js/iframeResizer.contentWindow.js";
+import { RecipeLoader } from "./lib/RecipeLoader";
 
 const startServer = () => {
   const server = new Server();
@@ -288,6 +289,92 @@ const buildPage = async () => {
   }, 10000);
 };
 
+const buildRecipe = () => {
+  const FIXTURE = {
+    imports: [
+      {
+        name: "Browser",
+        moduleName: "Browser",
+        isRemote: true,
+        path: "react-kawaii"
+      }
+    ],
+    component: "Browser",
+    dependencies: {
+      "react-kawaii": "*"
+    },
+
+    code:
+      '<Browser bagel="200" color="pink"><span><MDXTag name="strong" components={components} parentName="p">{`CHILDREN`}</MDXTag></span></Browser>',
+
+    json: {
+      type: "Browser",
+      props: {
+        bagel: "200",
+        color: "pink",
+        children: [
+          {
+            type: "span",
+            props: {
+              children: [
+                {
+                  type: "MDXTag",
+                  props: {
+                    name: "strong",
+                    parentName: "p"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+
+    props: {
+      bagel: "200",
+      color: "pink"
+    }
+  };
+
+  const ANIMATED_STYLE = `
+  #recipe {background-color: red; display: inline-block;}
+    #recipe svg #kawaii-browser__body > path:first-child { animation: filler 1s linear alternate-reverse; animation-iteration-count: infinite; }
+    @keyframes filler {
+      from {
+        fill: pink;
+      }
+
+      to {
+        fill: blue;
+      }
+    }
+  `;
+  const styleTag = document.createElement("style");
+  styleTag.innerHTML = ANIMATED_STYLE;
+  document.body.appendChild(styleTag);
+
+  const recipe = RecipeLoader.loadRecipe(FIXTURE.json, FIXTURE.imports);
+  window.recipe = recipe;
+  window.doRecord = async (seconds = 3) => {
+    const { video, images } = await window.recipe.record(
+      seconds,
+      document.querySelector("#recipe")
+    );
+    const videoEl = document.createElement("video");
+    videoEl.autoplay = true;
+    videoEl.src = URL.createObjectURL(video);
+    videoEl.controls = true;
+    document.body.appendChild(videoEl);
+
+    images.forEach(imgSrc => {
+      const el = document.createElement("img");
+      el.src = imgSrc;
+      document.body.appendChild(el);
+    });
+  };
+};
+
 startServer();
 
 if (typeof window !== "undefined" && location.search.includes("debug")) {
@@ -296,6 +383,15 @@ if (typeof window !== "undefined" && location.search.includes("debug")) {
   } catch (exception) {}
 
   buildPage();
+} else if (
+  typeof window !== "undefined" &&
+  location.search.includes("recipe")
+) {
+  try {
+    insertContainer();
+  } catch (exception) {}
+
+  buildRecipe();
 }
 
 window.addEventListener("DOMContentLoaded", insertContainer);

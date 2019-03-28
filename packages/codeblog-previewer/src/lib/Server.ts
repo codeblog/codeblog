@@ -284,6 +284,8 @@ export class Server {
       typeof value === "object"
     ) {
       this.handleLoadTemplate(value.template, value.props);
+    } else if (type === "get_recipes") {
+      this.handleGetRecipes();
     } else if (type === "get_html") {
       this.handleSendHTML();
     } else {

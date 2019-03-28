@@ -1,0 +1,64 @@
+{
+  "recipes": [
+    {
+      "imports": [
+        [
+          {
+            "name": "Browser",
+            "moduleName": "Browser",
+            "isRemote": true,
+            "path": "react-kawaii"
+          }
+        ]
+      ],
+      "component": "Browser",
+      "dependencies": [
+        {
+          "react-kawaii": "*"
+        }
+      ],
+      "code": [
+        "<Browser bagel=\"200\" color=\"pink\"><span><MDXTag name=\"strong\" components={components} parentName=\"p\">{`CHILDREN`}</MDXTag></span></Browser>"
+      ],
+      "json": [
+        {
+          "type": "Browser",
+          "props": {
+            "bagel": "200",
+            "color": "pink",
+            "children": [
+              {
+                "type": "span",
+                "props": {
+                  "children": [
+                    {
+                      "type": "MDXTag",
+                      "props": {
+                        "name": "strong",
+                        "parentName": "p"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "props": [
+        {
+          "bagel": "200",
+          "color": "pink"
+        }
+      ]
+    }
+  ],
+  "imports": [
+    {
+      "name": "Browser",
+      "moduleName": "Browser",
+      "isRemote": true,
+      "path": "react-kawaii"
+    }
+  ]
+}

@@ -1,0 +1,211 @@
+import React from "react";
+import { Highlight } from "react-fast-highlight";
+import classNames from "classnames";
+import { File } from "react-kawaii";
+import {CodeblogContext} from '@codeblog/template';
+
+import hljs from "highlight.js/lib/highlight";
+
+// Lets only register javascript, scss, html/xml
+hljs.registerLanguage("md", require("highlight.js/lib/languages/markdown"));
+hljs.registerLanguage("js", require("highlight.js/lib/languages/javascript"));
+hljs.registerLanguage("xml", require("highlight.js/lib/languages/xml"));
+
+const IMPORTS = [
+  `import ConfettiButton from "./ConfettiButton";`,
+  `import RequestAccessForm from "./RequestAccessForm";`,
+  `import StyleEditor from "./StyleEditor";`,
+  `import DarkModeToggle from "./DarkModeToggle";`,
+  `import Glitter from "./Glitter";`,
+  `import Ghost from "./Ghost";`,
+  `import ViewPostSource from "./ViewPostSource";`,
+  `import InspectElementIcon from "./Icon";`,
+  `import Mug from "./Mug";`,
+  `import DrawCanvas from './DrawCanvas';`,
+  `import { Browser } from "react-kawaii";`,
+];
+
+const getProps = () =>
+  JSON.parse(document.querySelector(`script[type="text/codeblog"]`).innerHTML);
+
+class ViewPostSource extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    let code;
+    try {
+      const blob = getProps();
+
+      if (blob.post) {
+        console.log(blob.post)
+        code = blob.post.files["post.mdx"];
+      }
+    } catch (exception) {
+      console.error(exception);
+    }
+
+    this.state = {
+      isExpanded: false,
+      showImports: false,
+      code
+    };
+  }
+
+  show = () => this.setState({ isExpanded: true });
+  showImports = () => this.setState({ showImports: true });
+
+  render() {
+    const { isExpanded, showImports, code } = this.state;
+    const { title, theme, ...otherProps } = this.props;
+
+    if (!code) {
+      return null;
+    }
+
+    const firstLineWithoutImport = code.split("\n").findIndex(text => !text.startsWith("import"));
+    const codeWithoutImporpt = code.split("\n").slice(firstLineWithoutImport).join("\n")
+
+    return (
+      <div
+        {...otherProps}
+        className={classNames("Source", {
+          "Source--expanded": isExpanded,
+          "Source--light": theme === "light"
+        })}
+      >
+        <div className="FilenameContainer">
+          <div className="Filename">
+            <span>codeblog.mdx</span>
+          </div>
+
+          {!showImports && (
+            <div onClick={this.showImports} className="Imports SystemFonts">
+              {IMPORTS.length - 1} imports hidden
+            </div>
+          )}
+        </div>
+
+        <div className="ScrollBox">
+          {!showImports ? (
+            <Highlight className="Code" languages={["md", "xml"]}>
+              {codeWithoutImporpt}
+            </Highlight>
+          ) : (
+            <Highlight className="Code" languages={["md", "js", "xml"]}>
+              {code}
+            </Highlight>
+          )}
+        </div>
+
+        {!isExpanded && (
+          <div onClick={this.show} className="ViewSource SystemFont">
+            <div className="ViewSourceButton">View source</div>
+          </div>
+        )}
+
+        <style jsx>{`
+          .Source {
+            position: relative;
+            border: 1px solid rgb(224, 214, 225);
+            border-radius: 4px;
+            background: rgb(244, 240, 244);
+          }
+
+          .Source pre {
+            margin: 0;
+            padding: 0;
+          }
+
+          .Source code {
+            white-space: pre-wrap;
+            line-height: 1.5;
+            font-size: 0.85em;
+          }
+
+          .Imports {
+            font-size: 0.85em;
+            color: rgb(var(--link-color));
+            margin-top: auto;
+            margin-bottom: auto;
+            text-decoration: underline;
+            cursor: pointer;
+
+            opacity: 0;
+          }
+
+          .Source--expanded .Imports {
+            opacity: 1;
+          }
+
+          .Source .ScrollBox {
+            overflow: hidden;
+            height: 200px;
+          }
+
+          .Source--expanded .ScrollBox {
+            overflow-y: scroll;
+            max-height: 500px;
+            height: 500px;
+            height: auto;
+            -webkit-overflow-scrolling: touch;
+          }
+
+          .ViewSource {
+            position: absolute;
+            padding-top: 16px;
+            padding-bottom: 16px;
+            background-color: rgba(var(--text-color), 0.85);
+            filter: hue-rotate(30deg);
+            margin-right: 0;
+            padding: 19px 3px;
+            display: flex;
+
+            bottom: 0;
+            left: 0;
+            right: 0px;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+          }
+
+          .Source--light .ViewSource {
+            background-color: rgba(var(--page-background), 0.75);
+          }
+
+          .Filename {
+            display: flex;
+          }
+
+          .FilenameContainer {
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            background-color: rgba(var(--link-color), 0.07);
+            color: rgb(var(--link-color));
+            filter: hue-rotate(30deg);
+          }
+
+          .ViewSourceButton {
+            font-size: 16px;
+            display: flex;
+            background-color: rgba(var(--link-color), 1);
+            color: white;
+            border: 1px solid rgba(var(--link-color), 0.85);
+
+            padding: 8px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+
+            align-items: center;
+            margin-left: auto;
+            margin-right: auto;
+            align-self: center;
+          }
+        `}</style>
+      </div>
+    );
+  }
+}
+
+export default (props) => (
+  <ViewPostSource {...props} theme="light" title="View source code" />
+);

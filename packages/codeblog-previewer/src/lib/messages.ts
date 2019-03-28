@@ -61,7 +61,9 @@ export enum ServerCommandType {
   load_post = "load_post",
   load_template = "load_post",
   get_state = "get_state",
-  get_html = "get_html"
+  get_html = "get_html",
+  get_recipes = "get_recipes",
+  get_recipe_images = "get_recipe_images"
 }
 
 export type ServerCommandPackageValue = {
