@@ -14,9 +14,7 @@
   },
   "scripts": {
     "dev": "webpack --config webpack.config.js --mode development --watch",
-    "build": "webpack --config webpack.config.js --mode production",
-    "prepublish": "yarn build && yarn test",
-    "test": "yarn jest"
+    "build": "webpack --config webpack.config.js --mode production"
   },
   "bugs": {
     "url": "https://github.com/codeblog/codeblog/issues"
@@ -38,10 +36,10 @@
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "@mdx-js/mdx": "^1.0.0-alpha.6",
-    "@mdx-js/tag": "^1.0.0-alpha.6",
+    "@mdx-js/mdx": "^1.0.0-alpha.13",
+    "@mdx-js/react": "^1.0.0-alpha.13",
     "html2canvas": "^1.0.0-alpha.12",
     "lodash": "^4.17.11"
   },
-  "gitHead": "f9b2454a21a3e41ef421b962fc574b487963855a"
+  "gitHead": "63cd1324586aab52182a78c72a6e8dc34e480e7e"
 }

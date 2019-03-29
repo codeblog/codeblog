@@ -148,7 +148,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _toConsumableArray2, _regenerator, _asyncToGenerator2, _classCallCheck2, _createClass2, _possibleConstructorReturn2, _getPrototypeOf2, _assertThisInitialized2, _inherits2, _defineProperty2, _objectWithoutProperties2, React, _tag, _html2canvas, _Whammy) {
+})(this, function (_exports, _toConsumableArray2, _regenerator, _asyncToGenerator2, _classCallCheck2, _createClass2, _possibleConstructorReturn2, _getPrototypeOf2, _assertThisInitialized2, _inherits2, _defineProperty2, _objectWithoutProperties2, React, _react2, _html2canvas, _Whammy) {
   "use strict";
 
   var _interopRequireWildcard = __webpack_require__(19);
@@ -175,7 +175,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   _Whammy = _interopRequireDefault(_Whammy);
   var DEFAULT_MODULE_NAMES = {
     React: React,
-    MDXTag: _tag.MDXTag,
+    MDXTag: _react2.MDXTag,
     div: "div",
     span: "span",
     strong: "strong",
@@ -223,7 +223,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     var canvas = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
     return (0, _html2canvas.default)(canvasBaseEl, {
       foreignObjectRendering: true,
-      backgroundColor: "red",
+      backgroundColor: null,
       logging: false,
       width: canvasBaseEl.clientWidth,
       hieght: canvasBaseEl.clientHeight,
@@ -407,7 +407,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__14__;
 /* 15 */
 /***/ (function(module, exports) {
 
-module.exports = require("@mdx-js/tag");
+module.exports = require("@mdx-js/react");
 
 /***/ }),
 /* 16 */

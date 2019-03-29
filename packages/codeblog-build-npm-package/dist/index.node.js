@@ -188,8 +188,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   _npmPackageArg = _interopRequireDefault(_npmPackageArg);
   var PEER_DEPENDNENCIES = {
     react: ">=16.8.0",
-    "@mdx-js/mdx": "^1.0.0-alpha.6",
-    "@mdx-js/tag": "^1.0.0-alpha.6"
+    "@mdx-js/mdx": "^1.0.0-alpha.13",
+    "@mdx-js/react": "^1.0.0-alpha.16"
   };
 
   var getJSFiles = function getJSFiles(files) {

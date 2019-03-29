@@ -1807,10 +1807,10 @@
     npmlog "^4.1.2"
     write-file-atomic "^2.3.0"
 
-"@mdx-js/mdx@^1.0.0-alpha.6":
-  version "1.0.0-alpha.6"
-  resolved "https://registry.yarnpkg.com/@mdx-js/mdx/-/mdx-1.0.0-alpha.6.tgz#87143a06ebbbcc80e6730b5f461985b39cb0fbbd"
-  integrity sha512-UCdLi+YpXOWvDXHm8sXuANMk0Z3W/C/GJgA8JLZ07uRSzIsaykVBz5Ylj7Vycl5UW+tgC9Q8yMNnwKCYVaY4EA==
+"@mdx-js/mdx@^1.0.0-alpha.13":
+  version "1.0.0-alpha.13"
+  resolved "https://registry.yarnpkg.com/@mdx-js/mdx/-/mdx-1.0.0-alpha.13.tgz#d7d5266ca522e7ec8da6608e5500e7f58f77334e"
+  integrity sha512-l/NJibkoa7ZGL8OjqjVI47UcFXkesF4Mz3eew8koEkZTJqMWVBR4TenMa677PKHXOq5k4kmhyXMn/3YG4WioVw==
   dependencies:
     "@babel/plugin-proposal-object-rest-spread" "^7.3.2"
     "@babel/plugin-syntax-jsx" "^7.2.0"
@@ -1818,7 +1818,7 @@
     detab "^2.0.0"
     hast-util-raw "^5.0.0"
     mdast-util-to-hast "^4.0.0"
-    remark-mdx "^1.0.0-alpha.6"
+    remark-mdx "^1.0.0-alpha.13"
     remark-parse "^6.0.0"
     remark-squeeze-paragraphs "^3.0.1"
     to-style "^1.3.3"
@@ -1826,10 +1826,10 @@
     unist-builder "^1.0.1"
     unist-util-visit "^1.3.0"
 
-"@mdx-js/tag@^1.0.0-alpha.6":
-  version "1.0.0-alpha.6"
-  resolved "https://registry.yarnpkg.com/@mdx-js/tag/-/tag-1.0.0-alpha.6.tgz#2ae87d75c1f2cf6d4a79d863bfd1ce441dd34fd5"
-  integrity sha512-jXA1KyBpGkec+imeRuAaLq4EOoJeGApZ3up1YiMWP+axKSVW8O0moz8Ti1gkr0fzntJi5dVosQeMEUe9b1jsxQ==
+"@mdx-js/react@^1.0.0-alpha.13":
+  version "1.0.0-alpha.13"
+  resolved "https://registry.yarnpkg.com/@mdx-js/react/-/react-1.0.0-alpha.13.tgz#1058765cb8d59bfec2ce7221e311bb0d07aee486"
+  integrity sha512-CxylbBUs8C74AgSGX7UfTHPNvAq5tw5uDevzXdlBwy+9OTqs6ZVuRcyt+zhLaOQUUQMx8GPgGk2qmwRWJKB/aQ==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -10925,10 +10925,10 @@ remark-images@^0.18.0:
     is-url "^1.2.2"
     unist-util-visit "^1.3.0"
 
-remark-mdx@^1.0.0-alpha.6:
-  version "1.0.0-alpha.6"
-  resolved "https://registry.yarnpkg.com/remark-mdx/-/remark-mdx-1.0.0-alpha.6.tgz#bc1d2843b18c5c050a9140f1d3a52fe49c5a78ee"
-  integrity sha512-I5yxu8FQFBufPPx6Nm5oPGWomAdAksTTbfsdLNkiB0l8zBMVtgyB4TaTQ4MkgTtlJzptfUpcOXACeJRFi4CKzg==
+remark-mdx@^1.0.0-alpha.13:
+  version "1.0.0-alpha.13"
+  resolved "https://registry.yarnpkg.com/remark-mdx/-/remark-mdx-1.0.0-alpha.13.tgz#39f1fa55996d9a55d8d83418d046926ef8fd7a88"
+  integrity sha512-XgSCbCejpv6IDem9iyTLXgsVJ1X9UW/IeQU0Yi/k9Eqwynlare2t1/z989s2yD1kTdG+KTmjKsysvlrDnvvQcw==
   dependencies:
     "@babel/core" "^7.2.2"
     "@babel/helper-plugin-utils" "^7.0.0"

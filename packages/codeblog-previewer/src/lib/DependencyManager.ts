@@ -33,8 +33,8 @@ const LAST_INSTALLED_DEPENDENCIES_MANIFEST_FILEPATH =
 const RENDER_CODEBLOG_POST_FILE = `
 const React = require("react");
 const ReactDOM = require("@hot-loader/react-dom");
-const MDXProvider = require("@mdx-js/tag").MDXProvider;
-const mdx = require("@mdx-js/mdx/create-element");
+const MDXProvider = require("@mdx-js/react").MDXProvider;
+const mdx = require("@mdx-js/react/dist/create-element").default;
 const AppContainer = require("react-hot-loader").AppContainer;
 
 
@@ -151,6 +151,8 @@ export class DependencyManager {
       codeblog: "1.3.2",
       "prop-types": "15.7.2",
       "react-is": "16.8.5",
+      "@mdx-js/mdx": "^1.0.0-alpha.13",
+      "@mdx-js/react": "^1.0.0-alpha.13",
       "require-reload": "0.2.2",
       "react-hot-loader": "4.8.0",
       "@hot-loader/react-dom": "16.8.3",

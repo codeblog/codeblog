@@ -20,7 +20,7 @@ export const transformMDX = async (
         })
         .join("\n"),
       {
-        mdPlugins: [
+        remarkPlugins: [
           [
             // Removes front-matter from Markdown output
             require("remark-frontmatter"),
