@@ -64,7 +64,10 @@
     "object-assign": "*",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
+    "react-error-guard": "^1.1.4",
+    "react-portal": "^4.2.0",
     "require-browser": "https://github.com/suchipi/require-browser",
-    "resolve": "^1.10.0"
+    "resolve": "^1.10.0",
+    "stacktrace-js": "^2.0.0"
   }
 }

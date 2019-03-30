@@ -1,5 +1,8 @@
 import { CompiledPackage } from "./messages";
 import { extname } from "path";
+import * as BrowserFS from "codesandbox-browserfs";
+import { ErrorBoundaryComponent } from "../components/CodeblogErrorContainer";
+import { ErrorBar } from "../components/ErrorBar";
 
 const insertCSSFile = (cssText: string, filename: string, index: number) => {
   const dataValue = escape(`${filename}`);
@@ -68,8 +71,11 @@ export class CodeLoader {
     const _require = require("../require");
 
     const renderCodeblog = _require("./codeblog.js");
-    renderCodeblog({
+
+    renderCodeblog.ErrorBoundaryComponent = ErrorBar;
+    return renderCodeblog({
       props,
+      lastBuild: new Date().getTime(),
       paths: [
         ...getJSFiles(post).map(file => "/post/" + file),
         ...getJSFiles(template).map(

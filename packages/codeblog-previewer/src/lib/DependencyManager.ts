@@ -38,6 +38,7 @@ const mdx = require("@mdx-js/react/dist/create-element").default;
 const AppContainer = require("react-hot-loader").AppContainer;
 
 
+
 const Codeblog = require("codeblog");
 
 window.React = React;
@@ -65,21 +66,80 @@ const CodeblogPreviewer = ({props, Blog, BlogPost, Post}) => (
   )
 )
 
-module.exports = function renderCodeblog({ props, paths }) {
-  const rootElement = document.querySelector("#codeblog");
+let hasRenderedOnce = true;
+module.exports = function renderCodeblog({props, paths, lastBuild}) {
+  return new Promise(async (resolve, reject) => {
+    const rootElement = document.querySelector("#codeblog");
 
-  const reload = require("require-reload")(require);
 
-  try {
-    paths.forEach(file => reload(file))
-  } catch(exception) {
-    console.error(exception)
-  }
+    const reload = require("require-reload")(require);
+    let error = null;
 
-  const { Blog, BlogPost } = reload("codeblog-template");
-  const Post = reload("./post").default;
+    try {
+      paths.forEach(file => reload(file))
+    } catch(exception) {
+      console.error(exception)
+      error = exception;
+    }
 
-  ReactDOM.render(React.createElement(CodeblogPreviewer, {props, Blog, BlogPost, Post}), rootElement);
+
+    let Blog, BlogPost, Post;
+
+    const pr = new Promise((_resolve) => {
+      window.requestIdleCallback(() => {
+        try {
+          const Template = reload("codeblog-template");
+          Blog = Template.Blog;
+          BlogPost = Template.BlogPost;
+          Post = reload("./post").default;
+        } catch(exception) {
+          error = exception;
+        }
+        _resolve();
+      }, {timeout: 500}
+      );
+    });
+    await pr;
+
+
+    if (!error) {
+      const pr = new Promise((_resolve) => {
+        window.requestIdleCallback(() => {
+          try {
+            const codeblog = React.createElement(CodeblogPreviewer, {props, Blog, BlogPost, Post});
+            ReactDOM.render(codeblog, document.querySelector("#codeblog-fake-hidden-box"))
+          } catch(exception) {
+            error = exception;
+
+          }
+
+          if (!error) {
+            const codeblog = React.createElement(CodeblogPreviewer, {props, Blog, BlogPost, Post});
+            ReactDOM.render(codeblog, rootElement);
+            hasRenderedOnce = true;
+            ReactDOM.unmountComponentAtNode(document.querySelector("#codeblog-fake-hidden-box"))
+          }
+
+          _resolve();
+        })
+      }, {timeout: 500})
+
+      await pr;
+    }
+
+
+    if (error) {
+      console.error(error)
+    }
+
+    ReactDOM.render(
+      React.createElement(renderCodeblog.ErrorBoundaryComponent, {error, level: 'runtime', hasRenderedOnce}),
+      document.querySelector("#codeblog-runtime-error-box")
+    )
+
+    resolve(true);
+  });
+
 }`;
 
 let _isFSInitialized = false;

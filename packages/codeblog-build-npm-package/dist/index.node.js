@@ -539,7 +539,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     fence: "---",
                     anywhere: true
                   }], __webpack_require__(17), __webpack_require__(18), __webpack_require__(19)],
-                  hastPlugins: [__webpack_require__(20)],
+                  rehypePlugins: [__webpack_require__(20)],
                   skipExport: true
                 });
               } catch (exception) {

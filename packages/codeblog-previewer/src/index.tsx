@@ -16,6 +16,25 @@ const insertContainer = () => {
     document.body.append(root);
   }
 
+  if (!document.querySelector("#codeblog-fake-hidden-box")) {
+    const root = document.createElement("div");
+    root.id = "codeblog-fake-hidden-box";
+    root.style.visibility = "hidden";
+    root.style.opacity = "0";
+    root.style.pointerEvents = "none";
+    root.style.position = "absolute";
+    root.style.zIndex = "-999";
+    // root.style.top = -99999;
+    // root.style.left = -99999;
+    document.body.append(root);
+  }
+
+  if (!document.querySelector("#codeblog-runtime-error-box")) {
+    const root = document.createElement("div");
+    root.id = "codeblog-runtime-error-box";
+    document.body.append(root);
+  }
+
   if (!document.querySelector("#iframe-resize-div")) {
     const iframeResizeDiv = document.createElement("div");
     iframeResizeDiv.id = "iframe-resize-div";
@@ -355,24 +374,6 @@ const buildRecipe = () => {
   document.body.appendChild(styleTag);
 
   const recipe = RecipeLoader.loadRecipe(FIXTURE.json, FIXTURE.imports);
-  window.recipe = recipe;
-  window.doRecord = async (seconds = 3) => {
-    const { video, images } = await window.recipe.record(
-      seconds,
-      document.querySelector("#recipe")
-    );
-    const videoEl = document.createElement("video");
-    videoEl.autoplay = true;
-    videoEl.src = URL.createObjectURL(video);
-    videoEl.controls = true;
-    document.body.appendChild(videoEl);
-
-    images.forEach(imgSrc => {
-      const el = document.createElement("img");
-      el.src = imgSrc;
-      document.body.appendChild(el);
-    });
-  };
 };
 
 startServer();

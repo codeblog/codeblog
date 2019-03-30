@@ -8,6 +8,7 @@ import {
 } from "./messages";
 import { CodeLoader } from "./CodeLoader";
 import { isEqual } from "lodash";
+import { reportBuildError, dismissError } from "../components/ErrorBar";
 
 const VERBOSE_LOGGING = false;
 
@@ -52,6 +53,7 @@ export class Server {
   lastCompiledPost: any;
   lastTemplate: any;
   lastCompiledTemplate: any;
+  hasBuildError: boolean = false;
 
   constructor() {
     this.status = ServerStatus.init;
@@ -69,6 +71,19 @@ export class Server {
     console.group("[Server]", status);
     console.error(error);
     console.groupEnd();
+
+    this.hasBuildError = true;
+    this.lastCompiledTemplate = null;
+    this.lastTemplate = null;
+    reportBuildError(
+      error,
+      [
+        ServerStatus.compiling_post_error,
+        ServerStatus.compiling_template_error,
+        ServerStatus.installing_dependencies_error
+      ].includes(status),
+      status
+    );
 
     this.status = status;
     sendMessage({
@@ -97,6 +112,8 @@ export class Server {
       this.sendStatusUpdate(ServerStatus.compiling_template_finished);
       return compiledPost;
     } catch (error) {
+      vtimeEnd("[Server] Compile post");
+      this.handleError(error, ServerStatus.compiling_post_error);
       return Promise.reject({
         error,
         status: ServerStatus.compiling_post_error
@@ -115,6 +132,8 @@ export class Server {
       this.sendStatusUpdate(ServerStatus.compiling_template_finished);
       return compiledTemplate;
     } catch (error) {
+      vtimeEnd("[Server] Compile template");
+      this.handleError(error, ServerStatus.compiling_template_error);
       return Promise.reject({
         error,
         status: ServerStatus.compiling_template_error
@@ -130,17 +149,26 @@ export class Server {
       this.sendStatusUpdate(ServerStatus.fs_finished);
       vtimeEnd("[Server] Initialize FS");
     } catch (error) {
+      this.handleError(error, ServerStatus.fs_error);
+      vtimeEnd("[Server] Initialize FS");
       return Promise.reject({ error, status: ServerStatus.fs_error });
     }
   };
 
   handleLoadPost = async (post: any, template: any, props: any) => {
     if (
+      !this.hasBuildError &&
       this.startedLoadingPostAt &&
       (new Date().getTime() - this.startedLoadingPostAt.getTime()) / 1000 < 30
     ) {
       return;
     }
+
+    if (this.hasBuildError) {
+      this.hasBuildError = false;
+      dismissError();
+    }
+
     console.time("[Server] Load post");
 
     this.startedLoadingPostAt = new Date();
@@ -168,6 +196,8 @@ export class Server {
         promises.push(this.lastCompiledTemplate);
       }
 
+      dismissError();
+
       const handleFS = new Promise((resolve, reject) => {
         self.requestIdleCallback(
           async () => {
@@ -185,7 +215,7 @@ export class Server {
       const result = await Promise.all(promises);
       compiledPost = result[0];
       compiledTemplate = result[1];
-    } catch ({ error, status }) {
+    } catch ({ error, status, ...other }) {
       this.handleError(error, status);
       return;
     }
@@ -221,36 +251,31 @@ export class Server {
     this.status = ServerStatus.loading_code;
     this.sendStatusUpdate();
 
-    self.requestIdleCallback(
-      async () => {
-        try {
-          vtime("[Server] Load code");
-          CodeLoader.loadPost(
-            compiledPost,
-            compiledTemplate,
-            this.dependencyManager.installer.styleURLs(),
-            props
-          );
-          vtimeEnd("[Server] Load code");
-        } catch (error) {
-          this.handleError(error, ServerStatus.loading_code_error);
-        }
+    try {
+      vtime("[Server] Load code");
+      await CodeLoader.loadPost(
+        compiledPost,
+        compiledTemplate,
+        this.dependencyManager.installer.styleURLs(),
+        props
+      );
+      vtimeEnd("[Server] Load code");
+    } catch (error) {
+      this.handleError(error, ServerStatus.loading_code_error);
+    }
 
-        this.status = ServerStatus.ready;
-        this.sendStatusUpdate();
-        console.timeEnd("[Server] Load post");
-        if (console.timeStamp) {
-          console.timeStamp("Load post");
-        }
+    this.status = ServerStatus.ready;
+    this.sendStatusUpdate();
+    console.timeEnd("[Server] Load post");
+    if (console.timeStamp) {
+      console.timeStamp("Load post");
+    }
 
-        this.startedLoadingPostAt = null;
-        this.lastPost = post;
-        this.lastTemplate = template;
-        this.lastCompiledPost = compiledPost;
-        this.lastCompiledTemplate = compiledTemplate;
-      },
-      { timeout: 1000 }
-    );
+    this.startedLoadingPostAt = null;
+    this.lastPost = post;
+    this.lastTemplate = template;
+    this.lastCompiledPost = compiledPost;
+    this.lastCompiledTemplate = compiledTemplate;
   };
 
   handleLoadTemplate = (template: any, props: any) => {};
@@ -262,6 +287,8 @@ export class Server {
       error: null
     });
   };
+
+  handleGetRecipes = () => {};
 
   listenForCommands = (event: ServerCommandMessageEvent) => {
     const { type = null, value = null, from } = event.data;

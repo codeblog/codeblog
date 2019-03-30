@@ -1307,7 +1307,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     fence: "---",
                     anywhere: true
                   }], __webpack_require__(24), __webpack_require__(25), __webpack_require__(26)],
-                  hastPlugins: [__webpack_require__(27)],
+                  rehypePlugins: [__webpack_require__(27)],
                   skipExport: true
                 });
               } catch (exception) {
@@ -1412,6 +1412,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       presets: [[env, {
         modules: "umd"
       }], react],
+      sourceMaps: "inline",
       plugins: [[destructuring, {
         useBuiltIns: true
       }], assign, properties, spread]

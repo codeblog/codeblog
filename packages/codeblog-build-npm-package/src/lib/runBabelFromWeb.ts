@@ -18,6 +18,7 @@ export const runBabel = (jsx: string) => {
       ],
       react
     ],
+    sourceMaps: "inline",
     plugins: [
       [destructuring, { useBuiltIns: true }],
       assign,

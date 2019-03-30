@@ -1,0 +1,66 @@
+.ErrorBar {
+    display: flex;
+    align-items: center;
+    font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    background-color: rgba(199, 14, 14, 0.02);
+    width: 100%;
+    border-radius: 4px;
+}
+
+.ErrorBar-Content {
+    display: flex;
+    align-items: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 12px 14px;
+}
+
+.ErrorBarTagName {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-weight: bold;
+    color: rgb(31, 62, 113);
+}
+
+#codeblog-runtime-error-box,
+#__codeblog-error-bar {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+}
+
+html, body {
+    margin: 0;
+}
+
+.CodeblogPreviewerRuntimeError #__codeblog-error-bar {
+    position: sticky;
+}
+
+.CodeblogPreviewBuildError #iframe-resize-div,
+.CodeblogPreviewRuntimeError #iframe-resize-div {
+    min-height: 300px;
+}
+
+.ErrorBar-Expander {
+    margin-left: auto;
+    margin-top: auto;
+    margin-right: 12px;
+    margin-bottom: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px 6px;
+    color: rgb(95, 99, 103);
+    cursor: pointer;
+}
+
+.ErrorBar-Expander:hover {
+    color: black;
+}
+
+.CodeblogPreviewRuntimeError.CodeblogPreviewBuildError #codeblog-runtime-error-box {
+    display: none;
+}

@@ -25,6 +25,10 @@ export class CodeCompiler {
     this.codeCompiler.onmessage = this.handleCodeCompilerMessage;
   }
 
+  dispose = () => {
+    this.codeCompiler.dispose();
+  };
+
   handleCodeCompilerMessage = (evt: ServiceWorkerMessageEvent) => {
     if (Object.values(BabelWorkerMessages).includes(evt.data.type)) {
       this.codeCompilerStatus = evt.data.type;
@@ -47,7 +51,6 @@ export class CodeCompiler {
           this.onCodeChangeError(evt.data.error);
         }
 
-        console.error(evt.data.error);
         this.onCodeChangeError = null;
       }
     } else {
