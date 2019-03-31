@@ -11,7 +11,7 @@
     "dev": "webpack-dev-server --config webpack.config.js --mode development --watch",
     "prebuild": "rimraf dist",
     "build": "webpack --config webpack.config.js --mode production",
-    "deploy": "gsutil -m rsync -r -c -d dist/ gs://previewer.codeblog.codes"
+    "deploy": "gsutil -m rsync -r -c -d dist/ gs://previewer.codeblog.com"
   },
   "files": [
     "dist",
@@ -65,6 +65,7 @@
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-error-guard": "^1.1.4",
+    "react-masonry-component": "^6.2.1",
     "react-portal": "^4.2.0",
     "require-browser": "https://github.com/suchipi/require-browser",
     "resolve": "^1.10.0",

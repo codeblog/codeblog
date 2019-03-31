@@ -14,5 +14,5 @@ steps:
         "-c",
         "-d",
         "./packages/codeblog-previewer/dist/",
-        "gs://previewer.codeblog.codes",
+        "gs://previewer.codeblog.com",
       ]

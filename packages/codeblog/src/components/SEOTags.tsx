@@ -1,8 +1,9 @@
 import * as React from "react";
-import { Meta, Codeblog, CodeblogContextType, Title } from "../index";
+import { Meta, Codeblog, CodeblogContextType, Title, Link } from "../index";
 import { Post, Blog } from "./Codeblog";
 
 const MetaTag = (props: any) => <Meta {...props} />;
+const LinkTag = (props: any) => <Link {...props} />;
 
 export const getBlogTitle = (blog: Blog) => {
   if (blog.title) {
@@ -94,11 +95,16 @@ export const BlogPostSEOTags = ({ post }: { post: Post }) => (
 export const RawBlogSEOTags = ({ blog }: { blog: Blog }) => (
   <>
     <Title>{getBlogTitle(blog)}</Title>
-    <meta name="twitter:site" content={getBlogTitle(blog)} />
+    <LinkTag
+      rel="alternate"
+      type="application/rss+xml"
+      title={getBlogTitle(blog)}
+      href={blog.url + "/feed.atom"}
+    />
     <MetaTag property="og:title" content={getBlogTitle(blog)} />
     <MetaTag name="twitter:title" content={getBlogTitle(blog)} />
 
-    <MetaTag name="twitter:card" content="sumamry" />
+    <MetaTag name="twitter:card" content="summary_large_image" />
     <MetaTag property="og:description" content={blog.description} />
     <MetaTag name="twitter:description" content={blog.description} />
 

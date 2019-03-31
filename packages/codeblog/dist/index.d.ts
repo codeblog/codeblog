@@ -9,7 +9,7 @@ declare type CodeblogPostProps = CodeblogContext & {
 };
 export { Codeblog };
 export { CodeblogContext as CodeblogContextType };
-export { Title, Meta } from "react-head";
+export { Title, Meta, Link } from "react-head";
 export { Post, Blog, BlogComponentType, BlogPostComponentType, EnvironmentType, PageType } from "./components/Codeblog";
 export declare const CodeblogRoot: (props: CodeblogPostProps) => JSX.Element;
 export declare const CodeblogPost: (props: CodeblogPostProps) => JSX.Element;

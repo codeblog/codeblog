@@ -20,7 +20,7 @@ type CodeblogPostProps = CodeblogContext & {
 export { Codeblog };
 export { CodeblogContext as CodeblogContextType };
 
-export { Title, Meta } from "react-head";
+export { Title, Meta, Link } from "react-head";
 export {
   Post,
   Blog,
