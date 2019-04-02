@@ -3610,10 +3610,10 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
-codeblog-packager@1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/codeblog-packager/-/codeblog-packager-1.2.0.tgz#441343a25d7c65e3a91ad91ba7de4775cc8e9d6a"
-  integrity sha512-xJwU7QiMIA5gAyLXs67dIZxbswFt5daLD2eAOF6HJh//hQFIUc2HLXXuVYXVAFh/CMhX/3VMB6CNNQfeHjKXfQ==
+codeblog-packager@1.4.4:
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/codeblog-packager/-/codeblog-packager-1.4.4.tgz#8c174457022b84c1ab381b9ae9d51ad53b8ad416"
+  integrity sha512-StgsuXvaEsP5JjtpKo2O55XoiGXfIqfU9Za0zPa6Pytghsp3jGC5luJOo7EFyOv9HNDiSHp2RMFZw3Hmel6WPw==
   dependencies:
     async "^2.6.2"
     bluebird "^3.5.3"
@@ -11040,6 +11040,11 @@ relateurl@0.2.x:
   version "0.2.7"
   resolved "https://registry.yarnpkg.com/relateurl/-/relateurl-0.2.7.tgz#54dbf377e51440aca90a4cd274600d3ff2d888a9"
   integrity sha1-VNvzd+UUQKypCkzSdGANP/LYiKk=
+
+remark-breaks@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/remark-breaks/-/remark-breaks-1.0.2.tgz#ad7bac95a30214ab44d7dd5ab3fe0bab97f0bc63"
+  integrity sha512-oVEmI9PH6RihPT84xWw1Z39CbaFRszEVQjlw+T1Di6bKp/RDO/QaLtMB5rrGmClKVoJsv/CYVivGsAdznsDiMA==
 
 remark-emoji@^2.0.2:
   version "2.0.2"

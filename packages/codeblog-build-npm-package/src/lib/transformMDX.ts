@@ -21,6 +21,7 @@ export const transformMDX = async (
         .join("\n"),
       {
         remarkPlugins: [
+          require("remark-breaks"),
           [
             // Removes front-matter from Markdown output
             require("remark-frontmatter"),

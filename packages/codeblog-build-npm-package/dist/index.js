@@ -891,7 +891,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(3), __webpack_require__(9), __webpack_require__(10), __webpack_require__(11), __webpack_require__(4), __webpack_require__(0), __webpack_require__(17), __webpack_require__(21), __webpack_require__(28)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(3), __webpack_require__(9), __webpack_require__(10), __webpack_require__(11), __webpack_require__(4), __webpack_require__(0), __webpack_require__(17), __webpack_require__(21), __webpack_require__(29)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -977,7 +977,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       var depName = (0, _npmPackageArg.default)(importName).name; // TODO: make this lock a specific version
 
       if (!_dependencies[depName]) {
-        _dependencies[depName] = "*";
+        _dependencies[depName] = "latest";
       }
     });
     return {
@@ -1300,14 +1300,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 jsx = _mdx.default.sync(_children.filter(function (line) {
                   return !/^import/.test(line);
                 }).join("\n"), {
-                  remarkPlugins: [[// Removes front-matter from Markdown output
-                  __webpack_require__(23), {
+                  remarkPlugins: [__webpack_require__(23), [// Removes front-matter from Markdown output
+                  __webpack_require__(24), {
                     type: "yaml",
                     marker: "-",
                     fence: "---",
                     anywhere: true
-                  }], __webpack_require__(24), __webpack_require__(25), __webpack_require__(26)],
-                  rehypePlugins: [__webpack_require__(27)],
+                  }], __webpack_require__(25), __webpack_require__(26), __webpack_require__(27)],
+                  rehypePlugins: [__webpack_require__(28)],
                   skipExport: true
                 });
               } catch (exception) {
@@ -1350,39 +1350,45 @@ module.exports = require("@mdx-js/mdx");
 /* 23 */
 /***/ (function(module, exports) {
 
-module.exports = require("remark-frontmatter");
+module.exports = require("remark-breaks");
 
 /***/ }),
 /* 24 */
 /***/ (function(module, exports) {
 
-module.exports = require("remark-slug");
+module.exports = require("remark-frontmatter");
 
 /***/ }),
 /* 25 */
 /***/ (function(module, exports) {
 
-module.exports = require("remark-images");
+module.exports = require("remark-slug");
 
 /***/ }),
 /* 26 */
 /***/ (function(module, exports) {
 
-module.exports = require("remark-emoji");
+module.exports = require("remark-images");
 
 /***/ }),
 /* 27 */
 /***/ (function(module, exports) {
 
-module.exports = require("rehype-highlight");
+module.exports = require("remark-emoji");
 
 /***/ }),
 /* 28 */
+/***/ (function(module, exports) {
+
+module.exports = require("rehype-highlight");
+
+/***/ }),
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(29)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(30)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -1395,17 +1401,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   });
   _exports.runBabel = void 0;
 
-  var react = __webpack_require__(30);
+  var react = __webpack_require__(31);
 
-  var env = __webpack_require__(31);
+  var env = __webpack_require__(32);
 
-  var assign = __webpack_require__(32);
+  var assign = __webpack_require__(33);
 
-  var properties = __webpack_require__(33);
+  var properties = __webpack_require__(34);
 
-  var spread = __webpack_require__(34);
+  var spread = __webpack_require__(35);
 
-  var destructuring = __webpack_require__(35);
+  var destructuring = __webpack_require__(36);
 
   var runBabel = function runBabel(jsx) {
     var _transform = (0, _standalone.transform)(jsx, {
@@ -1426,43 +1432,43 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports) {
 
 module.exports = require("@babel/standalone");
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports) {
 
 module.exports = require("@babel/preset-react");
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports) {
 
 module.exports = require("@babel/preset-env");
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports) {
 
 module.exports = require("@babel/plugin-transform-object-assign");
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports) {
 
 module.exports = require("@babel/plugin-proposal-class-properties");
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports) {
 
 module.exports = require("@babel/plugin-proposal-object-rest-spread");
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports) {
 
 module.exports = require("@babel/plugin-transform-destructuring");

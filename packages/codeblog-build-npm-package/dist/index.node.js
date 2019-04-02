@@ -167,7 +167,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(2), __webpack_require__(6), __webpack_require__(7), __webpack_require__(8), __webpack_require__(3), __webpack_require__(9), __webpack_require__(10), __webpack_require__(14), __webpack_require__(21)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(2), __webpack_require__(6), __webpack_require__(7), __webpack_require__(8), __webpack_require__(3), __webpack_require__(9), __webpack_require__(10), __webpack_require__(14), __webpack_require__(22)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -253,7 +253,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       var depName = (0, _npmPackageArg.default)(importName).name; // TODO: make this lock a specific version
 
       if (!_dependencies[depName]) {
-        _dependencies[depName] = "*";
+        _dependencies[depName] = "latest";
       }
     });
     return {
@@ -532,14 +532,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 jsx = _mdx.default.sync(_children.filter(function (line) {
                   return !/^import/.test(line);
                 }).join("\n"), {
-                  remarkPlugins: [[// Removes front-matter from Markdown output
-                  __webpack_require__(16), {
+                  remarkPlugins: [__webpack_require__(16), [// Removes front-matter from Markdown output
+                  __webpack_require__(17), {
                     type: "yaml",
                     marker: "-",
                     fence: "---",
                     anywhere: true
-                  }], __webpack_require__(17), __webpack_require__(18), __webpack_require__(19)],
-                  rehypePlugins: [__webpack_require__(20)],
+                  }], __webpack_require__(18), __webpack_require__(19), __webpack_require__(20)],
+                  rehypePlugins: [__webpack_require__(21)],
                   skipExport: true
                 });
               } catch (exception) {
@@ -582,39 +582,45 @@ module.exports = require("@mdx-js/mdx");
 /* 16 */
 /***/ (function(module, exports) {
 
-module.exports = require("remark-frontmatter");
+module.exports = require("remark-breaks");
 
 /***/ }),
 /* 17 */
 /***/ (function(module, exports) {
 
-module.exports = require("remark-slug");
+module.exports = require("remark-frontmatter");
 
 /***/ }),
 /* 18 */
 /***/ (function(module, exports) {
 
-module.exports = require("remark-images");
+module.exports = require("remark-slug");
 
 /***/ }),
 /* 19 */
 /***/ (function(module, exports) {
 
-module.exports = require("remark-emoji");
+module.exports = require("remark-images");
 
 /***/ }),
 /* 20 */
 /***/ (function(module, exports) {
 
-module.exports = require("rehype-highlight");
+module.exports = require("remark-emoji");
 
 /***/ }),
 /* 21 */
+/***/ (function(module, exports) {
+
+module.exports = require("rehype-highlight");
+
+/***/ }),
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(22)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(23)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -651,7 +657,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports) {
 
 module.exports = require("@babel/core");

@@ -208,16 +208,16 @@ export class DependencyManager {
     }
 
     return Object.assign(deps, {
-      codeblog: "1.3.2",
+      codeblog: "1.4.1",
       "prop-types": "15.7.2",
-      "react-is": "16.8.5",
+      "react-is": "16.8.6",
       "@mdx-js/mdx": "^1.0.0-alpha.13",
       "@mdx-js/react": "^1.0.0-alpha.13",
       "require-reload": "0.2.2",
       "react-hot-loader": "4.8.0",
-      "@hot-loader/react-dom": "16.8.3",
-      "react-dom": "16.8.5",
-      react: "16.8.5"
+      "@hot-loader/react-dom": "16.8.6",
+      "react-dom": "16.8.6",
+      react: "16.8.6"
     });
   };
 

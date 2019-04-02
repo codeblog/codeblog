@@ -69,7 +69,7 @@ export const createPackageJSON = ({
 
     // TODO: make this lock a specific version
     if (!_dependencies[depName]) {
-      _dependencies[depName] = "*";
+      _dependencies[depName] = "latest";
     }
   });
 
