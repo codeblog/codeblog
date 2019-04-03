@@ -1229,7 +1229,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       cjs: true
     });
     return imports.map(function (importObj) {
-      return importObj.source.value;
+      return importObj.source.value.split("/").slice(0, 2).join("/");
     }).filter(function (name) {
       return (0, _npmPackageArg.default)(name).name;
     });

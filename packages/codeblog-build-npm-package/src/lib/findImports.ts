@@ -11,6 +11,12 @@ export function findImports(code: string) {
   });
 
   return imports
-    .map(importObj => importObj.source.value)
+    .map(importObj =>
+      importObj.source.value
+        .split("/")
+        .slice(0, 2)
+        .join("/")
+    )
+
     .filter(name => npa(name).name);
 }
