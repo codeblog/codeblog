@@ -218,7 +218,6 @@ a:visited {
     display: flex;
     padding: var(--offset-medium);
     align-items: center;
-    border-bottom: 1px solid var(--color-muted);
 }
 
 .BlogTitle {
