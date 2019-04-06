@@ -13,6 +13,18 @@ export const getBlogTitle = (blog: Blog) => {
   }
 };
 
+const faviconMimeType = (photoURL: string) => {
+  if (photoURL.endsWith(".png")) {
+    return "image/png";
+  } else if (photoURL.endsWith(".jpg") || photoURL.endsWith(".jpeg")) {
+    return "image/jpeg";
+  } else if (photoURL.endsWith(".gif")) {
+    return "image/gif";
+  } else {
+    return null;
+  }
+};
+
 const RawBlogPostSEOTags = ({ post, pageType }: CodeblogContextType) => (
   <>
     <meta itemProp="description" content={post.summary} />
@@ -104,6 +116,14 @@ export const RawBlogSEOTags = ({ blog }: { blog: Blog }) => (
     <MetaTag property="og:title" content={getBlogTitle(blog)} />
     <MetaTag name="twitter:title" content={getBlogTitle(blog)} />
 
+    {blog.photoURL && (
+      <LinkTag
+        rel="icon"
+        type={faviconMimeType(blog.photoURL)}
+        href={blog.photoURL}
+      />
+    )}
+
     <MetaTag name="twitter:card" content="summary_large_image" />
     <MetaTag property="og:description" content={blog.description} />
     <MetaTag name="twitter:description" content={blog.description} />
@@ -114,14 +134,16 @@ export const RawBlogSEOTags = ({ blog }: { blog: Blog }) => (
   </>
 );
 
-export const BlogSEOTags = ({ blog }: { blog?: Blog } = {}) => (
-  <Codeblog>
-    {({ blog: currentBlog }: { blog: Blog }) => {
-      if (!blog && !currentBlog) {
-        return null;
-      } else {
-        return <RawBlogSEOTags blog={blog || currentBlog} />;
-      }
-    }}
-  </Codeblog>
-);
+export const BlogSEOTags = ({ blog }: { blog?: Blog } = {}) => {
+  if (typeof blog === "object") {
+    return <RawBlogSEOTags blog={blog} />;
+  } else {
+    return (
+      <Codeblog>
+        {({ blog }) => {
+          return <RawBlogSEOTags blog={blog} />;
+        }}
+      </Codeblog>
+    );
+  }
+};

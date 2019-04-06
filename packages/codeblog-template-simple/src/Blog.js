@@ -11,7 +11,7 @@ export const Blog = ({ blog, children, pageType }) => (
     itemType="http://schema.org/Blog"
     className="Blog"
   >
-    <BlogSEOTags />
+    <BlogSEOTags blog={blog} />
 
     {/*----- Header shown on every page goes here  -----*/}
     <div className="BlogHeader">
