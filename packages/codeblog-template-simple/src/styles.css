@@ -82,15 +82,15 @@ time,
 mark,
 audio,
 video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-family: inherit;
-  vertical-align: baseline;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-family: inherit;
+    vertical-align: baseline;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 /* ---- CSS reset ---- */
@@ -98,53 +98,53 @@ video {
 /* ---- CSS variables ---- */
 
 :root {
-  --monospace-font: "IBM Plex Mono", monospace;
-  --body-font: "Open Sans";
-  --headings-font: "Open Sans";
-  --offset-small: 4px;
-  --offset-normalish: 8px;
-  --offset-normal: 12px;
-  --offset-xnormal: 12px;
-  --offset-medium: 24px;
-  --offset-big: 38px;
-  --offset-large: 64px;
-  --color-black: rgb(32, 31, 31);
-  --color-white: rgb(255, 255, 255);
-  --color-dark-gray: rgb(83, 83, 83);
-  --color-medium-gray: rgb(92, 92, 92);
-  --color-light-gray: rgb(233, 233, 233);
-  --color-primary: rgb(224, 55, 55);
-  --color-primary-muted: rgba(224, 55, 55, 0.45);
-  --color-error: rgb(199, 14, 14);
-  --color-muted: #979797;
-  --border-radius: 4px;
-  --page-background: var(--color-white);
-  --page-background-offset: var(--color-light-gray);
-  --text-color: var(--color-black);
-  --text-medium-color: var(--color-dark-gray);
-  --text-light-color: var(--color-dark-gray);
-  --text-muted-color: var(--color-muted);
-  --text-light-extra-color: var(--color-light-gray);
-  --link-color: var(--text-color);
-  --blog-width: 100%;
-  --blog-post-width: 670px;
+    --monospace-font: "IBM Plex Mono", monospace;
+    --body-font: "Open Sans";
+    --headings-font: "Open Sans";
+    --offset-small: 4px;
+    --offset-normalish: 8px;
+    --offset-normal: 12px;
+    --offset-xnormal: 12px;
+    --offset-medium: 24px;
+    --offset-big: 38px;
+    --offset-large: 64px;
+    --color-black: rgb(32, 31, 31);
+    --color-white: rgb(255, 255, 255);
+    --color-dark-gray: rgb(83, 83, 83);
+    --color-medium-gray: rgb(92, 92, 92);
+    --color-light-gray: rgb(233, 233, 233);
+    --color-primary: rgb(224, 55, 55);
+    --color-primary-muted: rgba(224, 55, 55, 0.45);
+    --color-error: rgb(199, 14, 14);
+    --color-muted: #979797;
+    --border-radius: 4px;
+    --page-background: var(--color-white);
+    --page-background-offset: var(--color-light-gray);
+    --text-color: var(--color-black);
+    --text-medium-color: var(--color-dark-gray);
+    --text-light-color: var(--color-dark-gray);
+    --text-muted-color: var(--color-muted);
+    --text-light-extra-color: var(--color-light-gray);
+    --link-color: var(--text-color);
+    --blog-width: 100%;
+    --blog-post-width: 670px;
 }
 
 code {
-  font-family: var(--monospace-font);
+    font-family: var(--monospace-font);
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  color: var(--text-color);
-  background-color: var(--page-background);
-  transition: background-color 0.1s linear;
-  transition-property: background-color, color;
-  font-family: var(--body-font);
-  font-size: 18px;
+    color: var(--text-color);
+    background-color: var(--page-background);
+    transition: background-color 0.1s linear;
+    transition-property: background-color, color;
+    font-family: var(--body-font);
+    font-size: 18px;
 }
 
 .BlogPost-Title,
@@ -154,44 +154,44 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: bold;
-  margin-block-start: var(--offset-large);
-  margin-block-end: var(--offset-normal);
-  line-height: 1.35;
-  font-family: var(--headings-font);
-  color: var(--text-color);
+    font-weight: bold;
+    margin-block-start: var(--offset-large);
+    margin-block-end: var(--offset-normal);
+    line-height: 1.35;
+    font-family: var(--headings-font);
+    color: var(--text-color);
 }
 
 p {
-  margin-block-end: var(--offset-normal);
-  font-size: 1em;
+    margin-block-end: var(--offset-normal);
+    font-size: 1em;
 }
 
 a,
 a:visited {
-  color: var(--link-color);
+    color: var(--link-color);
 }
 
 .Blog {
-  width: 100%;
-  margin: 0;
+    width: 100%;
+    margin: 0;
 }
 
 .BlogPost {
-  width: 100%;
-  margin-top: var(--offset-large);
-  margin-bottom: var(--offset-large);
-  color: var(--text-medium-color);
+    width: 100%;
+    margin-top: var(--offset-large);
+    margin-bottom: var(--offset-large);
+    color: var(--text-medium-color);
 }
 
 .BlogPost-Body,
 .BlogPost-Body > div {
-  text-rendering: optimizeLegibility;
-  line-height: 1.75;
+    text-rendering: optimizeLegibility;
+    line-height: 1.75;
 }
 
 .BlogPost-Body > div {
-  position: relative;
+    position: relative;
 }
 
 .BlogPost-Title,
@@ -206,157 +206,158 @@ a:visited {
 .BlogPost-Body > blockquote,
 .BlogPost-Body > div,
 .BlogPost-Body > ul,
+.BlogPost-Body > pre,
 .BlogPost-Body > ol {
-  max-width: var(--blog-post-width);
-  margin-left: auto;
-  margin-right: auto;
-  word-wrap: break-word;
+    max-width: var(--blog-post-width);
+    margin-left: auto;
+    margin-right: auto;
+    word-wrap: break-word;
 }
 
 .BlogHeader {
-  display: flex;
-  padding: var(--offset-medium);
-  align-items: center;
-  border-bottom: 1px solid var(--color-muted);
+    display: flex;
+    padding: var(--offset-medium);
+    align-items: center;
+    border-bottom: 1px solid var(--color-muted);
 }
 
 .BlogTitle {
-  text-transform: uppercase;
-  font-size: 16px;
-  font-weight: bold;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .BlogHeader-image {
-  border-radius: 50%;
-  display: flex;
-  margin-right: var(--offset-normal);
+    border-radius: 50%;
+    display: flex;
+    margin-right: var(--offset-normal);
 }
 
 .BlogHeader-image--fallback {
-  height: 42px;
-  width: 42px;
-  background-color: var(--text-color);
-  border: 2px solid var(--color-primary);
+    height: 42px;
+    width: 42px;
+    background-color: var(--text-color);
+    border: 2px solid var(--color-primary);
 }
 
 .BlogPost img {
-  max-width: 100%;
+    max-width: 100%;
 }
 
 blockquote {
-  border-left: 10px solid var(--text-color);
-  padding-left: var(--offset-medium);
+    border-left: 10px solid var(--text-color);
+    padding-left: var(--offset-medium);
 }
 
 ol,
 ul {
-  margin-top: var(--offset-normal);
-  margin-bottom: var(--offset-normal);
+    margin-top: var(--offset-normal);
+    margin-bottom: var(--offset-normal);
 }
 
 li {
-  margin-block-start: var(--offset-normal);
-  padding-top: var(-offset-small);
-  padding-bottom: var(-offset-small);
-  margin-block-end: var(--offset-normal);
+    margin-block-start: var(--offset-normal);
+    padding-top: var(-offset-small);
+    padding-bottom: var(-offset-small);
+    margin-block-end: var(--offset-normal);
 }
 
 .BlogPost-Title {
-  font-size: 2em;
-  font-weight: bold;
-  margin-block-start: var(--offset-small);
-  margin-block-end: var(--offset-small);
+    font-size: 2em;
+    font-weight: bold;
+    margin-block-start: var(--offset-small);
+    margin-block-end: var(--offset-small);
 }
 
 .BlogPost-Title:hover a {
-  text-decoration: hover;
+    text-decoration: hover;
 }
 
 .BlogPost-Title a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 .BlogPost-Subtitle {
-  margin-block-end: 0;
-  margin-block-start: 0;
-  display: flex;
-  color: var(--color-primary);
-  font-weight: bold;
+    margin-block-end: 0;
+    margin-block-start: 0;
+    display: flex;
+    color: var(--color-primary);
+    font-weight: bold;
 }
 
 .Separator {
-  background-color: var(--color-primary);
-  border-radius: 50%;
-  content: "";
-  margin-top: auto;
-  margin-bottom: auto;
-  display: inline-block;
+    background-color: var(--color-primary);
+    border-radius: 50%;
+    content: "";
+    margin-top: auto;
+    margin-bottom: auto;
+    display: inline-block;
 }
 
 .Separator--small {
-  margin-left: var(--offset-small);
-  margin-right: var(--offset-small);
-  width: 4px;
-  height: 4px;
+    margin-left: var(--offset-small);
+    margin-right: var(--offset-small);
+    width: 4px;
+    height: 4px;
 }
 
 .BlogIndex-description {
-  white-space: pre-line;
+    white-space: pre-line;
 }
 
 .BlogPost--index {
-  margin-top: var(--offset-medium);
-  margin-bottom: var(--offset-medium);
+    margin-top: var(--offset-medium);
+    margin-bottom: var(--offset-medium);
 }
 
 @media (-webkit-min-device-pixel-ratio: 1.5) {
-  * {
-    -webkit-font-smoothing: antialiased;
-  }
+    * {
+        -webkit-font-smoothing: antialiased;
+    }
 }
 
 .BlogPost-Body > div > div {
-  margin-bottom: var(--offset-normalish);
-  margin-top: var(--offset-normalish);
+    margin-bottom: var(--offset-normalish);
+    margin-top: var(--offset-normalish);
 }
 
 .BlogPost-Body > div > div > pre,
 .BlogPost-Body > div > div > pre > .hljs {
-  direction: ltr;
-  text-align: left;
-  white-space: pre;
-  word-spacing: normal;
-  word-break: normal;
-  tab-size: 4;
-  -webkit-hyphens: none;
-  -moz-hyphens: none;
-  -ms-hyphens: none;
-  hyphens: none;
-  font-family: var(--monospace-font);
+    direction: ltr;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    tab-size: 4;
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+    font-family: var(--monospace-font);
 }
 
 .BlogPost-Body div > p > code:after,
 .BlogPost-Body div > p > code:before {
-  content: " ";
+    content: " ";
 }
 
 .BlogPost-Body div > p > code {
-  color: #3182bd;
-  font-weight: 600;
+    color: #3182bd;
+    font-weight: 600;
 }
 
 /* ---- Syntax highlighting ---- */
 
 .hljs {
-  display: block;
-  overflow-x: auto;
-  padding: var(--offset-normal) var(--offset-xnormal);
-  font-family: var(--monospace-font);
+    display: block;
+    overflow-x: auto;
+    padding: var(--offset-normal) var(--offset-xnormal);
+    font-family: var(--monospace-font);
 }
 
 .hljs,
 .hljs-subst {
-  color: #000;
+    color: #000;
 }
 
 .hljs-string,
@@ -365,26 +366,26 @@ li {
 .hljs-template-tag,
 .hljs-template-variable,
 .hljs-addition {
-  color: #756bb1;
-  font-weight: normal;
+    color: #756bb1;
+    font-weight: normal;
 }
 
 .hljs-comment,
 .hljs-quote {
-  color: #636363;
+    color: #636363;
 }
 
 .hljs-number,
 .hljs-regexp,
 .hljs-literal,
 .hljs-link {
-  color: #31a354;
+    color: #31a354;
 }
 
 .hljs-deletion,
 .hljs-variable {
-  color: #88f;
-  font-weight: normal;
+    color: #88f;
+    font-weight: normal;
 }
 
 .hljs-keyword,
@@ -397,330 +398,285 @@ li {
 .hljs-name,
 .hljs-selector-id,
 .hljs-selector-class {
-  color: #3182bd;
+    color: #3182bd;
 }
 
 .hljs-strong,
 .hljs-tag,
 .hljs-section {
-  font-weight: 600;
+    font-weight: 600;
 }
 
 .hljs-link {
-  color: var(--link-color);
+    color: var(--link-color);
 }
 
 .xml {
-  font-family: monospace;
+    font-family: monospace;
 }
 
 .hljs-emphasis {
-  font-style: italic;
+    font-style: italic;
 }
 
 .hljs-attr {
-  font-weight: normal;
+    font-weight: normal;
 }
 
 .hljs-attribute {
-  color: #e6550d;
+    color: #e6550d;
 }
 
 /* ---- Syntax highlighting ---- */
 
 /* cyrillic-ext */
 @font-face {
-  font-family: "Open Sans";
-  font-style: italic;
-  font-weight: 400;
-  src: local("Open Sans Italic"), local("OpenSans-Italic"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem6YaGs126MiZpBA-UFUK0Udc1GAK6bt6o.woff2)
-      format("woff2");
-  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F,
-    U+FE2E-FE2F;
+    font-family: "Open Sans";
+    font-style: italic;
+    font-weight: 400;
+    src: local("Open Sans Italic"), local("OpenSans-Italic"), url(https://fonts.gstatic.com/s/opensans/v16/mem6YaGs126MiZpBA-UFUK0Udc1GAK6bt6o.woff2) format("woff2");
+    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
 }
+
 /* cyrillic */
 @font-face {
-  font-family: "Open Sans";
-  font-style: italic;
-  font-weight: 400;
-  src: local("Open Sans Italic"), local("OpenSans-Italic"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem6YaGs126MiZpBA-UFUK0ddc1GAK6bt6o.woff2)
-      format("woff2");
-  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+    font-family: "Open Sans";
+    font-style: italic;
+    font-weight: 400;
+    src: local("Open Sans Italic"), local("OpenSans-Italic"), url(https://fonts.gstatic.com/s/opensans/v16/mem6YaGs126MiZpBA-UFUK0ddc1GAK6bt6o.woff2) format("woff2");
+    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
+
 /* greek-ext */
 @font-face {
-  font-family: "Open Sans";
-  font-style: italic;
-  font-weight: 400;
-  src: local("Open Sans Italic"), local("OpenSans-Italic"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem6YaGs126MiZpBA-UFUK0Vdc1GAK6bt6o.woff2)
-      format("woff2");
-  unicode-range: U+1F00-1FFF;
+    font-family: "Open Sans";
+    font-style: italic;
+    font-weight: 400;
+    src: local("Open Sans Italic"), local("OpenSans-Italic"), url(https://fonts.gstatic.com/s/opensans/v16/mem6YaGs126MiZpBA-UFUK0Vdc1GAK6bt6o.woff2) format("woff2");
+    unicode-range: U+1F00-1FFF;
 }
+
 /* greek */
 @font-face {
-  font-family: "Open Sans";
-  font-style: italic;
-  font-weight: 400;
-  src: local("Open Sans Italic"), local("OpenSans-Italic"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem6YaGs126MiZpBA-UFUK0adc1GAK6bt6o.woff2)
-      format("woff2");
-  unicode-range: U+0370-03FF;
+    font-family: "Open Sans";
+    font-style: italic;
+    font-weight: 400;
+    src: local("Open Sans Italic"), local("OpenSans-Italic"), url(https://fonts.gstatic.com/s/opensans/v16/mem6YaGs126MiZpBA-UFUK0adc1GAK6bt6o.woff2) format("woff2");
+    unicode-range: U+0370-03FF;
 }
+
 /* vietnamese */
 @font-face {
-  font-family: "Open Sans";
-  font-style: italic;
-  font-weight: 400;
-  src: local("Open Sans Italic"), local("OpenSans-Italic"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem6YaGs126MiZpBA-UFUK0Wdc1GAK6bt6o.woff2)
-      format("woff2");
-  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+    font-family: "Open Sans";
+    font-style: italic;
+    font-weight: 400;
+    src: local("Open Sans Italic"), local("OpenSans-Italic"), url(https://fonts.gstatic.com/s/opensans/v16/mem6YaGs126MiZpBA-UFUK0Wdc1GAK6bt6o.woff2) format("woff2");
+    unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
 }
+
 /* latin-ext */
 @font-face {
-  font-family: "Open Sans";
-  font-style: italic;
-  font-weight: 400;
-  src: local("Open Sans Italic"), local("OpenSans-Italic"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem6YaGs126MiZpBA-UFUK0Xdc1GAK6bt6o.woff2)
-      format("woff2");
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB,
-    U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    font-family: "Open Sans";
+    font-style: italic;
+    font-weight: 400;
+    src: local("Open Sans Italic"), local("OpenSans-Italic"), url(https://fonts.gstatic.com/s/opensans/v16/mem6YaGs126MiZpBA-UFUK0Xdc1GAK6bt6o.woff2) format("woff2");
+    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
+
 /* latin */
 @font-face {
-  font-family: "Open Sans";
-  font-style: italic;
-  font-weight: 400;
-  src: local("Open Sans Italic"), local("OpenSans-Italic"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem6YaGs126MiZpBA-UFUK0Zdc1GAK6b.woff2)
-      format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
-    U+FEFF, U+FFFD;
+    font-family: "Open Sans";
+    font-style: italic;
+    font-weight: 400;
+    src: local("Open Sans Italic"), local("OpenSans-Italic"), url(https://fonts.gstatic.com/s/opensans/v16/mem6YaGs126MiZpBA-UFUK0Zdc1GAK6b.woff2) format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+
 /* cyrillic-ext */
 @font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 400;
-  src: local("Open Sans Regular"), local("OpenSans-Regular"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem8YaGs126MiZpBA-UFWJ0bf8pkAp6a.woff2)
-      format("woff2");
-  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F,
-    U+FE2E-FE2F;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Open Sans Regular"), local("OpenSans-Regular"), url(https://fonts.gstatic.com/s/opensans/v16/mem8YaGs126MiZpBA-UFWJ0bf8pkAp6a.woff2) format("woff2");
+    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
 }
+
 /* cyrillic */
 @font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 400;
-  src: local("Open Sans Regular"), local("OpenSans-Regular"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem8YaGs126MiZpBA-UFUZ0bf8pkAp6a.woff2)
-      format("woff2");
-  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Open Sans Regular"), local("OpenSans-Regular"), url(https://fonts.gstatic.com/s/opensans/v16/mem8YaGs126MiZpBA-UFUZ0bf8pkAp6a.woff2) format("woff2");
+    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
+
 /* greek-ext */
 @font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 400;
-  src: local("Open Sans Regular"), local("OpenSans-Regular"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem8YaGs126MiZpBA-UFWZ0bf8pkAp6a.woff2)
-      format("woff2");
-  unicode-range: U+1F00-1FFF;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Open Sans Regular"), local("OpenSans-Regular"), url(https://fonts.gstatic.com/s/opensans/v16/mem8YaGs126MiZpBA-UFWZ0bf8pkAp6a.woff2) format("woff2");
+    unicode-range: U+1F00-1FFF;
 }
+
 /* greek */
 @font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 400;
-  src: local("Open Sans Regular"), local("OpenSans-Regular"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem8YaGs126MiZpBA-UFVp0bf8pkAp6a.woff2)
-      format("woff2");
-  unicode-range: U+0370-03FF;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Open Sans Regular"), local("OpenSans-Regular"), url(https://fonts.gstatic.com/s/opensans/v16/mem8YaGs126MiZpBA-UFVp0bf8pkAp6a.woff2) format("woff2");
+    unicode-range: U+0370-03FF;
 }
+
 /* vietnamese */
 @font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 400;
-  src: local("Open Sans Regular"), local("OpenSans-Regular"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem8YaGs126MiZpBA-UFWp0bf8pkAp6a.woff2)
-      format("woff2");
-  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Open Sans Regular"), local("OpenSans-Regular"), url(https://fonts.gstatic.com/s/opensans/v16/mem8YaGs126MiZpBA-UFWp0bf8pkAp6a.woff2) format("woff2");
+    unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
 }
+
 /* latin-ext */
 @font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 400;
-  src: local("Open Sans Regular"), local("OpenSans-Regular"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem8YaGs126MiZpBA-UFW50bf8pkAp6a.woff2)
-      format("woff2");
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB,
-    U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Open Sans Regular"), local("OpenSans-Regular"), url(https://fonts.gstatic.com/s/opensans/v16/mem8YaGs126MiZpBA-UFW50bf8pkAp6a.woff2) format("woff2");
+    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
+
 /* latin */
 @font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 400;
-  src: local("Open Sans Regular"), local("OpenSans-Regular"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem8YaGs126MiZpBA-UFVZ0bf8pkAg.woff2)
-      format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
-    U+FEFF, U+FFFD;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Open Sans Regular"), local("OpenSans-Regular"), url(https://fonts.gstatic.com/s/opensans/v16/mem8YaGs126MiZpBA-UFVZ0bf8pkAg.woff2) format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+
 /* cyrillic-ext */
 @font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 600;
-  src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOX-hpKKSTj5PW.woff2)
-      format("woff2");
-  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F,
-    U+FE2E-FE2F;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 600;
+    src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOX-hpKKSTj5PW.woff2) format("woff2");
+    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
 }
+
 /* cyrillic */
 @font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 600;
-  src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOVuhpKKSTj5PW.woff2)
-      format("woff2");
-  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 600;
+    src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOVuhpKKSTj5PW.woff2) format("woff2");
+    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
+
 /* greek-ext */
 @font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 600;
-  src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOXuhpKKSTj5PW.woff2)
-      format("woff2");
-  unicode-range: U+1F00-1FFF;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 600;
+    src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOXuhpKKSTj5PW.woff2) format("woff2");
+    unicode-range: U+1F00-1FFF;
 }
+
 /* greek */
 @font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 600;
-  src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOUehpKKSTj5PW.woff2)
-      format("woff2");
-  unicode-range: U+0370-03FF;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 600;
+    src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOUehpKKSTj5PW.woff2) format("woff2");
+    unicode-range: U+0370-03FF;
 }
+
 /* vietnamese */
 @font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 600;
-  src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOXehpKKSTj5PW.woff2)
-      format("woff2");
-  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 600;
+    src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOXehpKKSTj5PW.woff2) format("woff2");
+    unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
 }
+
 /* latin-ext */
 @font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 600;
-  src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOXOhpKKSTj5PW.woff2)
-      format("woff2");
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB,
-    U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 600;
+    src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOXOhpKKSTj5PW.woff2) format("woff2");
+    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
+
 /* latin */
 @font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 600;
-  src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOUuhpKKSTjw.woff2)
-      format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
-    U+FEFF, U+FFFD;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 600;
+    src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOUuhpKKSTjw.woff2) format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+
 /* cyrillic-ext */
 @font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 700;
-  src: local("Open Sans Bold"), local("OpenSans-Bold"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UN7rgOX-hpKKSTj5PW.woff2)
-      format("woff2");
-  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F,
-    U+FE2E-FE2F;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 700;
+    src: local("Open Sans Bold"), local("OpenSans-Bold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UN7rgOX-hpKKSTj5PW.woff2) format("woff2");
+    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
 }
+
 /* cyrillic */
 @font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 700;
-  src: local("Open Sans Bold"), local("OpenSans-Bold"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UN7rgOVuhpKKSTj5PW.woff2)
-      format("woff2");
-  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 700;
+    src: local("Open Sans Bold"), local("OpenSans-Bold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UN7rgOVuhpKKSTj5PW.woff2) format("woff2");
+    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
+
 /* greek-ext */
 @font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 700;
-  src: local("Open Sans Bold"), local("OpenSans-Bold"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UN7rgOXuhpKKSTj5PW.woff2)
-      format("woff2");
-  unicode-range: U+1F00-1FFF;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 700;
+    src: local("Open Sans Bold"), local("OpenSans-Bold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UN7rgOXuhpKKSTj5PW.woff2) format("woff2");
+    unicode-range: U+1F00-1FFF;
 }
+
 /* greek */
 @font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 700;
-  src: local("Open Sans Bold"), local("OpenSans-Bold"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UN7rgOUehpKKSTj5PW.woff2)
-      format("woff2");
-  unicode-range: U+0370-03FF;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 700;
+    src: local("Open Sans Bold"), local("OpenSans-Bold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UN7rgOUehpKKSTj5PW.woff2) format("woff2");
+    unicode-range: U+0370-03FF;
 }
+
 /* vietnamese */
 @font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 700;
-  src: local("Open Sans Bold"), local("OpenSans-Bold"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UN7rgOXehpKKSTj5PW.woff2)
-      format("woff2");
-  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 700;
+    src: local("Open Sans Bold"), local("OpenSans-Bold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UN7rgOXehpKKSTj5PW.woff2) format("woff2");
+    unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
 }
+
 /* latin-ext */
 @font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 700;
-  src: local("Open Sans Bold"), local("OpenSans-Bold"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UN7rgOXOhpKKSTj5PW.woff2)
-      format("woff2");
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB,
-    U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 700;
+    src: local("Open Sans Bold"), local("OpenSans-Bold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UN7rgOXOhpKKSTj5PW.woff2) format("woff2");
+    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
+
 /* latin */
 @font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 700;
-  src: local("Open Sans Bold"), local("OpenSans-Bold"),
-    url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UN7rgOUuhpKKSTjw.woff2)
-      format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
-    U+FEFF, U+FFFD;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 700;
+    src: local("Open Sans Bold"), local("OpenSans-Bold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UN7rgOUuhpKKSTjw.woff2) format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
