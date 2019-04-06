@@ -1,6 +1,6 @@
 {
   "name": "codeblog-template-simple",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "browser": "dist/index.js",
   "main": "dist/index.js",
   "license": "MIT",
