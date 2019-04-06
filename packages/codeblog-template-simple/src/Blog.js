@@ -14,23 +14,26 @@ export const Blog = ({ blog, children, pageType }) => (
     <BlogSEOTags />
 
     {/*----- Header shown on every page goes here  -----*/}
+    <div className="BlogHeader">
+      {blog.photo_url ? (
+        <img
+          src={blog.photo_url}
+          width={42}
+          height={42}
+          className="BlogHeader-image"
+        />
+      ) : (
+        <div className="BlogHeader-image BlogHeader-image--fallback" />
+      )}
+      <div itemProp="headline" className="BlogTitle">
+        {title || blog.title}
+      </div>
+    </div>
 
     {pageType === "index" ? (
       <div className="BlogIndex">
-        {/*----- Custom header for the list of blog posts page goes here (e.g. https://jarredsumner.com/)  -----*/}
-        <div className="BlogIndex-Header">
-          <h1 itemProp="headline" className="BlogIndex-Title">
-            {title || blog.title}
-          </h1>
-          {description && (
-            <div className="BlogIndex-description">{description}</div>
-          )}
-        </div>
-
         {/* children is the list of blog posts */}
         <div className="BlogPost-List">{children}</div>
-
-        {/*----- Custom footer for the list of blog posts page goes here (e.g. https://jarredsumner.com/)  -----*/}
       </div>
     ) : (
       /* children is the current blog post */

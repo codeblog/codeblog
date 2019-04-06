@@ -7,6 +7,6 @@ export declare const BlogPostSEOTags: ({ post }: {
 export declare const RawBlogSEOTags: ({ blog }: {
     blog: Blog;
 }) => JSX.Element;
-export declare const BlogSEOTags: ({ blog }: {
+export declare const BlogSEOTags: ({ blog }?: {
     blog?: Blog;
 }) => JSX.Element;

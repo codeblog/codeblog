@@ -114,10 +114,14 @@ export const RawBlogSEOTags = ({ blog }: { blog: Blog }) => (
   </>
 );
 
-export const BlogSEOTags = ({ blog }: { blog?: Blog }) => (
+export const BlogSEOTags = ({ blog }: { blog?: Blog } = {}) => (
   <Codeblog>
-    {({ blog: currentBlog }: { blog: Blog }) => (
-      <RawBlogSEOTags blog={blog || currentBlog} />
-    )}
+    {({ blog: currentBlog }: { blog: Blog }) => {
+      if (!blog && !currentBlog) {
+        return null;
+      } else {
+        return <RawBlogSEOTags blog={blog || currentBlog} />;
+      }
+    }}
   </Codeblog>
 );
