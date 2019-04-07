@@ -54,6 +54,47 @@ export const CodeblogPost = (props: CodeblogPostProps) => {
   );
 };
 
+type BlogPostWithErrorBoundaryProps = CodeblogContextInterface & {
+  post: Post;
+  children: React.ReactNode;
+  BlogPostComponent: BlogPostComponentType;
+};
+type BlogPostWithErrorBoundaryState = { hasError: boolean };
+
+class BlogPostWithErrorBoundary extends React.Component<
+  BlogPostWithErrorBoundaryProps,
+  BlogPostWithErrorBoundaryState
+> {
+  state = {
+    hasError: false
+  };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, info: any) {
+    console.error(
+      `[Codeblog][${
+        this.props.post.url
+      }] An error occurred while rendering your post! The post has been automatically hidden, so that the entire page doesn't break.`,
+      error,
+      info
+    );
+  }
+
+  render() {
+    const { BlogPostComponent, children } = this.props;
+    const { hasError } = this.state;
+
+    if (hasError) {
+      return null;
+    } else {
+      return <BlogPostComponent {...this.props}>{children}</BlogPostComponent>;
+    }
+  }
+}
+
 export const CodeblogIndexPage = (props: CodeblogPostProps) => {
   const { BlogComponent, BlogPostComponent } = props;
 
@@ -72,12 +113,13 @@ export const CodeblogIndexPage = (props: CodeblogPostProps) => {
             <BlogComponent {...contextProps}>
               {React.Children.map(props.children, (child, index) => {
                 return (
-                  <BlogPostComponent
+                  <BlogPostWithErrorBoundary
                     {...contextProps}
+                    BlogPostComponent={BlogPostComponent}
                     post={contextProps.posts[index]}
                   >
                     {child}
-                  </BlogPostComponent>
+                  </BlogPostWithErrorBoundary>
                 );
               })}
             </BlogComponent>

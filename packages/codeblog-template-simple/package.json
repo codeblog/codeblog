@@ -14,9 +14,6 @@
     "dist",
     "src"
   ],
-  "peerDependencies": {
-    "codeblog": "latest"
-  },
   "dependencies": {
     "classnames": "^2.2.6",
     "date-fns": "^2.0.0-alpha.27",
