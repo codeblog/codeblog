@@ -3,6 +3,7 @@ import { HeadProvider } from "react-head";
 import {
   Codeblog,
   CodeblogContext,
+  CodeblogContextInterface,
   CodeblogProvider,
   BlogComponentType,
   BlogPostComponentType
@@ -10,15 +11,14 @@ import {
 
 export { BlogSEOTags, BlogPostSEOTags } from "./components/SEOTags";
 
-type CodeblogPostProps = CodeblogContext & {
+type CodeblogPostProps = CodeblogContextInterface & {
   children: React.ReactNode;
   BlogComponent?: BlogComponentType;
   BlogPostComponent?: BlogPostComponentType;
   headTags?: [];
 };
 
-export { Codeblog };
-export { CodeblogContext as CodeblogContextType };
+export { Codeblog, CodeblogContext, CodeblogContextInterface };
 
 export { Title, Meta, Link } from "react-head";
 export {

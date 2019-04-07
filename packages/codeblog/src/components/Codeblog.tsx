@@ -35,7 +35,7 @@ export interface Post {
   blog: Blog;
 }
 
-export interface CodeblogContext {
+export interface CodeblogContextInterface {
   blog: Blog;
   pageType: PageType;
   post: Post | null;
@@ -45,15 +45,15 @@ export interface CodeblogContext {
   BlogPostComponent: BlogPostComponentType;
 }
 
-export const CodeblogContext = React.createContext<CodeblogContext | null>(
+export const CodeblogContext = React.createContext<CodeblogContextInterface | null>(
   null
 );
 
 export type BlogComponentType = React.ComponentType<
-  CodeblogContext & { children: React.ReactNode }
+  CodeblogContextInterface & { children: React.ReactNode }
 >;
 export type BlogPostComponentType = React.ComponentType<
-  CodeblogContext & { post: Post; children?: React.ReactNode }
+  CodeblogContextInterface & { post: Post; children?: React.ReactNode }
 >;
 
 interface Props {
@@ -93,8 +93,11 @@ export const normalizePost = (post: any, blog: any) => {
   };
 };
 
-export class CodeblogProvider extends React.Component<Props, CodeblogContext> {
-  state: CodeblogContext;
+export class CodeblogProvider extends React.Component<
+  Props,
+  CodeblogContextInterface
+> {
+  state: CodeblogContextInterface;
 
   static defaultProps: { posts: Array<Post>; post: Post | null } = {
     posts: [],
@@ -104,7 +107,7 @@ export class CodeblogProvider extends React.Component<Props, CodeblogContext> {
   constructor(props: Props) {
     super(props);
 
-    const state: CodeblogContext = {
+    const state: CodeblogContextInterface = {
       blog: { ...props.blog },
       posts: props.posts,
       post: props.post,
@@ -123,8 +126,11 @@ export class CodeblogProvider extends React.Component<Props, CodeblogContext> {
     this.state = state;
   }
 
-  static getDerivedStateFromProps(props: Props, state: CodeblogContext) {
-    const changes: Partial<CodeblogContext> = {};
+  static getDerivedStateFromProps(
+    props: Props,
+    state: CodeblogContextInterface
+  ) {
+    const changes: Partial<CodeblogContextInterface> = {};
 
     if (props.BlogComponent !== state.BlogComponent) {
       changes.BlogComponent = props.BlogComponent;

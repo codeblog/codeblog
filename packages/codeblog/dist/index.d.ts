@@ -1,14 +1,13 @@
 import * as React from "react";
-import { Codeblog, CodeblogContext, BlogComponentType, BlogPostComponentType } from "./components/Codeblog";
+import { Codeblog, CodeblogContext, CodeblogContextInterface, BlogComponentType, BlogPostComponentType } from "./components/Codeblog";
 export { BlogSEOTags, BlogPostSEOTags } from "./components/SEOTags";
-declare type CodeblogPostProps = CodeblogContext & {
+declare type CodeblogPostProps = CodeblogContextInterface & {
     children: React.ReactNode;
     BlogComponent?: BlogComponentType;
     BlogPostComponent?: BlogPostComponentType;
     headTags?: [];
 };
-export { Codeblog };
-export { CodeblogContext as CodeblogContextType };
+export { Codeblog, CodeblogContext, CodeblogContextInterface };
 export { Title, Meta, Link } from "react-head";
 export { Post, Blog, BlogComponentType, BlogPostComponentType, EnvironmentType, PageType } from "./components/Codeblog";
 export declare const CodeblogRoot: (props: CodeblogPostProps) => JSX.Element;

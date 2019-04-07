@@ -1,5 +1,11 @@
 import * as React from "react";
-import { Meta, Codeblog, CodeblogContextType, Title, Link } from "../index";
+import {
+  Meta,
+  Codeblog,
+  CodeblogContextInterface,
+  Title,
+  Link
+} from "../index";
 import { Post, Blog } from "./Codeblog";
 
 const MetaTag = (props: any) => <Meta {...props} />;
@@ -25,7 +31,7 @@ const faviconMimeType = (photoURL: string) => {
   }
 };
 
-const RawBlogPostSEOTags = ({ post, pageType }: CodeblogContextType) => (
+const RawBlogPostSEOTags = ({ post, pageType }: CodeblogContextInterface) => (
   <>
     <meta itemProp="description" content={post.summary} />
     {pageType === "show" && (

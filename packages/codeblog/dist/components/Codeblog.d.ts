@@ -30,7 +30,7 @@ export interface Post {
     author: Blog;
     blog: Blog;
 }
-export interface CodeblogContext {
+export interface CodeblogContextInterface {
     blog: Blog;
     pageType: PageType;
     post: Post | null;
@@ -39,11 +39,11 @@ export interface CodeblogContext {
     BlogComponent: BlogComponentType;
     BlogPostComponent: BlogPostComponentType;
 }
-export declare const CodeblogContext: React.Context<CodeblogContext>;
-export declare type BlogComponentType = React.ComponentType<CodeblogContext & {
+export declare const CodeblogContext: React.Context<CodeblogContextInterface>;
+export declare type BlogComponentType = React.ComponentType<CodeblogContextInterface & {
     children: React.ReactNode;
 }>;
-export declare type BlogPostComponentType = React.ComponentType<CodeblogContext & {
+export declare type BlogPostComponentType = React.ComponentType<CodeblogContextInterface & {
     post: Post;
     children?: React.ReactNode;
 }>;
@@ -59,15 +59,15 @@ interface Props {
     BlogPostComponent: BlogPostComponentType;
 }
 export declare const normalizePost: (post: any, blog: any) => any;
-export declare class CodeblogProvider extends React.Component<Props, CodeblogContext> {
-    state: CodeblogContext;
+export declare class CodeblogProvider extends React.Component<Props, CodeblogContextInterface> {
+    state: CodeblogContextInterface;
     static defaultProps: {
         posts: Array<Post>;
         post: Post | null;
     };
     constructor(props: Props);
-    static getDerivedStateFromProps(props: Props, state: CodeblogContext): Partial<CodeblogContext>;
+    static getDerivedStateFromProps(props: Props, state: CodeblogContextInterface): Partial<CodeblogContextInterface>;
     render(): JSX.Element;
 }
-export declare const Codeblog: React.ExoticComponent<React.ConsumerProps<CodeblogContext>>;
+export declare const Codeblog: React.ExoticComponent<React.ConsumerProps<CodeblogContextInterface>>;
 export default Codeblog;
