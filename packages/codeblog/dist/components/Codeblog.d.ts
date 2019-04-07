@@ -12,14 +12,17 @@ interface Props {
     BlogPostComponent: BlogPostComponentType;
 }
 export declare const normalizePost: (post: any, blog: any) => any;
-export declare class CodeblogProvider extends React.Component<Props, CodeblogContextInterface> {
-    state: CodeblogContextInterface;
+declare type CodeblogContextState = CodeblogContextInterface & {
+    _BlogPostComponent: BlogPostComponentType;
+};
+export declare class CodeblogProvider extends React.Component<Props, CodeblogContextState> {
+    state: CodeblogContextState;
     static defaultProps: {
         posts: Array<Post>;
         post: Post | null;
     };
     constructor(props: Props);
-    static getDerivedStateFromProps(props: Props, state: CodeblogContextInterface): Partial<CodeblogContextInterface>;
+    static getDerivedStateFromProps(props: Props, state: CodeblogContextState): Partial<CodeblogContextState>;
     render(): JSX.Element;
 }
 export {};

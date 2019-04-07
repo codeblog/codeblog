@@ -594,7 +594,7 @@ var external_lodash_ = __webpack_require__(5);
 // EXTERNAL MODULE: ./src/components/CodeblogContext.tsx
 var CodeblogContext = __webpack_require__(1);
 
-// CONCATENATED MODULE: ./src/components/Codeblog.tsx
+// CONCATENATED MODULE: ./src/components/BlogPostWithErrorBoundary.tsx
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -605,17 +605,100 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+
+
+var BlogPostWithErrorBoundary_BlogPostWithErrorBoundary =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(BlogPostWithErrorBoundary, _React$Component);
+
+  function BlogPostWithErrorBoundary(props) {
+    var _this;
+
+    _classCallCheck(this, BlogPostWithErrorBoundary);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(BlogPostWithErrorBoundary).call(this, props));
+    _this.state = {
+      hasError: false
+    };
+    return _this;
+  }
+
+  _createClass(BlogPostWithErrorBoundary, [{
+    key: "componentDidCatch",
+    value: function componentDidCatch(error, info) {
+      if (this.props.blogPostProps.post) {
+        console.error("[Codeblog][".concat(this.props.blogPostProps.post.url, "] An error occurred while rendering your post! The post has been automatically hidden, so that the entire page doesn't break.\n\n"), error, info);
+      } else {
+        console.error("[Codeblog] An error occurred while rendering your post! The post has been automatically hidden, so that the entire page doesn't break.\n\n", error, info);
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this$props = this.props,
+          BlogPostComponent = _this$props.BlogPostComponent,
+          blogPostProps = _this$props.blogPostProps;
+      var hasError = this.state.hasError;
+
+      if (hasError) {
+        return null;
+      } else {
+        return external_react_["createElement"](BlogPostComponent, blogPostProps);
+      }
+    }
+  }], [{
+    key: "getDerivedStateFromError",
+    value: function getDerivedStateFromError() {
+      return {
+        hasError: true
+      };
+    }
+  }]);
+
+  return BlogPostWithErrorBoundary;
+}(external_react_["Component"]);
+
+var BlogPostWithErrorBoundary_addErrorBoundary = function addErrorBoundary(BlogPostComponent) {
+  return function () {
+    var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    return external_react_["createElement"](BlogPostWithErrorBoundary_BlogPostWithErrorBoundary, {
+      blogPostProps: props,
+      BlogPostComponent: BlogPostComponent
+    });
+  };
+};
+// CONCATENATED MODULE: ./src/components/Codeblog.tsx
+function Codeblog_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Codeblog_typeof = function _typeof(obj) { return typeof obj; }; } else { Codeblog_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Codeblog_typeof(obj); }
+
+function Codeblog_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function Codeblog_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function Codeblog_createClass(Constructor, protoProps, staticProps) { if (protoProps) Codeblog_defineProperties(Constructor.prototype, protoProps); if (staticProps) Codeblog_defineProperties(Constructor, staticProps); return Constructor; }
+
+function Codeblog_possibleConstructorReturn(self, call) { if (call && (Codeblog_typeof(call) === "object" || typeof call === "function")) { return call; } return Codeblog_assertThisInitialized(self); }
+
+function Codeblog_getPrototypeOf(o) { Codeblog_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return Codeblog_getPrototypeOf(o); }
+
+function Codeblog_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function Codeblog_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) Codeblog_setPrototypeOf(subClass, superClass); }
+
+function Codeblog_setPrototypeOf(o, p) { Codeblog_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return Codeblog_setPrototypeOf(o, p); }
+
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -647,16 +730,16 @@ var normalizePost = function normalizePost(post, blog) {
 var Codeblog_CodeblogProvider =
 /*#__PURE__*/
 function (_React$Component) {
-  _inherits(CodeblogProvider, _React$Component);
+  Codeblog_inherits(CodeblogProvider, _React$Component);
 
   function CodeblogProvider(props) {
     var _this;
 
-    _classCallCheck(this, CodeblogProvider);
+    Codeblog_classCallCheck(this, CodeblogProvider);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(CodeblogProvider).call(this, props));
+    _this = Codeblog_possibleConstructorReturn(this, Codeblog_getPrototypeOf(CodeblogProvider).call(this, props));
 
-    _defineProperty(_assertThisInitialized(_this), "state", void 0);
+    _defineProperty(Codeblog_assertThisInitialized(_this), "state", void 0);
 
     var state = {
       blog: _objectSpread({}, props.blog),
@@ -665,7 +748,8 @@ function (_React$Component) {
       pageType: props.pageType,
       environment: props.environment,
       BlogComponent: props.BlogComponent,
-      BlogPostComponent: props.BlogPostComponent
+      BlogPostComponent: BlogPostWithErrorBoundary_addErrorBoundary(props.BlogPostComponent),
+      _BlogPostComponent: props.BlogPostComponent
     };
 
     if (props.post) {
@@ -679,7 +763,7 @@ function (_React$Component) {
     return _this;
   }
 
-  _createClass(CodeblogProvider, [{
+  Codeblog_createClass(CodeblogProvider, [{
     key: "render",
     value: function render() {
       return external_react_["createElement"](CodeblogContext["CodeblogContext"].Provider, {
@@ -695,8 +779,9 @@ function (_React$Component) {
         changes.BlogComponent = props.BlogComponent;
       }
 
-      if (props.BlogPostComponent !== state.BlogPostComponent) {
-        changes.BlogPostComponent = props.BlogPostComponent;
+      if (props.BlogPostComponent !== state._BlogPostComponent) {
+        changes.BlogPostComponent = BlogPostWithErrorBoundary_addErrorBoundary(props.BlogPostComponent);
+        changes._BlogPostComponent = props.BlogPostComponent;
       }
 
       if (props.pageType !== state.pageType) {
@@ -752,26 +837,6 @@ var SEOTags = __webpack_require__(3);
 /* concated harmony reexport Title */__webpack_require__.d(__webpack_exports__, "Title", function() { return SEOTags["Title"]; });
 /* concated harmony reexport Meta */__webpack_require__.d(__webpack_exports__, "Meta", function() { return SEOTags["Meta"]; });
 /* concated harmony reexport Link */__webpack_require__.d(__webpack_exports__, "Link", function() { return SEOTags["Link"]; });
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-function src_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { src_typeof = function _typeof(obj) { return typeof obj; }; } else { src_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return src_typeof(obj); }
-
-function src_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function src_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function src_createClass(Constructor, protoProps, staticProps) { if (protoProps) src_defineProperties(Constructor.prototype, protoProps); if (staticProps) src_defineProperties(Constructor, staticProps); return Constructor; }
-
-function src_possibleConstructorReturn(self, call) { if (call && (src_typeof(call) === "object" || typeof call === "function")) { return call; } return src_assertThisInitialized(self); }
-
-function src_getPrototypeOf(o) { src_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return src_getPrototypeOf(o); }
-
-function src_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function src_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) src_setPrototypeOf(subClass, superClass); }
-
-function src_setPrototypeOf(o, p) { src_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return src_setPrototypeOf(o, p); }
-
 function src_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { src_defineProperty(target, key, source[key]); }); } return target; }
 
 function src_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -809,63 +874,6 @@ var src_CodeblogPost = function CodeblogPost(props) {
     return external_react_["createElement"](BlogComponent, contextProps, props.children);
   })));
 };
-
-var src_BlogPostWithErrorBoundary =
-/*#__PURE__*/
-function (_React$Component) {
-  src_inherits(BlogPostWithErrorBoundary, _React$Component);
-
-  function BlogPostWithErrorBoundary() {
-    var _getPrototypeOf2;
-
-    var _this;
-
-    src_classCallCheck(this, BlogPostWithErrorBoundary);
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = src_possibleConstructorReturn(this, (_getPrototypeOf2 = src_getPrototypeOf(BlogPostWithErrorBoundary)).call.apply(_getPrototypeOf2, [this].concat(args)));
-
-    src_defineProperty(src_assertThisInitialized(_this), "state", {
-      hasError: false
-    });
-
-    return _this;
-  }
-
-  src_createClass(BlogPostWithErrorBoundary, [{
-    key: "componentDidCatch",
-    value: function componentDidCatch(error, info) {
-      console.error("[Codeblog][".concat(this.props.post.url, "] An error occurred while rendering your post! The post has been automatically hidden, so that the entire page doesn't break.\n"), error, info);
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this$props = this.props,
-          BlogPostComponent = _this$props.BlogPostComponent,
-          children = _this$props.children;
-      var hasError = this.state.hasError;
-
-      if (hasError || !children) {
-        return null;
-      } else {
-        return external_react_["createElement"](BlogPostComponent, this.props, children);
-      }
-    }
-  }], [{
-    key: "getDerivedStateFromError",
-    value: function getDerivedStateFromError() {
-      return {
-        hasError: true
-      };
-    }
-  }]);
-
-  return BlogPostWithErrorBoundary;
-}(external_react_["Component"]);
-
 var src_CodeblogIndexPage = function CodeblogIndexPage(props) {
   var BlogComponent = props.BlogComponent,
       BlogPostComponent = props.BlogPostComponent;
@@ -879,12 +887,7 @@ var src_CodeblogIndexPage = function CodeblogIndexPage(props) {
     BlogComponent: BlogComponent,
     BlogPostComponent: BlogPostComponent
   }, external_react_["createElement"](CodeblogContext["CodeblogContext"].Consumer, null, function (contextProps) {
-    return external_react_["createElement"](BlogComponent, contextProps, external_react_["Children"].map(props.children, function (child, index) {
-      return external_react_["createElement"](src_BlogPostWithErrorBoundary, _extends({}, contextProps, {
-        BlogPostComponent: BlogPostComponent,
-        post: contextProps.posts[index]
-      }), child);
-    }));
+    return external_react_["createElement"](BlogComponent, contextProps, props.children);
   })));
 };
 var src_PreviewCodeblogPost = function PreviewCodeblogPost(props) {
