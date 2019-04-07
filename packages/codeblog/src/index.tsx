@@ -55,11 +55,11 @@ export const CodeblogPost = (props: CodeblogPostProps) => {
         BlogComponent={BlogComponent}
         BlogPostComponent={BlogPostComponent}
       >
-        <Codeblog>
+        <CodeblogContext.Consumer>
           {contextProps => (
             <BlogComponent {...contextProps}>{props.children}</BlogComponent>
           )}
-        </Codeblog>
+        </CodeblogContext.Consumer>
       </CodeblogProvider>
     </HeadProvider>
   );
@@ -78,7 +78,7 @@ export const CodeblogIndexPage = (props: CodeblogPostProps) => {
         BlogComponent={BlogComponent}
         BlogPostComponent={BlogPostComponent}
       >
-        <Codeblog>
+        <CodeblogContext.Consumer>
           {contextProps => (
             <BlogComponent {...contextProps}>
               {React.Children.map(props.children, (child, index) => {
@@ -93,7 +93,7 @@ export const CodeblogIndexPage = (props: CodeblogPostProps) => {
               })}
             </BlogComponent>
           )}
-        </Codeblog>
+        </CodeblogContext.Consumer>
       </CodeblogProvider>
     </HeadProvider>
   );
@@ -112,11 +112,11 @@ export const PreviewCodeblogPost = (props: CodeblogPostProps) => {
         BlogComponent={BlogComponent}
         BlogPostComponent={BlogPostComponent}
       >
-        <Codeblog>
+        <CodeblogContext.Consumer>
           {contextProps => (
             <BlogComponent {...contextProps}>{props.children}</BlogComponent>
           )}
-        </Codeblog>
+        </CodeblogContext.Consumer>
       </CodeblogProvider>
     </HeadProvider>
   );

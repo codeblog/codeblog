@@ -24,7 +24,7 @@ const BlogPost = ({ pageType, post, children, environment }) => (
 // You probably want to keep this as is
 // Previewing your post might break if you remove this part.
 const BlogPostContainer = props => (
-  <Codeblog>
+  <Codeblog.Consumer>
     {({ pageType, environment, post }) => (
       <BlogPost
         pageType={pageType}
@@ -34,7 +34,7 @@ const BlogPostContainer = props => (
         {props.children || post.body}
       </BlogPost>
     )}
-  </Codeblog>
+  </Codeblog.Consumer>
 );
 
 export { BlogPostContainer as BlogPost };

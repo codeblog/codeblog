@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { BlogPostSEOTags as SEOTags, Codeblog } from "codeblog";
+import { BlogPostSEOTags as SEOTags, CodeblogContext } from "codeblog";
 import BlogPostHeader from "./BlogPostHeader";
 
 const BlogPost = ({ pageType, post, children, environment }) => (
@@ -31,7 +31,7 @@ const BlogPost = ({ pageType, post, children, environment }) => (
 // You probably want to keep this as is
 // Previewing your post might break if you remove this part.
 const BlogPostContainer = props => (
-  <Codeblog>
+  <CodeblogContext.Consumer>
     {({ pageType, environment, post }) => (
       <BlogPost
         pageType={pageType}
@@ -41,7 +41,7 @@ const BlogPostContainer = props => (
         {props.children}
       </BlogPost>
     )}
-  </Codeblog>
+  </CodeblogContext.Consumer>
 );
 
 export { BlogPostContainer as BlogPost };
