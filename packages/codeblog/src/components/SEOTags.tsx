@@ -1,6 +1,14 @@
 import * as React from "react";
-import { Meta, CodeblogContextInterface, Title, Link } from "../index";
-import { Post, Blog, Codeblog } from "./Codeblog";
+import {
+  Post,
+  Blog,
+  CodeblogContext,
+  CodeblogContextInterface
+} from "./CodeblogContext";
+
+import { Title, Meta, Link } from "react-head";
+
+export { Title, Meta, Link };
 
 const MetaTag = (props: any) => <Meta {...props} />;
 const LinkTag = (props: any) => <Link {...props} />;
@@ -97,11 +105,11 @@ const RawBlogPostSEOTags = ({ post, pageType }: CodeblogContextInterface) => (
 );
 
 export const BlogPostSEOTags = ({ post }: { post: Post }) => (
-  <Codeblog>
+  <CodeblogContext.Consumer>
     {({ pageType, ...otherProps }) => (
       <RawBlogPostSEOTags {...otherProps} pageType={pageType} post={post} />
     )}
-  </Codeblog>
+  </CodeblogContext.Consumer>
 );
 
 export const RawBlogSEOTags = ({ blog }: { blog: Blog }) => (
@@ -139,11 +147,11 @@ export const BlogSEOTags = ({ blog }: { blog?: Blog } = {}) => {
     return <RawBlogSEOTags blog={blog} />;
   } else {
     return (
-      <Codeblog>
+      <CodeblogContext.Consumer>
         {({ blog }) => {
           return <RawBlogSEOTags blog={blog} />;
         }}
-      </Codeblog>
+      </CodeblogContext.Consumer>
     );
   }
 };

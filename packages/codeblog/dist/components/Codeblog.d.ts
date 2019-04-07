@@ -1,52 +1,5 @@
 import * as React from "react";
-export declare type PageType = "index" | "show" | "preview" | null;
-export declare type EnvironmentType = "server" | "client";
-export interface Blog {
-    id: string;
-    subdomain: string;
-    url: string;
-    title: string | null;
-    description: string | null;
-    photoURL: string | null;
-}
-export interface Post {
-    id: number;
-    slug: string;
-    url: string;
-    title: string;
-    body: React.ReactNode;
-    photoURL: string | null;
-    summary: string;
-    code: string;
-    publishedAt: Date;
-    status: "published" | "draft" | "trash";
-    editedAt: Date;
-    readingTime: {
-        text: string;
-        words: number;
-        minutes: number;
-        seconds: number;
-    };
-    author: Blog;
-    blog: Blog;
-}
-export interface CodeblogContextInterface {
-    blog: Blog;
-    pageType: PageType;
-    post: Post | null;
-    posts: Array<Post>;
-    environment: EnvironmentType;
-    BlogComponent: BlogComponentType;
-    BlogPostComponent: BlogPostComponentType;
-}
-export declare const CodeblogContext: React.Context<CodeblogContextInterface>;
-export declare type BlogComponentType = React.ComponentType<CodeblogContextInterface & {
-    children: React.ReactNode;
-}>;
-export declare type BlogPostComponentType = React.ComponentType<CodeblogContextInterface & {
-    post: Post;
-    children?: React.ReactNode;
-}>;
+import { Blog, BlogComponentType, BlogPostComponentType, CodeblogContextInterface, EnvironmentType, PageType, Post } from "./CodeblogContext";
 interface Props {
     blog: Blog;
     posts?: Array<Post>;
@@ -69,5 +22,4 @@ export declare class CodeblogProvider extends React.Component<Props, CodeblogCon
     static getDerivedStateFromProps(props: Props, state: CodeblogContextInterface): Partial<CodeblogContextInterface>;
     render(): JSX.Element;
 }
-export declare const Codeblog: React.ExoticComponent<React.ConsumerProps<CodeblogContextInterface>>;
-export default Codeblog;
+export {};

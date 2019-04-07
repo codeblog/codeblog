@@ -1,60 +1,15 @@
-import * as React from "react";
 import { isEqual } from "lodash";
-
-export type PageType = "index" | "show" | "preview" | null;
-export type EnvironmentType = "server" | "client";
-
-export interface Blog {
-  id: string;
-  subdomain: string;
-  url: string;
-  title: string | null;
-  description: string | null;
-  photoURL: string | null;
-}
-
-export interface Post {
-  id: number;
-  slug: string;
-  url: string;
-  title: string;
-  body: React.ReactNode;
-  photoURL: string | null;
-  summary: string;
-  code: string;
-  publishedAt: Date;
-  status: "published" | "draft" | "trash";
-  editedAt: Date;
-  readingTime: {
-    text: string;
-    words: number;
-    minutes: number;
-    seconds: number;
-  };
-  author: Blog;
-  blog: Blog;
-}
-
-export interface CodeblogContextInterface {
-  blog: Blog;
-  pageType: PageType;
-  post: Post | null;
-  posts: Array<Post>;
-  environment: EnvironmentType;
-  BlogComponent: BlogComponentType;
-  BlogPostComponent: BlogPostComponentType;
-}
-
-export const CodeblogContext = React.createContext<CodeblogContextInterface | null>(
-  null
-);
-
-export type BlogComponentType = React.ComponentType<
-  CodeblogContextInterface & { children: React.ReactNode }
->;
-export type BlogPostComponentType = React.ComponentType<
-  CodeblogContextInterface & { post: Post; children?: React.ReactNode }
->;
+import * as React from "react";
+import {
+  Blog,
+  BlogComponentType,
+  BlogPostComponentType,
+  CodeblogContext,
+  CodeblogContextInterface,
+  EnvironmentType,
+  PageType,
+  Post
+} from "./CodeblogContext";
 
 interface Props {
   blog: Blog;
@@ -175,7 +130,3 @@ export class CodeblogProvider extends React.Component<
     );
   }
 }
-
-export const Codeblog = CodeblogContext.Consumer;
-
-export default Codeblog;

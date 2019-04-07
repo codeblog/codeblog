@@ -12,6 +12,9 @@ module.exports = {
     umdNamedDefine: true,
     globalObject: "typeof self !== 'undefined' ? self : this"
   },
+  optimization: {
+    minimize: false
+  },
   target: "web",
   resolve: {
     extensions: [".wasm", ".mjs", ".js", ".json", ".tsx", ".ts"]

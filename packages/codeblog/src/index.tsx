@@ -1,15 +1,16 @@
 import * as React from "react";
 import { HeadProvider } from "react-head";
+import { CodeblogProvider } from "./components/Codeblog";
 import {
-  Codeblog,
+  BlogComponentType,
+  BlogPostComponentType,
   CodeblogContext,
   CodeblogContextInterface,
-  CodeblogProvider,
-  BlogComponentType,
-  BlogPostComponentType
-} from "./components/Codeblog";
-
-export { BlogSEOTags, BlogPostSEOTags } from "./components/SEOTags";
+  Post,
+  Blog,
+  EnvironmentType,
+  PageType
+} from "./components/CodeblogContext";
 
 type CodeblogPostProps = CodeblogContextInterface & {
   children: React.ReactNode;
@@ -17,18 +18,6 @@ type CodeblogPostProps = CodeblogContextInterface & {
   BlogPostComponent?: BlogPostComponentType;
   headTags?: [];
 };
-
-export { Codeblog, CodeblogContext, CodeblogContextInterface };
-
-export { Title, Meta, Link } from "react-head";
-export {
-  Post,
-  Blog,
-  BlogComponentType,
-  BlogPostComponentType,
-  EnvironmentType,
-  PageType
-} from "./components/Codeblog";
 
 export const CodeblogRoot = (props: CodeblogPostProps) => {
   if (props.pageType === "show") {
@@ -122,4 +111,24 @@ export const PreviewCodeblogPost = (props: CodeblogPostProps) => {
   );
 };
 
+export const Codeblog = CodeblogContext.Consumer;
 export default Codeblog;
+
+export {
+  CodeblogContext,
+  CodeblogContextInterface,
+  Post,
+  Blog,
+  BlogPostComponentType,
+  BlogComponentType,
+  EnvironmentType,
+  PageType
+};
+
+export {
+  BlogSEOTags,
+  BlogPostSEOTags,
+  Title,
+  Meta,
+  Link
+} from "./components/SEOTags";

@@ -32,7 +32,14 @@ module.exports = {
   resolve: {
     extensions: [".wasm", ".mjs", ".js", ".json"]
   },
-  externals: ["react", "react-dom", "object-assign", "codeblog", "moment"],
+  externals: [
+    "react",
+    "react-dom",
+    "object-assign",
+    "codeblog",
+    "moment",
+    "classnames"
+  ],
   module: {
     rules: [
       {
