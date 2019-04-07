@@ -3,7 +3,12 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 
 module.exports = {
   entry: {
-    index: path.resolve(__dirname, "src/index.tsx")
+    index: path.resolve(__dirname, "src/index.tsx"),
+    SEOTags: path.resolve(__dirname, "src/components/SEOTags.tsx"),
+    CodeblogContext: path.resolve(
+      __dirname,
+      "src/components/CodeblogContext.tsx"
+    )
   },
   output: {
     path: path.resolve(__dirname, "./dist"),

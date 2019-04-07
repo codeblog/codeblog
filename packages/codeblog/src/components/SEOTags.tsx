@@ -112,7 +112,7 @@ export const BlogPostSEOTags = ({ post }: { post: Post }) => (
   </CodeblogContext.Consumer>
 );
 
-export const RawBlogSEOTags = ({ blog }: { blog: Blog }) => (
+export const BlogSEOTags = ({ blog }: { blog: Blog }) => (
   <>
     <Title>{getBlogTitle(blog)}</Title>
     <LinkTag
@@ -141,17 +141,3 @@ export const RawBlogSEOTags = ({ blog }: { blog: Blog }) => (
     <MetaTag name="viewport" content="width=device-width, initial-scale=1" />
   </>
 );
-
-export const BlogSEOTags = ({ blog }: { blog?: Blog } = {}) => {
-  if (typeof blog === "object") {
-    return <RawBlogSEOTags blog={blog} />;
-  } else {
-    return (
-      <CodeblogContext.Consumer>
-        {({ blog }) => {
-          return <RawBlogSEOTags blog={blog} />;
-        }}
-      </CodeblogContext.Consumer>
-    );
-  }
-};
