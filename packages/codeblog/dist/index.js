@@ -838,7 +838,7 @@ function (_React$Component) {
   src_createClass(BlogPostWithErrorBoundary, [{
     key: "componentDidCatch",
     value: function componentDidCatch(error, info) {
-      console.error("[Codeblog][".concat(this.props.post.url, "] An error occurred while rendering your post! The post has been automatically hidden, so that the entire page doesn't break."), error, info);
+      console.error("[Codeblog][".concat(this.props.post.url, "] An error occurred while rendering your post! The post has been automatically hidden, so that the entire page doesn't break.\n"), error, info);
     }
   }, {
     key: "render",
@@ -848,7 +848,7 @@ function (_React$Component) {
           children = _this$props.children;
       var hasError = this.state.hasError;
 
-      if (hasError) {
+      if (hasError || !children) {
         return null;
       } else {
         return external_react_["createElement"](BlogPostComponent, this.props, children);

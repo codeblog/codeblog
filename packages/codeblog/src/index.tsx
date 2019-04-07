@@ -77,7 +77,7 @@ class BlogPostWithErrorBoundary extends React.Component<
     console.error(
       `[Codeblog][${
         this.props.post.url
-      }] An error occurred while rendering your post! The post has been automatically hidden, so that the entire page doesn't break.`,
+      }] An error occurred while rendering your post! The post has been automatically hidden, so that the entire page doesn't break.\n`,
       error,
       info
     );
@@ -87,7 +87,7 @@ class BlogPostWithErrorBoundary extends React.Component<
     const { BlogPostComponent, children } = this.props;
     const { hasError } = this.state;
 
-    if (hasError) {
+    if (hasError || !children) {
       return null;
     } else {
       return <BlogPostComponent {...this.props}>{children}</BlogPostComponent>;
