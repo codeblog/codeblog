@@ -10,7 +10,6 @@ import {
   PageType,
   Post
 } from "./CodeblogContext";
-import { addErrorBoundary } from "./BlogPostWithErrorBoundary";
 
 interface Props {
   blog: Blog;
@@ -49,15 +48,11 @@ export const normalizePost = (post: any, blog: any) => {
   };
 };
 
-type CodeblogContextState = CodeblogContextInterface & {
-  _BlogPostComponent: BlogPostComponentType;
-};
-
 export class CodeblogProvider extends React.Component<
   Props,
-  CodeblogContextState
+  CodeblogContextInterface
 > {
-  state: CodeblogContextState;
+  state: CodeblogContextInterface;
 
   static defaultProps: { posts: Array<Post>; post: Post | null } = {
     posts: [],
@@ -67,15 +62,14 @@ export class CodeblogProvider extends React.Component<
   constructor(props: Props) {
     super(props);
 
-    const state: CodeblogContextState = {
+    const state: CodeblogContextInterface = {
       blog: { ...props.blog },
       posts: props.posts,
       post: props.post,
       pageType: props.pageType,
       environment: props.environment,
       BlogComponent: props.BlogComponent,
-      BlogPostComponent: addErrorBoundary(props.BlogPostComponent),
-      _BlogPostComponent: props.BlogPostComponent
+      BlogPostComponent: props.BlogPostComponent
     };
 
     if (props.post) {
@@ -87,16 +81,18 @@ export class CodeblogProvider extends React.Component<
     this.state = state;
   }
 
-  static getDerivedStateFromProps(props: Props, state: CodeblogContextState) {
-    const changes: Partial<CodeblogContextState> = {};
+  static getDerivedStateFromProps(
+    props: Props,
+    state: CodeblogContextInterface
+  ) {
+    const changes: Partial<CodeblogContextInterface> = {};
 
     if (props.BlogComponent !== state.BlogComponent) {
       changes.BlogComponent = props.BlogComponent;
     }
 
-    if (props.BlogPostComponent !== state._BlogPostComponent) {
-      changes.BlogPostComponent = addErrorBoundary(props.BlogPostComponent);
-      changes._BlogPostComponent = props.BlogPostComponent;
+    if (props.BlogPostComponent !== state.BlogPostComponent) {
+      changes.BlogPostComponent = props.BlogPostComponent;
     }
 
     if (props.pageType !== state.pageType) {
