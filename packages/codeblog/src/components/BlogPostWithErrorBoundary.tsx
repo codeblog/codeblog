@@ -1,9 +1,14 @@
 import * as React from "react";
 
-import { BlogPostComponentType } from "./CodeblogContext";
+import {
+  BlogPostComponentType,
+  CodeblogContext,
+  EnvironmentType
+} from "./CodeblogContext";
 
 type BlogPostWithErrorBoundaryProps = {
   blogPostProps: any;
+  environment: EnvironmentType;
   BlogPostComponent: BlogPostComponentType;
 };
 type BlogPostWithErrorBoundaryState = { hasError: boolean };
@@ -15,8 +20,21 @@ class BlogPostWithErrorBoundary extends React.Component<
   constructor(props: BlogPostWithErrorBoundaryProps) {
     super(props);
 
+    let hasError = false;
+
+    if (props.environment === "server") {
+      const ReactDOM = require("react-dom/server");
+      try {
+        ReactDOM.renderToString(
+          React.createElement(props.BlogPostComponent, props.blogPostProps)
+        );
+      } catch (exception) {
+        hasError = true;
+      }
+    }
+
     this.state = {
-      hasError: false
+      hasError
     };
   }
 
@@ -57,10 +75,15 @@ class BlogPostWithErrorBoundary extends React.Component<
 export const addErrorBoundary = (BlogPostComponent: BlogPostComponentType) => {
   return (props: any = {}) => {
     return (
-      <BlogPostWithErrorBoundary
-        blogPostProps={props}
-        BlogPostComponent={BlogPostComponent}
-      />
+      <CodeblogContext.Consumer>
+        {({ environment }) => (
+          <BlogPostWithErrorBoundary
+            blogPostProps={props}
+            environment={environment}
+            BlogPostComponent={BlogPostComponent}
+          />
+        )}
+      </CodeblogContext.Consumer>
     );
   };
 };

@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("react"), require("react-dom"), require("lodash"));
+		module.exports = factory(require("react"), require("react-dom"), require("lodash"), require("react-dom/server"));
 	else if(typeof define === 'function' && define.amd)
-		define("codeblog", ["react", "react-dom", "lodash"], factory);
+		define("codeblog", ["react", "react-dom", "lodash", "react-dom/server"], factory);
 	else if(typeof exports === 'object')
-		exports["codeblog"] = factory(require("react"), require("react-dom"), require("lodash"));
+		exports["codeblog"] = factory(require("react"), require("react-dom"), require("lodash"), require("react-dom/server"));
 	else
-		root["codeblog"] = factory(root["react"], root["react-dom"], root["lodash"]);
-})(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__4__, __WEBPACK_EXTERNAL_MODULE__5__) {
+		root["codeblog"] = factory(root["react"], root["react-dom"], root["lodash"], root["react-dom/server"]);
+})(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__4__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__6__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -577,6 +577,12 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__5__;
 
 /***/ }),
 /* 6 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__6__;
+
+/***/ }),
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -615,6 +621,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
 var BlogPostWithErrorBoundary_BlogPostWithErrorBoundary =
 /*#__PURE__*/
 function (_React$Component) {
@@ -626,8 +633,20 @@ function (_React$Component) {
     _classCallCheck(this, BlogPostWithErrorBoundary);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(BlogPostWithErrorBoundary).call(this, props));
+    var hasError = false;
+
+    if (props.environment === "server") {
+      var ReactDOM = __webpack_require__(6);
+
+      try {
+        ReactDOM.renderToString(external_react_["createElement"](props.BlogPostComponent, props.blogPostProps));
+      } catch (exception) {
+        hasError = true;
+      }
+    }
+
     _this.state = {
-      hasError: false
+      hasError: hasError
     };
     return _this;
   }
@@ -670,9 +689,13 @@ function (_React$Component) {
 var BlogPostWithErrorBoundary_addErrorBoundary = function addErrorBoundary(BlogPostComponent) {
   return function () {
     var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    return external_react_["createElement"](BlogPostWithErrorBoundary_BlogPostWithErrorBoundary, {
-      blogPostProps: props,
-      BlogPostComponent: BlogPostComponent
+    return external_react_["createElement"](CodeblogContext["CodeblogContext"].Consumer, null, function (_ref) {
+      var environment = _ref.environment;
+      return external_react_["createElement"](BlogPostWithErrorBoundary_BlogPostWithErrorBoundary, {
+        blogPostProps: props,
+        environment: environment,
+        BlogPostComponent: BlogPostComponent
+      });
     });
   };
 };

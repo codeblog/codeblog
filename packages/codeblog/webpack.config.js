@@ -26,6 +26,7 @@ module.exports = {
   externals: [
     "react",
     "react-dom",
+    "react-dom/server",
     "object-assign",
     "lodash",
     "date-fns",
