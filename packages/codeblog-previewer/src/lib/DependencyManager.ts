@@ -4,9 +4,20 @@ import {
 } from "codeblog-packager";
 import { CompiledPackage, ServerStatus } from "./messages";
 import Bluebird from "bluebird";
-import { isEqual } from "lodash";
+import { isEqual, omit, get } from "lodash";
 import * as BrowserFS from "codesandbox-browserfs";
 import localForage from "localforage";
+import BUNDLED_DEPENDENCIES from "./BUNDLED_DEPENDENCIES.json";
+import * as MDXReact from "@mdx-js/react/dist/index.es";
+const BUNDLED_DEPENDENCY_NAMES = BUNDLED_DEPENDENCIES.dependencies.map(
+  ({ name }) => name
+);
+
+window.REQUIRE_MAPPINGS = {
+  "styled-jsx/style": require("styled-jsx/style"),
+  "@mdx-js/mdx": require("@mdx-js/mdx"),
+  "@mdx-js/react": MDXReact
+};
 
 // const createLocalStorageFS = Bluebird.promisify(
 //   BrowserFS.FileSystem.LocalStorage.Create
@@ -31,22 +42,35 @@ const LAST_INSTALLED_DEPENDENCIES_MANIFEST_FILEPATH =
 // const configureBrowserFS = Bluebird.promisify(BrowserFS.configure);
 
 const RENDER_CODEBLOG_POST_FILE = `
+const origRequire = module.constructor.prototype.require;
+
+module.constructor.prototype.require = function(moduleName) {
+  if (window.REQUIRE_MAPPINGS[moduleName]) {
+
+    return window.REQUIRE_MAPPINGS[moduleName];
+  } else {
+    return origRequire.call(this, moduleName);
+  }
+}
+
 const React = require("react");
 const ReactDOM = require("@hot-loader/react-dom");
-const MDXProvider = require("@mdx-js/react").MDXProvider;
-const mdx = require("@mdx-js/react/dist/create-element").default;
+const MDXJS = require("@mdx-js/react");
+
 const AppContainer = require("react-hot-loader").AppContainer;
 
 
+const mdx = MDXJS.mdx;
+const MDXProvider = MDXJS.MDXProvider;
+
 
 const Codeblog = require("codeblog");
-
 window.React = React;
 window.ReactDOM = ReactDOM;
 window.mdx = mdx;
 
 
-const CodeblogPreviewer = ({props, Blog, BlogPost, Post}) => (
+const CodeblogPreviewer = ({props, Blog, BlogPost, Post, Components}) => (
   React.createElement(
     AppContainer,
     {},
@@ -59,8 +83,8 @@ const CodeblogPreviewer = ({props, Blog, BlogPost, Post}) => (
       }, props),
       React.createElement(
         MDXProvider,
-        {components: {}},
-        React.createElement(Post, {components: {}})
+        {components: Components},
+        React.createElement(Post, {components: Components})
       )
     )
   )
@@ -83,7 +107,7 @@ module.exports = function renderCodeblog({props, paths, lastBuild}) {
     }
 
 
-    let Blog, BlogPost, Post;
+    let Blog, BlogPost, Post, Components;
 
     const pr = new Promise((_resolve) => {
       window.requestIdleCallback(() => {
@@ -91,6 +115,7 @@ module.exports = function renderCodeblog({props, paths, lastBuild}) {
           const Template = reload("codeblog-template");
           Blog = Template.Blog;
           BlogPost = Template.BlogPost;
+          Components = Template.Components;
           Post = reload("./post").default;
         } catch(exception) {
           error = exception;
@@ -106,15 +131,16 @@ module.exports = function renderCodeblog({props, paths, lastBuild}) {
       const pr = new Promise((_resolve) => {
         window.requestIdleCallback(() => {
           try {
-            const codeblog = React.createElement(CodeblogPreviewer, {props, Blog, BlogPost, Post});
+            const codeblog = React.createElement(CodeblogPreviewer, {props, Blog, BlogPost, Post, Components});
             ReactDOM.render(codeblog, document.querySelector("#codeblog-fake-hidden-box"))
           } catch(exception) {
             error = exception;
 
           }
 
+
           if (!error) {
-            const codeblog = React.createElement(CodeblogPreviewer, {props, Blog, BlogPost, Post});
+            const codeblog = React.createElement(CodeblogPreviewer, {props, Blog, BlogPost, Post, Components});
             ReactDOM.render(codeblog, rootElement);
             hasRenderedOnce = true;
             ReactDOM.unmountComponentAtNode(document.querySelector("#codeblog-fake-hidden-box"))
@@ -181,11 +207,24 @@ export class DependencyManager {
       this.installer = new Installer({
         rootDir: "/",
         fs: BrowserFS.BFSRequire("fs"),
-        dependencies: lastInstalledDeps,
+        dependencies: Object.assign(
+          {},
+          BUNDLED_DEPENDENCIES.contents,
+          lastInstalledDeps
+        ),
         logger: function() {}
       });
       await this.installer.install();
       LAST_MANIFEST = lastInstalledDepsManifest;
+    } else {
+      this.installer = new Installer({
+        rootDir: "/",
+        fs: BrowserFS.BFSRequire("fs"),
+        dependencies: Object.assign({}, BUNDLED_DEPENDENCIES.contents),
+        logger: function() {}
+      });
+
+      await this.installer.install();
     }
 
     this.status = ServerStatus.fs_finished;
@@ -207,18 +246,7 @@ export class DependencyManager {
       Object.assign(deps, dependencies, peerDependencies);
     }
 
-    return Object.assign(deps, {
-      codeblog: "1.4.1",
-      "prop-types": "15.7.2",
-      "react-is": "16.8.6",
-      "@mdx-js/mdx": "^1.0.0-alpha.13",
-      "@mdx-js/react": "^1.0.0-alpha.13",
-      "require-reload": "0.2.2",
-      "react-hot-loader": "4.8.0",
-      "@hot-loader/react-dom": "16.8.6",
-      "react-dom": "16.8.6",
-      react: "16.8.6"
-    });
+    return omit(deps, BUNDLED_DEPENDENCY_NAMES);
   };
 
   installDependencies = async () => {

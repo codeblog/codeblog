@@ -1413,6 +1413,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   var destructuring = __webpack_require__(36);
 
+  var styledJSX = __webpack_require__(37);
+
   var runBabel = function runBabel(jsx) {
     var _transform = (0, _standalone.transform)(jsx, {
       presets: [[env, {
@@ -1421,7 +1423,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       sourceMaps: "inline",
       plugins: [[destructuring, {
         useBuiltIns: true
-      }], assign, properties, spread]
+      }], assign, properties, spread, styledJSX]
     }),
         code = _transform.code;
 
@@ -1472,6 +1474,12 @@ module.exports = require("@babel/plugin-proposal-object-rest-spread");
 /***/ (function(module, exports) {
 
 module.exports = require("@babel/plugin-transform-destructuring");
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports) {
+
+module.exports = require("styled-jsx/babel");
 
 /***/ })
 /******/ ]);

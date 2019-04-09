@@ -1,4 +1,5 @@
 import * as React from "react";
+import { CodeblogProvider } from "./components/Codeblog";
 import { BlogComponentType, BlogPostComponentType, CodeblogContext, CodeblogContextInterface, Post, Blog, EnvironmentType, PageType } from "./components/CodeblogContext";
 declare type CodeblogPostProps = CodeblogContextInterface & {
     children: React.ReactNode;
@@ -12,5 +13,5 @@ export declare const CodeblogIndexPage: (props: CodeblogPostProps) => JSX.Elemen
 export declare const PreviewCodeblogPost: (props: CodeblogPostProps) => JSX.Element;
 export declare const Codeblog: React.ExoticComponent<React.ConsumerProps<CodeblogContextInterface>>;
 export default Codeblog;
-export { CodeblogContext, CodeblogContextInterface, Post, Blog, BlogPostComponentType, BlogComponentType, EnvironmentType, PageType };
+export { CodeblogContext, CodeblogContextInterface, Post, Blog, BlogPostComponentType, BlogComponentType, EnvironmentType, PageType, CodeblogProvider };
 export { BlogSEOTags, BlogPostSEOTags, Title, Meta, Link } from "./components/SEOTags";

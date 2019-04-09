@@ -647,7 +647,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         regenerator: true
       }], ["@babel/transform-destructuring", {
         useBuiltIns: true
-      }], "@babel/transform-object-assign", "@babel/proposal-class-properties", "@babel/proposal-object-rest-spread"]
+      }], "@babel/transform-object-assign", "@babel/proposal-class-properties", "@babel/proposal-object-rest-spread", "styled-jsx/babel"]
     }).then(function (res) {
       return res.code;
     });

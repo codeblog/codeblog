@@ -122,7 +122,8 @@ export {
   BlogPostComponentType,
   BlogComponentType,
   EnvironmentType,
-  PageType
+  PageType,
+  CodeblogProvider
 };
 
 export {

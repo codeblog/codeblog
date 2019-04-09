@@ -1,6 +1,6 @@
 {
   "name": "codeblog",
-  "version": "2.1.4",
+  "version": "2.1.6",
   "browser": "dist/index.js",
   "main": "dist/index.js",
   "license": "MIT",
@@ -19,8 +19,7 @@
     "classnames": "^2.2.6",
     "lodash": "^4.17.11",
     "react": "^16.8.1",
-    "react-head": "^3.1.0",
-    "react-helmet-async": "^0.2.0"
+    "react-head": "^3.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",

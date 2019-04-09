@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("react"), require("react-dom"), require("lodash"));
+		module.exports = factory(require("react"), require("react-head"), require("lodash"));
 	else if(typeof define === 'function' && define.amd)
-		define("codeblog", ["react", "react-dom", "lodash"], factory);
+		define("codeblog", ["react", "react-head", "lodash"], factory);
 	else if(typeof exports === 'object')
-		exports["codeblog"] = factory(require("react"), require("react-dom"), require("lodash"));
+		exports["codeblog"] = factory(require("react"), require("react-head"), require("lodash"));
 	else
-		root["codeblog"] = factory(root["react"], root["react-dom"], root["lodash"]);
-})(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__4__, __WEBPACK_EXTERNAL_MODULE__5__) {
+		root["codeblog"] = factory(root["react"], root["react-head"], root["lodash"]);
+})(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__4__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -114,292 +114,9 @@ var CodeblogContext = react__WEBPACK_IMPORTED_MODULE_0__["createContext"](null);
 
 /***/ }),
 /* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-// EXTERNAL MODULE: external "react"
-var external_react_ = __webpack_require__(0);
-
-// CONCATENATED MODULE: /Users/jarred/Code/codeblog/opensource/node_modules/@babel/runtime/helpers/esm/extends.js
-function _extends() {
-  _extends = Object.assign || function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-
-    return target;
-  };
-
-  return _extends.apply(this, arguments);
-}
-// CONCATENATED MODULE: /Users/jarred/Code/codeblog/opensource/node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js
-function _objectWithoutPropertiesLoose(source, excluded) {
-  if (source == null) return {};
-  var target = {};
-  var sourceKeys = Object.keys(source);
-  var key, i;
-
-  for (i = 0; i < sourceKeys.length; i++) {
-    key = sourceKeys[i];
-    if (excluded.indexOf(key) >= 0) continue;
-    target[key] = source[key];
-  }
-
-  return target;
-}
-// CONCATENATED MODULE: /Users/jarred/Code/codeblog/opensource/node_modules/@babel/runtime/helpers/esm/inheritsLoose.js
-function _inheritsLoose(subClass, superClass) {
-  subClass.prototype = Object.create(superClass.prototype);
-  subClass.prototype.constructor = subClass;
-  subClass.__proto__ = superClass;
-}
-// EXTERNAL MODULE: external "react-dom"
-var external_react_dom_ = __webpack_require__(4);
-
-// CONCATENATED MODULE: /Users/jarred/Code/codeblog/opensource/node_modules/tiny-invariant/dist/tiny-invariant.esm.js
-var isProduction = "production" === 'production';
-var prefix = 'Invariant failed';
-function invariant(condition, message) {
-  if (condition) {
-    return;
-  }
-
-  if (isProduction) {
-    throw new Error(prefix);
-  } else {
-    throw new Error(prefix + ": " + (message || ''));
-  }
-}
-
-/* harmony default export */ var tiny_invariant_esm = (invariant);
-
-// CONCATENATED MODULE: /Users/jarred/Code/codeblog/opensource/node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js
-function _assertThisInitialized(self) {
-  if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return self;
-}
-// CONCATENATED MODULE: ./node_modules/react-head/dist/index.esm.js
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return index_esm_Title; });
-/* unused harmony export Style */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return index_esm_Meta; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return index_esm_Link; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return index_esm_HeadProvider; });
-
-
-
-
-
-
-
-
-var _React$createContext = Object(external_react_["createContext"])(null),
-    Consumer = _React$createContext.Consumer,
-    Provider = _React$createContext.Provider;
-
-var index_esm_HeadTag =
-/*#__PURE__*/
-function (_React$Component) {
-  _inheritsLoose(HeadTag, _React$Component);
-
-  function HeadTag() {
-    var _this;
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _React$Component.call.apply(_React$Component, [this].concat(args)) || this;
-    _this.state = {
-      canUseDOM: false
-    };
-    _this.headTags = null;
-    _this.index = -1;
-    return _this;
-  }
-
-  var _proto = HeadTag.prototype;
-
-  _proto.componentDidMount = function componentDidMount() {
-    var _this$props = this.props,
-        tag = _this$props.tag,
-        name = _this$props.name,
-        property = _this$props.property;
-    this.setState({
-      canUseDOM: true
-    });
-    this.index = this.headTags.addClientTag(tag, name || property);
-  };
-
-  _proto.componentWillUnmount = function componentWillUnmount() {
-    this.headTags.removeClientTag(this.props.tag, this.index);
-  };
-
-  _proto.render = function render() {
-    var _this2 = this;
-
-    var _this$props2 = this.props,
-        Tag = _this$props2.tag,
-        rest = _objectWithoutPropertiesLoose(_this$props2, ["tag"]);
-
-    return Object(external_react_["createElement"])(Consumer, null, function (headTags) {
-      !headTags ?  false ? undefined : tiny_invariant_esm(false) : void 0;
-      _this2.headTags = headTags;
-
-      if (_this2.state.canUseDOM) {
-        if (!headTags.shouldRenderTag(Tag, _this2.index)) {
-          return null;
-        }
-
-        var ClientComp = Object(external_react_["createElement"])(Tag, rest);
-        return Object(external_react_dom_["createPortal"])(ClientComp, document.head);
-      }
-
-      var ServerComp = Object(external_react_["createElement"])(Tag, _extends({
-        "data-rh": ""
-      }, rest));
-      headTags.addServerTag(ServerComp);
-      return null;
-    });
-  };
-
-  return HeadTag;
-}(external_react_["Component"]);
-
-var cascadingTags = ['title', 'meta'];
-
-var index_esm_HeadProvider =
-/*#__PURE__*/
-function (_React$Component) {
-  _inheritsLoose(HeadProvider, _React$Component);
-
-  function HeadProvider() {
-    var _this;
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _React$Component.call.apply(_React$Component, [this].concat(args)) || this;
-    _this.indices = new Map();
-    _this.state = {
-      addClientTag: function addClientTag(tag, name) {
-        // consider only cascading tags
-        if (cascadingTags.indexOf(tag) !== -1) {
-          _this.setState(function (state) {
-            var _ref;
-
-            var names = state[tag] || [];
-            return _ref = {}, _ref[tag] = names.concat([name]), _ref;
-          }); // track indices synchronously
-
-
-          var _assertThisInitialize = _assertThisInitialized(_assertThisInitialized(_this)),
-              indices = _assertThisInitialize.indices;
-
-          var index = indices.has(tag) ? indices.get(tag) + 1 : 0;
-          indices.set(tag, index);
-          return index;
-        }
-
-        return -1;
-      },
-      shouldRenderTag: function shouldRenderTag(tag, index) {
-        if (cascadingTags.indexOf(tag) !== -1) {
-          var names = _this.state[tag]; // check if the tag is the last one of similar
-
-          return names && names.lastIndexOf(names[index]) === index;
-        }
-
-        return true;
-      },
-      removeClientTag: function removeClientTag(tag, index) {
-        _this.setState(function (state) {
-          var names = state[tag];
-
-          if (names) {
-            var _ref2;
-
-            names[index] = null;
-            return _ref2 = {}, _ref2[tag] = names, _ref2;
-          }
-
-          return null;
-        });
-      },
-      addServerTag: function addServerTag(tagNode) {
-        var headTags = _this.props.headTags || []; // tweak only cascading tags
-
-        if (cascadingTags.indexOf(tagNode.type) !== -1) {
-          var index = headTags.findIndex(function (prev) {
-            var prevName = prev.props.name || prev.props.property;
-            var nextName = tagNode.props.name || tagNode.props.property;
-            return prev.type === tagNode.type && prevName === nextName;
-          });
-
-          if (index !== -1) {
-            headTags.splice(index, 1);
-          }
-        }
-
-        headTags.push(tagNode);
-      }
-    };
-    return _this;
-  }
-
-  var _proto = HeadProvider.prototype;
-
-  _proto.componentDidMount = function componentDidMount() {
-    var ssrTags = document.head.querySelectorAll("[data-rh=\"\"]"); // `forEach` on `NodeList` is not supported in Googlebot, so use a workaround
-
-    Array.prototype.forEach.call(ssrTags, function (ssrTag) {
-      return ssrTag.parentNode.removeChild(ssrTag);
-    });
-  };
-
-  _proto.render = function render() {
-    !(typeof window !== 'undefined' || Array.isArray(this.props.headTags)) ?  false ? undefined : tiny_invariant_esm(false) : void 0;
-    return Object(external_react_["createElement"])(Provider, {
-      value: this.state
-    }, this.props.children);
-  };
-
-  return HeadProvider;
-}(external_react_["Component"]);
-
-var index_esm_Title = function Title(props) {
-  return Object(external_react_["createElement"])(index_esm_HeadTag, _extends({
-    tag: "title"
-  }, props));
-};
-var index_esm_Style = function Style(props) {
-  return Object(external_react_["createElement"])(index_esm_HeadTag, _extends({
-    tag: "style"
-  }, props));
-};
-var index_esm_Meta = function Meta(props) {
-  return Object(external_react_["createElement"])(index_esm_HeadTag, _extends({
-    tag: "meta"
-  }, props));
-};
-var index_esm_Link = function Link(props) {
-  return Object(external_react_["createElement"])(index_esm_HeadTag, _extends({
-    tag: "link"
-  }, props));
-};
-
-
-
+module.exports = __WEBPACK_EXTERNAL_MODULE__2__;
 
 /***/ }),
 /* 3 */
@@ -414,11 +131,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _CodeblogContext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 /* harmony import */ var react_head__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Title", function() { return react_head__WEBPACK_IMPORTED_MODULE_2__["d"]; });
+/* harmony import */ var react_head__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_head__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Title", function() { return react_head__WEBPACK_IMPORTED_MODULE_2__["Title"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Meta", function() { return react_head__WEBPACK_IMPORTED_MODULE_2__["c"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Meta", function() { return react_head__WEBPACK_IMPORTED_MODULE_2__["Meta"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Link", function() { return react_head__WEBPACK_IMPORTED_MODULE_2__["b"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Link", function() { return react_head__WEBPACK_IMPORTED_MODULE_2__["Link"]; });
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
@@ -432,11 +150,11 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 
 
 var MetaTag = function MetaTag(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_head__WEBPACK_IMPORTED_MODULE_2__[/* Meta */ "c"], props);
+  return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_head__WEBPACK_IMPORTED_MODULE_2__["Meta"], props);
 };
 
 var LinkTag = function LinkTag(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_head__WEBPACK_IMPORTED_MODULE_2__[/* Link */ "b"], props);
+  return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_head__WEBPACK_IMPORTED_MODULE_2__["Link"], props);
 };
 
 var getBlogTitle = function getBlogTitle(blog) {
@@ -468,7 +186,7 @@ var RawBlogPostSEOTags = function RawBlogPostSEOTags(_ref) {
   }), pageType === "show" && react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, react__WEBPACK_IMPORTED_MODULE_0__["createElement"](MetaTag, {
     property: "article:publisher",
     content: "https://codeblog.com"
-  }), post.title && react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_head__WEBPACK_IMPORTED_MODULE_2__[/* Title */ "d"], null, post.title, " | via Codeblog"), react__WEBPACK_IMPORTED_MODULE_0__["createElement"](MetaTag, {
+  }), post.title && react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_head__WEBPACK_IMPORTED_MODULE_2__["Title"], null, post.title, " | via Codeblog"), react__WEBPACK_IMPORTED_MODULE_0__["createElement"](MetaTag, {
     property: "og:title",
     content: "".concat(post.title, " | via Codeblog")
   }), react__WEBPACK_IMPORTED_MODULE_0__["createElement"](MetaTag, {
@@ -527,7 +245,7 @@ var BlogPostSEOTags = function BlogPostSEOTags(_ref2) {
 };
 var BlogSEOTags = function BlogSEOTags(_ref4) {
   var blog = _ref4.blog;
-  return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_head__WEBPACK_IMPORTED_MODULE_2__[/* Title */ "d"], null, getBlogTitle(blog)), react__WEBPACK_IMPORTED_MODULE_0__["createElement"](LinkTag, {
+  return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_head__WEBPACK_IMPORTED_MODULE_2__["Title"], null, getBlogTitle(blog)), react__WEBPACK_IMPORTED_MODULE_0__["createElement"](LinkTag, {
     rel: "alternate",
     type: "application/rss+xml",
     title: getBlogTitle(blog),
@@ -571,12 +289,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__4__;
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__5__;
-
-/***/ }),
-/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -585,11 +297,11 @@ __webpack_require__.r(__webpack_exports__);
 // EXTERNAL MODULE: external "react"
 var external_react_ = __webpack_require__(0);
 
-// EXTERNAL MODULE: ./node_modules/react-head/dist/index.esm.js + 5 modules
-var index_esm = __webpack_require__(2);
+// EXTERNAL MODULE: external "react-head"
+var external_react_head_ = __webpack_require__(2);
 
 // EXTERNAL MODULE: external "lodash"
-var external_lodash_ = __webpack_require__(5);
+var external_lodash_ = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./src/components/CodeblogContext.tsx
 var CodeblogContext = __webpack_require__(1);
@@ -747,6 +459,7 @@ var SEOTags = __webpack_require__(3);
 /* concated harmony reexport BlogComponentType */__webpack_require__.d(__webpack_exports__, "BlogComponentType", function() { return CodeblogContext["BlogComponentType"]; });
 /* concated harmony reexport EnvironmentType */__webpack_require__.d(__webpack_exports__, "EnvironmentType", function() { return CodeblogContext["EnvironmentType"]; });
 /* concated harmony reexport PageType */__webpack_require__.d(__webpack_exports__, "PageType", function() { return CodeblogContext["PageType"]; });
+/* concated harmony reexport CodeblogProvider */__webpack_require__.d(__webpack_exports__, "CodeblogProvider", function() { return Codeblog_CodeblogProvider; });
 /* concated harmony reexport BlogSEOTags */__webpack_require__.d(__webpack_exports__, "BlogSEOTags", function() { return SEOTags["BlogSEOTags"]; });
 /* concated harmony reexport BlogPostSEOTags */__webpack_require__.d(__webpack_exports__, "BlogPostSEOTags", function() { return SEOTags["BlogPostSEOTags"]; });
 /* concated harmony reexport Title */__webpack_require__.d(__webpack_exports__, "Title", function() { return SEOTags["Title"]; });
@@ -776,7 +489,7 @@ var src_CodeblogRoot = function CodeblogRoot(props) {
 var src_CodeblogPost = function CodeblogPost(props) {
   var BlogComponent = props.BlogComponent,
       BlogPostComponent = props.BlogPostComponent;
-  return external_react_["createElement"](index_esm["a" /* HeadProvider */], {
+  return external_react_["createElement"](external_react_head_["HeadProvider"], {
     headTags: props.headTags
   }, external_react_["createElement"](Codeblog_CodeblogProvider, {
     pageType: "show",
@@ -794,7 +507,7 @@ var src_CodeblogPost = function CodeblogPost(props) {
 var src_CodeblogIndexPage = function CodeblogIndexPage(props) {
   var BlogComponent = props.BlogComponent,
       BlogPostComponent = props.BlogPostComponent;
-  return external_react_["createElement"](index_esm["a" /* HeadProvider */], {
+  return external_react_["createElement"](external_react_head_["HeadProvider"], {
     headTags: props.headTags
   }, external_react_["createElement"](Codeblog_CodeblogProvider, {
     pageType: "index",
@@ -814,7 +527,7 @@ var src_CodeblogIndexPage = function CodeblogIndexPage(props) {
 var src_PreviewCodeblogPost = function PreviewCodeblogPost(props) {
   var BlogComponent = props.BlogComponent,
       BlogPostComponent = props.BlogPostComponent;
-  return external_react_["createElement"](index_esm["a" /* HeadProvider */], {
+  return external_react_["createElement"](external_react_head_["HeadProvider"], {
     headTags: props.headTags
   }, external_react_["createElement"](Codeblog_CodeblogProvider, {
     pageType: "preview",

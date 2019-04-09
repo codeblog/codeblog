@@ -9,6 +9,7 @@ module.exports = {
     index: path.resolve(__dirname, "src/index.js"),
     BlogPost: path.resolve(__dirname, "src/BlogPost.js"),
     Blog: path.resolve(__dirname, "src/Blog.js"),
+    Components: path.resolve(__dirname, "src/Components.js"),
     styles: path.resolve(__dirname, "src/styles.css")
   },
   output: {
@@ -37,6 +38,7 @@ module.exports = {
     "react-dom",
     "object-assign",
     "codeblog",
+    "styled-jsx",
     "moment",
     "classnames"
   ],
@@ -48,7 +50,10 @@ module.exports = {
         loader: "babel-loader",
         options: {
           presets: ["@babel/preset-env", "@babel/react"],
-          plugins: ["@babel/plugin-proposal-class-properties"]
+          plugins: [
+            "@babel/plugin-proposal-class-properties",
+            "styled-jsx/babel"
+          ]
         }
       },
       {

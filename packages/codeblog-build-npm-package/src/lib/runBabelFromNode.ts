@@ -26,7 +26,8 @@ export const runBabel = (jsx: string) => {
       ["@babel/transform-destructuring", { useBuiltIns: true }],
       "@babel/transform-object-assign",
       "@babel/proposal-class-properties",
-      "@babel/proposal-object-rest-spread"
+      "@babel/proposal-object-rest-spread",
+      "styled-jsx/babel"
     ]
   }).then(res => res.code);
 };

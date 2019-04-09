@@ -3,6 +3,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 const browserfs = require("codesandbox-browserfs");
+const fs = require("fs");
+const _ = require("lodash");
 
 module.exports = {
   entry: {
@@ -14,6 +16,9 @@ module.exports = {
     globalObject: "self"
   },
   target: "web",
+  optimization: {
+    nodeEnv: "development"
+  },
   resolve: {
     extensions: [".wasm", ".mjs", ".js", ".json", ".tsx", ".ts"],
     alias: {
@@ -107,6 +112,7 @@ module.exports = {
           }
         ]
       },
+
       {
         test: /\.css$/,
         use: [
@@ -125,7 +131,14 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: "development", // use 'development' unless process.env.NODE_ENV is defined
+      DEBUG: true,
+      __DEV__: true
+    }),
     new webpack.ProvidePlugin({
+      React: "React",
+      ReactDOM: "react-dom",
       BrowserFS: "bfsGlobal",
       process: "processGlobal",
       Buffer: "bufferGlobal"
