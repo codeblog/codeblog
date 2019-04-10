@@ -63,6 +63,7 @@
     "classnames": "^2.2.6",
     "codeblog": "^2.2.1",
     "codeblog-build-npm-package": "^2.2.2",
+    "codeblog-codeblock": "^2.2.11",
     "codeblog-components": "^2.0.0",
     "codeblog-packager": "1.5.0",
     "codeblog-template-simple": "^2.2.2",

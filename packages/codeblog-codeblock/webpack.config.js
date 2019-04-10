@@ -35,7 +35,10 @@ module.exports = {
         loader: "babel-loader",
         options: {
           presets: ["@babel/preset-env", "@babel/react", "@babel/typescript"],
-          plugins: ["@babel/plugin-proposal-class-properties"]
+          plugins: [
+            ["styled-jsx/babel", { sourceMaps: false }],
+            "@babel/plugin-proposal-class-properties"
+          ]
         }
       }
     ]

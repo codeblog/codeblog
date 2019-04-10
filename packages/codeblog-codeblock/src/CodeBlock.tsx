@@ -6,6 +6,7 @@ import ruby from "react-syntax-highlighter/dist/esm/languages/prism/ruby";
 import python from "react-syntax-highlighter/dist/esm/languages/prism/python";
 import css from "react-syntax-highlighter/dist/esm/languages/prism/css";
 import typescript from "react-syntax-highlighter/dist/esm/languages/prism/typescript";
+import classNames from "classnames";
 
 export enum Language {
   css = "css",
@@ -61,130 +62,273 @@ type Props = {
   children: string;
   showLineNumbers?: boolean;
   disableStyles?: boolean;
+  truncateLength?: number;
   language?: Language;
 };
 
-export const CodeBlock = ({
-  showLineNumbers = true,
-  disableStyles = false,
-  language = Language.plain,
-  children: code,
-  ...otherProps
-}: Props) => (
-  <>
-    <SyntaxHighlighter
-      {...otherProps}
-      showLineNumbers={showLineNumbers}
-      wrapLines
-      useInlineStyles={false}
-      language={language}
-      style={{}}
-    >
-      {code}
-    </SyntaxHighlighter>
-    {!disableStyles && (
-      // @ts-ignore
-      <style jsx global>{`
-        .hljs {
-          direction: ltr;
-          text-align: left;
-          word-spacing: normal;
-          word-break: normal;
-          white-space: pre-wrap;
-          overflow-x: auto;
+type State = {
+  isTruncated: boolean;
+  code: string;
+};
 
-          tab-size: 4;
-          padding: var(--offset-medium);
-          background-color: var(--text-dark-color);
-          color: var(--page-background);
-          hyphens: none;
-          border-radius: var(--border-radius);
-          font-size: 16px;
-          font-family: var(--monospace-font);
-        }
+const canTruncuate = (code: string, length: number) =>
+  code.split("\n").length > length;
 
-        .hljs * {
-          background: unset !important;
-        }
+export class CodeBlock extends React.PureComponent<Props, State> {
+  static defaultProps = {
+    showLineNumbers: true,
+    disableStyles: false,
+    language: Language.plain,
+    truncateLength: 20
+  };
 
-        .hljs code:first-of-type {
-          user-select: none;
-          -webkit-user-select: none;
-        }
+  constructor(props: Props) {
+    super(props);
 
-        .hljs code + code {
-          margin-left: var(--offset-medium);
-          display: block;
-        }
+    this.state = {
+      code: props.children,
+      isTruncated: canTruncuate(props.children, props.truncateLength)
+    };
+  }
 
-        .react-syntax-highlighter-line-number {
-          color: #827d82;
-        }
+  static getDerivedStateFromProps(props: Props, state: State) {
+    const changes: Partial<State> = {};
 
-        /* ---- Syntax highlighting ---- */
+    if (props.children !== state.code) {
+      changes.isTruncated = canTruncuate(props.children, props.truncateLength);
+      changes.code = state.code;
+    }
 
-        .hljs .string,
-        .hljs .meta,
-        .hljs .symbol,
-        .hljs .template-tag,
-        .hljs .template-variable,
-        .hljs .addition {
-          color: #769fff;
-          font-weight: normal;
-        }
+    return changes;
+  }
 
-        .hljs .comment,
-        .hljs .quote {
-          color: #636363;
-        }
+  handleUntruncate = () => {
+    this.setState({ isTruncated: false });
+  };
 
-        .hljs .number,
-        .hljs .regexp,
-        .hljs .literal,
-        .hljs .link {
-          color: #31a354;
-        }
+  render() {
+    const {
+      showLineNumbers,
+      disableStyles,
+      language,
+      truncateLength,
+      children: code,
+      ...otherProps
+    } = this.props;
 
-        .hljs .deletion,
-        .hljs .variable {
-          color: #7e9eff;
-          font-weight: normal;
-        }
+    const { isTruncated } = this.state;
 
-        .hljs .keyword,
-        .hljs .operator {
-          color: #ff6c6c;
-        }
+    return (
+      <div
+        className={classNames("CodeBlockWrapper", {
+          "CodeBlockWrapper--truncated": isTruncated
+        })}
+      >
+        <SyntaxHighlighter
+          {...otherProps}
+          showLineNumbers={showLineNumbers}
+          wrapLines
+          useInlineStyles={false}
+          language={language}
+          style={{}}
+        >
+          {code}
+        </SyntaxHighlighter>
+        {isTruncated && (
+          <div className="CodeBlockWrapper-ViewSource">
+            <div
+              onClick={this.handleUntruncate}
+              className="CodeBlockWrapper-ViewSourceButton"
+            >
+              View code
+            </div>
+          </div>
+        )}
+        {!disableStyles && (
+          <style jsx global>{`
+            .CodeBlockWrapper {
+              max-height: 800px;
+              overflow-y: auto;
+              border-bottom-left-radius: var(--border-radius);
+              border-bottom-right-radius: var(--border-radius);
+            }
 
-        .hljs .function {
-          color: #d46dff;
-        }
+            .CodeBlockWrapper--truncated {
+              position: relative;
+              max-height: 400px;
+              overflow-y: hidden;
+            }
 
-        .hljs .strong,
-        .hljs .tag,
-        .hljs .section {
-          font-weight: 600;
-        }
+            .CodeBlockWrapper-ViewSource {
+              position: absolute;
+              bottom: 0;
+              left: 0;
+              right: 0;
+              width: 100%;
+              height: 200px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              padding: var(--offset-medium);
+              /* thx for the gradient, Tinder.com */
+              background-image: linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.25),
+                transparent 80%
+              );
+            }
 
-        .hljs .link {
-          color: var(--link-color);
-        }
+            .CodeBlockWrapper-ViewSourceButton {
+              padding: 6px 8px;
+              display: flex;
+              font-size: 16px;
+              font-family: var(--headings-font);
+              cursor: pointer;
+              font-weight: 600;
+              color: var(--text-dark-color);
+              background-color: var(--page-background);
+              border-radius: var(--border-radius);
+              border: 1px solid rgba(255, 255, 255, 0.55);
+              cursor: pointer;
+            }
 
-        .hljs .emphasis {
-          font-style: italic;
-        }
+            .CodeBlockWrapper-ViewSourceButton:hover {
+              opacity: 0.8;
+            }
 
-        .hljs .attr {
-          font-weight: normal;
-        }
+            .hljs {
+              direction: ltr;
+              text-align: left;
+              word-spacing: normal;
+              word-break: normal;
+              white-space: pre;
+              overflow-x: auto;
 
-        .hljs .attribute {
-          color: #e6550d;
-        }
-      `}</style>
-    )}
-  </>
-);
+              tab-size: 4;
+              padding: var(--offset-medium);
+              background-color: var(--text-dark-color);
+              color: var(--page-background);
+              hyphens: none;
+              border-radius: var(--border-radius);
+              font-size: 16px;
+              font-family: var(--monospace-font);
+              -webkit-mask-image: radial-gradient(
+                circle,
+                var(--page-background) 100%,
+                var(--text-dark-color) 100%
+              );
+              -moz-mask-image: radial-gradient(
+                circle,
+                var(--page-background) 100%,
+                var(--text-dark-color) 100%
+              );
+              padding-bottom: 0;
+            }
+            .hljs::-webkit-scrollbar-track {
+              background-color: #222;
+            }
+
+            .hljs::-webkit-scrollbar {
+              height: 12px;
+
+              opacity: 0.5;
+            }
+
+            .hljs::-webkit-scrollbar-thumb {
+              background-color: var(--page-background);
+              border: 3px solid #222;
+              border-radius: 10px;
+            }
+
+            .hljs * {
+              background: unset !important;
+            }
+
+            .hljs code:first-of-type {
+              user-select: none;
+              -webkit-user-select: none;
+            }
+
+            .hljs code + code {
+              margin-left: var(--offset-medium);
+              display: block;
+            }
+
+            .react-syntax-highlighter-line-number {
+              color: #827d82;
+            }
+
+            /* ---- Syntax highlighting ---- */
+
+            .hljs .tag,
+            .hljs .string,
+            .hljs .meta,
+            .hljs .symbol,
+            .hljs .template-tag,
+            .hljs .template-variable,
+            .hljs .addition {
+              color: #769fff;
+              font-weight: normal;
+            }
+
+            .hljs .punctuation,
+            .hljs .comment,
+            .hljs .quote {
+              color: #827d82;
+            }
+
+            .hljs .number,
+            .hljs .regexp,
+            .hljs .literal,
+            .hljs .link {
+              color: #31a354;
+            }
+
+            .hljs .deletion,
+            .hljs .variable {
+              color: #7e9eff;
+              font-weight: normal;
+            }
+
+            .hljs .keyword,
+            .hljs .operator {
+              color: #ff6c6c;
+            }
+
+            .hljs .function {
+              color: #d46dff;
+            }
+
+            .hljs .title,
+            .hljs .bold,
+            .hljs .strong,
+            .hljs .tag,
+            .hljs .section {
+              font-weight: 600;
+            }
+
+            .hljs .link,
+            .hljs .url {
+              color: var(--color-primary);
+            }
+
+            .hljs .emphasis {
+              font-style: italic;
+            }
+
+            .hljs .attr {
+              font-weight: normal;
+            }
+
+            .hljs .attribute {
+              color: #e6550d;
+            }
+          `}</style>
+        )}
+      </div>
+    );
+  }
+}
 
 type MDXComponentProps = {
   className?: string;

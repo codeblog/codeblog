@@ -11,9 +11,7 @@ export default {
 */
 import classNames from "classnames";
 import React from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-
-const dark = {};
+import { MDXCodeBlock } from "codeblog-codeblock";
 
 const LinkIcon = props => (
   <svg viewBox="0 0 24 24" {...props}>
@@ -833,19 +831,7 @@ const Section = ({ color = "auto", children, className, ...otherProps }) => {
 
 export const Components = {
   section: Section,
-  pre: props => {
-    return (
-      <SyntaxHighlighter
-        {...props}
-        showLineNumbers
-        useInlineStyles={false}
-        language={props.language || "javascript"}
-        style={dark}
-      >
-        {props.children.props.children}
-      </SyntaxHighlighter>
-    );
-  },
+  pre: MDXCodeBlock,
   h1: props => (
     <Header {...props} type="h1">
       {props.children}

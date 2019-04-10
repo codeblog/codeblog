@@ -16,10 +16,9 @@
   ],
   "dependencies": {
     "classnames": "^2.2.6",
-    "date-fns": "^2.0.0-alpha.27",
+    "codeblog-codeblock": "^2.2.11",
     "moment": "^2.24.0",
     "react-headroom": "^2.2.8",
-    "react-syntax-highlighter": "^10.2.1",
     "reading-time": "^1.1.3"
   },
   "devDependencies": {

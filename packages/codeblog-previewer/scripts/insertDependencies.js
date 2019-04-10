@@ -16,6 +16,7 @@ const BUNDLED_DEPS = _.pick(packageJSON.dependencies, [
   "react-lottie",
   "shadertoy-react",
   "codeblog-components",
+  "codeblog-codeblock",
   "moment",
   "classnames",
   "require-reload",

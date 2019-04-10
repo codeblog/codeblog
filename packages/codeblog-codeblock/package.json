@@ -42,8 +42,7 @@
     "prebuild": "rimraf dist",
     "dev": "webpack --config webpack.config.js --mode development --watch",
     "build": "webpack --config webpack.config.js --mode production --",
-    "build-typescript": "yarn tsc -p tsconfig.json",
-    "postbuild": "yarn build-typescript"
+    "build-typescript": "yarn tsc -p tsconfig.json"
   },
   "bugs": {
     "url": "https://github.com/codeblog/codeblog/issues"

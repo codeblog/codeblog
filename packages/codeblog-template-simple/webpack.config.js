@@ -39,7 +39,7 @@ module.exports = {
     "object-assign",
     "codeblog",
     "styled-jsx",
-    "react-syntax-highlighter",
+    "codeblog-codeblock",
     "moment",
     "classnames"
   ],

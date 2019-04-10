@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { Post, Blog } from "./CodeblogContext";
 import { Title, Meta, Link } from "react-head";
 export { Title, Meta, Link };

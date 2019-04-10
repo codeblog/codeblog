@@ -394,7 +394,7 @@ ul li:last-of-type {
     margin-bottom: var(--offset-medium);
 }
 
-@media (max-width: 650px) {
+@media (max-width: 680px) {
     .BlogPost-Title,
     .BlogPost-Subtitle,
     .BlogPost-Body > section,
@@ -416,111 +416,7 @@ ul li:last-of-type {
     }
 }
 
-.BlogPost-Body > div > div {
-    margin-bottom: var(--offset-normalish);
-    margin-top: var(--offset-normalish);
-}
 
-.hljs {
-    direction: ltr;
-    text-align: left;
-    white-space: pre;
-    word-spacing: normal;
-    word-break: normal;
-    tab-size: 4;
-    padding: var(--offset-medium);
-    background-color: var(--text-dark-color);
-    color: var(--page-background);
-    hyphens: none;
-    border-radius: var(--border-radius);
-    font-size: 16px;
-    font-family: var(--monospace-font);
-}
-
-.hljs * {
-    background: unset !important;
-}
-
-.hljs code:first-of-type {
-    user-select: none;
-    -webkit-user-select: none;
-}
-
-.hljs code + code {
-    margin-left: var(--offset-medium);
-    display: block;
-}
-
-.react-syntax-highlighter-line-number {
-    color: #827D82;
-}
-
-/* ---- Syntax highlighting ---- */
-
-.hljs .string,
-.hljs .meta,
-.hljs .symbol,
-.hljs .template-tag,
-.hljs .template-variable,
-.hljs .addition {
-    color: #769FFF;
-    font-weight: normal;
-}
-
-.hljs .comment,
-.hljs .quote {
-    color: #636363;
-}
-
-.hljs .number,
-.hljs .regexp,
-.hljs .literal,
-.hljs .link {
-    color: #31a354;
-}
-
-.hljs .deletion,
-.hljs .variable {
-    color: #7E9EFF;
-    font-weight: normal;
-}
-
-.hljs .keyword,
-.hljs .operator {
-    color: #FF6C6C;
-}
-
-.hljs .function {
-    color: #D46DFF;
-}
-
-.hljs .strong,
-.hljs .tag,
-.hljs .section {
-    font-weight: 600;
-}
-
-.hljs .link {
-    color: var(--link-color);
-}
-
-.xml {
-    font-family: monospace;
-}
-
-.hljs .emphasis {
-    font-style: italic;
-}
-
-.hljs .attr {
-    font-weight: normal;
-}
-
-.hljs .attribute {
-    color: #e6550d;
-}
-
-/* ---- Syntax highlighting ---- */
 
 /* latin-ext */
 @font-face {

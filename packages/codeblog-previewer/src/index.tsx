@@ -3,6 +3,120 @@ import "iframe-resizer/js/iframeResizer.contentWindow.js";
 import { RecipeLoader } from "./lib/RecipeLoader";
 import getDefaultTemplate from "./lib/getDefaultTemplate";
 
+const TEMPLATE = `
+By mistake, MySpace inspired a generation of teenagers to learn how to code. From [Stealing MySpace](https://www.amazon.com/dp/B001VT3L3C):
+
+> But Nguyen forgot to block Web markup language in user submissions.
+
+> His mistake allowed users to build colorful backgrounds and wallpapers and load them onto their MySpace pages.
+
+https://codeblog-shrinecache.storage.googleapis.com/6d8bea00be2c3e7a663ee03ed5763457.jpg
+
+### The internet used to be fun and weird.
+
+During the internet of 2006, consumer products let anyone edit CSS. It was a beautiful mess. As the internet grew up, consumer products stopped trusting their users, and the internet lost its soul.
+
+When's the last time a consumer product let you do this?
+
+ <StyleEditor />
+
+We have Dark Mode now...
+
+ <DarkModeToggle label="Dark Mode" />
+
+But where did all the glitter go?
+
+### Today's internet is Serious Business.
+
+When MySpace was a thing, the internet was just [a series of tubes](https://en.wikipedia.org/wiki/Series_of_tubes). People used it to buy beanie babies and play Runescape.
+
+That changed. The internet of 2019 is vital societal infrastructure. We depend on it to keep in touch with family, to pay for things, and so much more.
+
+Just because it got serious doesn't mean it can't be fun and weird.
+
+### Three things MySpace got right
+
+1. To make a page on MySpace, all it took was text in a textbox.
+
+2. The text could be words or code.
+
+3. Anyone could read the words and see the code.
+
+https://codeblog-shrinecache.storage.googleapis.com/e8625207b741c1d204bfc1d828147ad9.png
+
+MySpace's simplicity enabled teenagers to make silly things like <Glitter>glitter</Glitter> text, [custom layouts](http://www.layoutgeneratormyspace.com/) and [more](https://mashable.com/2007/11/05/20-editors-myspace-profiles/#t5p4gjoccsq5). MySpace profiles were a canvas for self-expression and code was the paint.
+
+MySpace showed the world that if you make powerful and complicated tools (like coding) accessible to anyone, people are smart enough to figure out how to use them.
+
+### The lesson the internet learned? No thanks.
+
+https://imgs.xkcd.com/comics/exploits_of_a_mom.png
+
+We started sanitizing inputs. This remains a huge win for security. But, that means sticking code and words in the same place doesn't work anymore. The code becomes ordinary words...or nothing at all.
+
+Nobody ever talks about why this was bad for the world.
+
+### Coding became a privilege, instead of a right.
+
+[The internet is the great equalizer (1996)](https://www.bloomberg.com/news/articles/1996-10-20/the-internet-is-the-great-equalizer). People used to believe that. Today, it sounds sarcastic.
+
+We — the programmers, designers, product people — collectively decided that users don't deserve the right to code in everyday products. Users are too stupid. They'd break stuff. Coding is too complicated for ordinary people. Besides, we can just do the coding...so why does it matter?
+
+The internet added \`<canvas />\`, but the internet stopped being one.
+
+ <DrawCanvas />
+
+### 2019, a world where all the apps are the same.
+
+Facebook, WhatsApp, Messenger, and Instagram [are merging](https://www.nytimes.com/2019/01/25/technology/facebook-instagram-whatsapp-messenger.html). [Instagram cloned Snapchat](https://techcrunch.com/2017/05/16/to-clone-or-not-to-clone/), and Twitter is just [screenshots on Instagram](https://www.theverge.com/2018/6/21/17442028/instagram-twitter-meme-accounts-screenshots-text).
+
+The everyday consumer products are converging. They ran out of good ideas for helping people express themselves, so all that's left is to monopolize.
+
+# Introducing Codeblog
+
+[Codeblog](https://codeblog.com) makes coding as easy as blogging. It's an open-source blogging platform where, instead of just words, you can also write code that runs in the blog post.
+
+For example, even though HTML lacks a \`<Glitter />\` tag, Codeblog lets me write <Glitter>\`<Glitter>\`text\`</Glitter>\`</Glitter>.
+
+HTML doesn't have a \`<ConfettiButton />\` tag either, but Codeblog makes it easy to add it to my post.
+
+ <ConfettiButton />
+
+**You're reading a codeblog now**.
+
+Posts are written in a flavor of Markdown that renders React components inline. This makes writing words feel natural and writing JavaScript feel like HTML.
+
+You can write and publish posts directly on [codeblog.com](https://codeblog.com) without downloading anything, or you can use your text editor. Host your codeblog for free on codeblog.com, or you can host it yourself.
+
+Even this \`<RequestAccessForm />\` is part of the post:
+
+ <RequestAccessForm title={{desktop: "Want your own Codeblog?", mobile: "Want a Codeblog?" }} description={{desktop: "I can let you know when it's ready."}} emailLabel="Email" emailPlaceholder="example@my-email.com" buttonLabel="Request access" />
+
+Codeblog is powered by [MDX](https://mdxjs.com), a new flavor of Markdown that supports JSX. With MDX, words look like words, and code looks like HTML.
+
+- **Post online**. Write & publish posts on codeblog.com or write from your text editor.
+
+- **Social coding**. Post comments with words or code and follow codeblogs. It's the easiest way to show stuff you're working on. Or just rant.
+
+- **Plugins**. Auto-install npm packages as you use them. Through npm, Codeblog will support hundreds of thousands of plugins from day one.
+
+- **Free** hosting via codeblog.com, or you can self-host.
+
+### One more thing.
+
+Examples are great teachers. That's why on Codeblog, the original source code for every post, comment, and plugin will be readily available and remixable. **With one click, remixing gives you a live, running website with a copy of the post**, comment, or plugin that you are free to modify and make your own.
+
+You can view the source code for this post:
+
+ <ViewPostSource />
+
+What do you think? Codeblog isn't ready for everyone yet, but if you [request access](https://tinyletter.com/codeblog), I'll let you know when it's ready.
+
+<Ghost size={80}>Thanks for reading!</Ghost>
+
+Edit (2019-02-22): This post is now hosted by codeblog.com.
+`;
+
 const startServer = () => {
   const server = new Server();
   self.server = server;
@@ -48,11 +162,9 @@ const buildPage = async () => {
   const post = {
     url: "https://codeblog.com/test",
     title: "Codeblog changelog – February 23rd",
-    body:
-      'import { Highlight, Glitter } from "codeblog-components";\nimport Sparkler from \'./Sparkler\';\nimport Typist from \'react-typist\';\n\n<Sparkler>\n\n<Typist>\nCodeblog changelog\n<Typist.Backspace count={"Codeblog changelog".length} delay={300} />\nFebruary 23rd\n</Typist>\n\n</Sparkler>\n\n\n2,400 people are on the waiting list for Codeblog now. \n```js\n\nconst bloop = \'bleep\'; \n\nthis.isAFunction();\n \n```\nA small batch of invites will go out by Monday.\n\n# Changelog for February 23rd\n\nThis is what I built today.\n\n# Components\n\nA <Glitter>Glitter component</Glitter> and a <Highlight>Highlight component</Highlight> are now available in the sidebar. Bringing the total number of components to the sidebar to...two.\n\nThree `color` for `<Highlight />`\n- <Highlight color="yellow">color="yellow"</Highlight>\n- <Highlight color="green">color="green"</Highlight>\n- <Highlight color="pink">color="pink"</Highlight>\n\n# Click to use component\n\nClick `<Glitter />` and you get glitter. Clicking on a component in the sidebar adds it to your post.\n\nhttps://codeblog-shrinecache.storage.googleapis.com/4d5f5bdfbab822a0098ca7891e19451e.gif\n\nWhat\'s not shown: imports are handled automatically, even when the component has to be downloaded from npm.\n\n# Preview\n\nThe editor supports previewing posts without saving them. Before, you had to publish the blog post in order to see it.\n\n<img src="https://codeblog-shrinecache.storage.googleapis.com/26917b7c27b077118b86878c306f97b5.png" height={40} />\n\n# Edit metadata\n\nUntil today, the only way to edit the title, link, or summary of blog posts was secret. I didn\'t have time to give it a UI yet. Now, it\'s there. \n\n<img src="https://codeblog-shrinecache.storage.googleapis.com/d0bce9d33fecfe257f8eedd13ede6c0c.png" width={200} />\n\nI still need to add a social image option, however Google/Facebook seem to be okay at auto-detecting it, so it\'s lower priority for now.\n\n# Syntax highlighting\n\nThe editor now has syntax highlighting. Might still play around with the theme though.\n\nhttps://codeblog-shrinecache.storage.googleapis.com/0a63ad3f8634a934fd01cdf9da30d7fa.png\n\n# Help with components\n\nSomeday, I want Codeblog to have hundreds of components wired up for anyone to use (even if you don\'t know how to code) – silly stuff, practical stuff (e.g. `<TweetThread />`), and useless stuff. I want most of these to be built by people using Codeblog.\n\nIf you have ideas for components, please email me: jarred@jarredsumner.com. Pull requests would be even better: https://github.com/codeblog/components. If you submit a PR for more components, I\'ll make sure you get access to Codeblog sooner.\n\n',
+    body: `import { Highlight, Glitter } from "codeblog-components";\nimport Sparkler from \'./Sparkler\';\nimport Typist from \'react-typist\';\n\n<Sparkler>\n\n<Typist>\nCodeblog changelog\n<Typist.Backspace count={"Codeblog changelog".length} delay={300} />\nFebruary 23rd\n</Typist>\n\n</Sparkler>\n\n\n2,400 people are on the waiting list for Codeblog now. \n\`\`\`md\n\n${TEMPLATE}\n\n\`\`\` \nA small batch of invites will go out by Monday.\n\n# Changelog for February 23rd\n\nThis is what I built today.\n\n# Components\n\nA <Glitter>Glitter component</Glitter> and a <Highlight>Highlight component</Highlight> are now available in the sidebar. Bringing the total number of components to the sidebar to...two.\n\nThree \`color\` for \`<Highlight />\`\n- <Highlight color="yellow">color="yellow"</Highlight>\n- <Highlight color="green">color="green"</Highlight>\n- <Highlight color="pink">color="pink"</Highlight>\n\n# Click to use component\n\nClick \`<Glitter />\` and you get glitter. Clicking on a component in the sidebar adds it to your post.\n\nhttps://codeblog-shrinecache.storage.googleapis.com/4d5f5bdfbab822a0098ca7891e19451e.gif\n\nWhat\'s not shown: imports are handled automatically, even when the component has to be downloaded from npm.\n\n# Preview\n\nThe editor supports previewing posts without saving them. Before, you had to publish the blog post in order to see it.\n\n<img src="https://codeblog-shrinecache.storage.googleapis.com/26917b7c27b077118b86878c306f97b5.png" height={40} />\n\n# Edit metadata\n\nUntil today, the only way to edit the title, link, or summary of blog posts was secret. I didn\'t have time to give it a UI yet. Now, it\'s there. \n\n<img src="https://codeblog-shrinecache.storage.googleapis.com/d0bce9d33fecfe257f8eedd13ede6c0c.png" width={200} />\n\nI still need to add a social image option, however Google/Facebook seem to be okay at auto-detecting it, so it\'s lower priority for now.\n\n# Syntax highlighting\n\nThe editor now has syntax highlighting. Might still play around with the theme though.\n\nhttps://codeblog-shrinecache.storage.googleapis.com/0a63ad3f8634a934fd01cdf9da30d7fa.png\n\n# Help with components\n\nSomeday, I want Codeblog to have hundreds of components wired up for anyone to use (even if you don\'t know how to code) – silly stuff, practical stuff (e.g. \`<TweetThread />\`), and useless stuff. I want most of these to be built by people using Codeblog.\n\nIf you have ideas for components, please email me: jarred@jarredsumner.com. Pull requests would be even better: https://github.com/codeblog/components. If you submit a PR for more components, I\'ll make sure you get access to Codeblog sooner.\n\n`,
     files: {
-      "post.mdx":
-        'import { Highlight, Glitter } from "codeblog-components";\nimport Sparkler from \'./Sparkler\';\nimport Typist from \'react-typist\';\n\n<Sparkler>\n\n<Typist>\nCodeblog changelog\n<Typist.Backspace count={"Codeblog changelog".length} delay={300} />\nFebruary 23rd\n</Typist>\n\n</Sparkler>\n\n\n2,400 people are on the waiting list for Codeblog now. \n```js\n\nconst bloop = \'bleep\';\nthis.isAFunction();\n ```\nA small batch of invites will go out by Monday.\n\n# Changelog for February 23rd\n\nThis is what I built today.\n\n# Components\n\nA <Glitter>Glitter component</Glitter> and a <Highlight>Highlight component</Highlight> are now available in the sidebar. Bringing the total number of components to the sidebar to...two.\n\nThree `color` for `<Highlight />`\n- <Highlight color="yellow">color="yellow"</Highlight>\n- <Highlight color="green">color="green"</Highlight>\n- <Highlight color="pink">color="pink"</Highlight>\n\n# Click to use component\n\nClick `<Glitter />` and you get glitter. Clicking on a component in the sidebar adds it to your post.\n\nhttps://codeblog-shrinecache.storage.googleapis.com/4d5f5bdfbab822a0098ca7891e19451e.gif\n\nWhat\'s not shown: imports are handled automatically, even when the component has to be downloaded from npm.\n\n# Preview\n\nThe editor supports previewing posts without saving them. Before, you had to publish the blog post in order to see it.\n\n<img src="https://codeblog-shrinecache.storage.googleapis.com/26917b7c27b077118b86878c306f97b5.png" height={40} />\n\n# Edit metadata\n\nUntil today, the only way to edit the title, link, or summary of blog posts was secret. I didn\'t have time to give it a UI yet. Now, it\'s there. \n\n<img src="https://codeblog-shrinecache.storage.googleapis.com/d0bce9d33fecfe257f8eedd13ede6c0c.png" width={200} />\n\nI still need to add a social image option, however Google/Facebook seem to be okay at auto-detecting it, so it\'s lower priority for now.\n\n# Syntax highlighting\n\nThe editor now has syntax highlighting. Might still play around with the theme though.\n\nhttps://codeblog-shrinecache.storage.googleapis.com/0a63ad3f8634a934fd01cdf9da30d7fa.png\n\n# Help with components\n\nSomeday, I want Codeblog to have hundreds of components wired up for anyone to use (even if you don\'t know how to code) – silly stuff, practical stuff (e.g. `<TweetThread />`), and useless stuff. I want most of these to be built by people using Codeblog.\n\nIf you have ideas for components, please email me: jarred@jarredsumner.com. Pull requests would be even better: https://github.com/codeblog/components. If you submit a PR for more components, I\'ll make sure you get access to Codeblog sooner.\n\n',
+      "post.mdx": `import { Highlight, Glitter } from "codeblog-components";\nimport Sparkler from \'./Sparkler\';\nimport Typist from \'react-typist\';\n\n<Sparkler>\n\n<Typist>\nCodeblog changelog\n<Typist.Backspace count={"Codeblog changelog".length} delay={300} />\nFebruary 23rd\n</Typist>\n\n</Sparkler>\n\n\n2,400 people are on the waiting list for Codeblog now. \n\`\`\`md\n${TEMPLATE}\n\`\`\` \nA small batch of invites will go out by Monday.\n\n# Changelog for February 23rd\n\nThis is what I built today.\n\n# Components\n\nA <Glitter>Glitter component</Glitter> and a <Highlight>Highlight component</Highlight> are now available in the sidebar. Bringing the total number of components to the sidebar to...two.\n\nThree \`color\` for \`<Highlight />\`\n- <Highlight color="yellow">color="yellow"</Highlight>\n- <Highlight color="green">color="green"</Highlight>\n- <Highlight color="pink">color="pink"</Highlight>\n\n# Click to use component\n\nClick \`<Glitter />\` and you get glitter. Clicking on a component in the sidebar adds it to your post.\n\nhttps://codeblog-shrinecache.storage.googleapis.com/4d5f5bdfbab822a0098ca7891e19451e.gif\n\nWhat\'s not shown: imports are handled automatically, even when the component has to be downloaded from npm.\n\n# Preview\n\nThe editor supports previewing posts without saving them. Before, you had to publish the blog post in order to see it.\n\n<img src="https://codeblog-shrinecache.storage.googleapis.com/26917b7c27b077118b86878c306f97b5.png" height={40} />\n\n# Edit metadata\n\nUntil today, the only way to edit the title, link, or summary of blog posts was secret. I didn\'t have time to give it a UI yet. Now, it\'s there. \n\n<img src="https://codeblog-shrinecache.storage.googleapis.com/d0bce9d33fecfe257f8eedd13ede6c0c.png" width={200} />\n\nI still need to add a social image option, however Google/Facebook seem to be okay at auto-detecting it, so it\'s lower priority for now.\n\n# Syntax highlighting\n\nThe editor now has syntax highlighting. Might still play around with the theme though.\n\nhttps://codeblog-shrinecache.storage.googleapis.com/0a63ad3f8634a934fd01cdf9da30d7fa.png\n\n# Help with components\n\nSomeday, I want Codeblog to have hundreds of components wired up for anyone to use (even if you don\'t know how to code) – silly stuff, practical stuff (e.g. \`<TweetThread />\`), and useless stuff. I want most of these to be built by people using Codeblog.\n\nIf you have ideas for components, please email me: jarred@jarredsumner.com. Pull requests would be even better: https://github.com/codeblog/components. If you submit a PR for more components, I\'ll make sure you get access to Codeblog sooner.\n\n`,
       "Sparkler.js":
         'import Sparkles from "react-sparkle";\n\n\nclass Sparkler extends React.Component {\n  render() {\n    return (\n      <div\n        style={{\n          position: "relative",\n          backgroundColor: "#333",\n          borderRadius: \'4px\',\n          height: "175px",\n          width: "100%",\n          alignItems: "center",\n          justifyContent: "center",\n          display: "flex",\n          fontSize: "36px",\n          color: "white",\n          fontWeight: "600"\n        }}\n      >\n        <Sparkles />\n        {this.props.children}\n      </div>\n    );\n  }\n}\n\nexport default Sparkler;\n',
       "typist.css":
