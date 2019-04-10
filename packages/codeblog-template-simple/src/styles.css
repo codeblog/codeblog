@@ -149,10 +149,12 @@ h3,
 h4,
 h5,
 h6 {
+    margin-block-start: var(--offset-big);
     line-height: 1.35;
     font-weight: 600;
     font-family: var(--headings-font);
     position: relative;
+    margin-block-end: 0;
 }
 
 .BlogPost-Body h1,
@@ -171,9 +173,10 @@ h6 {
     top: 50%;
     transform: translateY(-50%);
     color: var(--text-color);
-    opacity: 0.35;
     cursor: pointer;
     display: none;
+    opacity: 0;
+    transition: opacity 0.1s linear;
 }
 
 .HeaderAnchorLink:hover {
@@ -187,6 +190,7 @@ h4:hover .HeaderAnchorLink,
 h5:hover .HeaderAnchorLink,
 h6:hover .HeaderAnchorLink {
     display: inline-block;
+    opacity: 0.35;
 }
 
 .BlogPost-Title,
