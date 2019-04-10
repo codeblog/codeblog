@@ -1,10 +1,12 @@
 {
   "name": "codeblog-codeblock",
-  "version": "2.2.5",
+  "version": "2.2.6",
   "description": "> TODO: description",
   "author": "Jarred Sumner <jarred@jarredsumner.com>",
   "homepage": "https://github.com/codeblog/codeblog#readme",
   "license": "MIT",
+  "main": "dist/index.js",
+  "browser": "dist/index.js",
   "peerDependencies": {
     "styled-jsx": "latest"
   },
@@ -20,17 +22,17 @@
     "@babel/preset-typescript": "^7.1.0",
     "@types/lodash": "^4.14.121",
     "@types/react": "^16.8.3",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
+    "@types/react-syntax-highlighter": "^10.1.0",
+    "@types/styled-jsx": "^2.2.8",
     "babel-loader": "^8.0.5",
     "css-loader": "^2.1.0",
     "cssnano": "^4.1.10",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-syntax-highlighter": "^10.2.1",
     "typescript": "^3.3.3333",
     "webpack": "^4.29.3",
-    "webpack-cli": "^3.2.3",
-    "@types/react-syntax-highlighter": "^10.1.0",
-    "@types/styled-jsx": "^2.2.8",
-    "react-syntax-highlighter": "^10.2.1"
+    "webpack-cli": "^3.2.3"
   },
   "repository": {
     "type": "git",
