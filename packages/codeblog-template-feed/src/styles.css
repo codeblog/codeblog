@@ -151,7 +151,8 @@ li {
 }
 
 .Separator {
-    background-color: rgba(var(--color-primary), 0.15);
+    background-color: var(--text-color);
+    opacity: 0.15;
     border-radius: 50%;
     content: "";
     margin-top: auto;
@@ -160,8 +161,8 @@ li {
 }
 
 .Separator--small {
-    margin-left: var(--offset-small);
-    margin-right: var(--offset-small);
+    margin-left: var(--offset-normal);
+    margin-right: var(--offset-normal);
     width: 4px;
     height: 4px;
 }

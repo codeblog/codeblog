@@ -10,6 +10,36 @@ export default {
 
 */
 import classNames from "classnames";
+import React from "react";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+
+const dark = {};
+
+const LinkIcon = props => (
+  <svg viewBox="0 0 24 24" {...props}>
+    <path d="M10.59 13.41c.41.39.41 1.03 0 1.42-.39.39-1.03.39-1.42 0a5.003 5.003 0 0 1 0-7.07l3.54-3.54a5.003 5.003 0 0 1 7.07 0 5.003 5.003 0 0 1 0 7.07l-1.49 1.49c.01-.82-.12-1.64-.4-2.42l.47-.48a2.982 2.982 0 0 0 0-4.24 2.982 2.982 0 0 0-4.24 0l-3.53 3.53a2.982 2.982 0 0 0 0 4.24m2.82-4.24c.39-.39 1.03-.39 1.42 0a5.003 5.003 0 0 1 0 7.07l-3.54 3.54a5.003 5.003 0 0 1-7.07 0 5.003 5.003 0 0 1 0-7.07l1.49-1.49c-.01.82.12 1.64.4 2.43l-.47.47a2.982 2.982 0 0 0 0 4.24 2.982 2.982 0 0 0 4.24 0l3.53-3.53a2.982 2.982 0 0 0 0-4.24.973.973 0 0 1 0-1.42z" />
+    <style jsx>{`
+      svg path {
+        fill: currentColor;
+      }
+    `}</style>
+  </svg>
+);
+
+const Header = ({ id, type, children, ...otherProps }) =>
+  React.createElement(
+    type,
+    { id },
+    <>
+      <a
+        href={location.href.split("#")[0] + `#${id}`}
+        className="HeaderAnchorLink"
+      >
+        <LinkIcon height={24} width={24} />
+      </a>
+      {children}
+    </>
+  );
 
 const Section = ({ color = "auto", children, className, ...otherProps }) => {
   return (
@@ -802,7 +832,50 @@ const Section = ({ color = "auto", children, className, ...otherProps }) => {
 };
 
 export const Components = {
-  section: Section
+  section: Section,
+  pre: props => {
+    return (
+      <SyntaxHighlighter
+        {...props}
+        showLineNumbers
+        useInlineStyles={false}
+        language={props.language || "javascript"}
+        style={dark}
+      >
+        {props.children.props.children}
+      </SyntaxHighlighter>
+    );
+  },
+  h1: props => (
+    <Header {...props} type="h1">
+      {props.children}
+    </Header>
+  ),
+  h2: props => (
+    <Header {...props} type="h2">
+      {props.children}
+    </Header>
+  ),
+  h3: props => (
+    <Header {...props} type="h3">
+      {props.children}
+    </Header>
+  ),
+  h4: props => (
+    <Header {...props} type="h4">
+      {props.children}
+    </Header>
+  ),
+  h5: props => (
+    <Header {...props} type="h5">
+      {props.children}
+    </Header>
+  ),
+  h6: props => (
+    <Header {...props} type="h6">
+      {props.children}
+    </Header>
+  )
 };
 
 export default Components;

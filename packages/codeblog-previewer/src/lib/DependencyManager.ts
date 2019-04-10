@@ -16,6 +16,7 @@ const BUNDLED_DEPENDENCY_NAMES = BUNDLED_DEPENDENCIES.dependencies.map(
 window.REQUIRE_MAPPINGS = {
   "styled-jsx/style": require("styled-jsx/style"),
   "@mdx-js/mdx": require("@mdx-js/mdx"),
+  "react-syntax-highlighter": require("react-syntax-highlighter"),
   "@mdx-js/react": MDXReact
 };
 

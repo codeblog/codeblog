@@ -1,5 +1,6 @@
 import { BlogSEOTags } from "codeblog";
 import { BlogPost } from "./BlogPost";
+import Headroom from "react-headroom";
 
 const title = "";
 const description = "";
@@ -14,21 +15,28 @@ export const Blog = ({ blog, children, pageType }) => (
     <BlogSEOTags blog={blog} />
 
     {/*----- Header shown on every page goes here  -----*/}
-    <div className="BlogHeader">
-      {blog.photo_url ? (
-        <img
-          src={blog.photo_url}
-          width={42}
-          height={42}
-          className="BlogHeader-image"
-        />
-      ) : (
-        <div className="BlogHeader-image BlogHeader-image--fallback" />
-      )}
-      <div itemProp="headline" className="BlogTitle">
-        {title || blog.title}
+    <Headroom>
+      <div className="BlogHeader">
+        <a
+          href={blog.url}
+          className="BlogHeaderContent BlogHeaderContent--left"
+        >
+          {blog.photo_url ? (
+            <img
+              src={blog.photo_url}
+              width={30}
+              height={30}
+              className="BlogHeader-image"
+            />
+          ) : (
+            <div className="BlogHeader-image BlogHeader-image--fallback" />
+          )}
+          <div itemProp="headline" className="BlogTitle">
+            {title || blog.title}
+          </div>
+        </a>
       </div>
-    </div>
+    </Headroom>
 
     {pageType === "index" ? (
       <div className="BlogIndex">

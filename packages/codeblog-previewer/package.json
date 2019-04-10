@@ -79,11 +79,14 @@
     "react-head": "^3.1.0",
     "react-hot-loader": "^4.8.3",
     "react-is": "^16.8.6",
+    "react-lottie": "^1.2.3",
     "react-masonry-component": "^6.2.1",
     "react-portal": "^4.2.0",
+    "react-syntax-highlighter": "^10.2.1",
     "require-browser": "https://github.com/suchipi/require-browser",
     "require-reload": "^0.2.2",
     "resolve": "^1.10.0",
+    "shadertoy-react": "^1.1.0",
     "stacktrace-js": "^2.0.0",
     "styled-jsx": "3.2.0"
   }

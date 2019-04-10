@@ -1,4 +1,5 @@
 import moment from "moment";
+import readingTime from "reading-time";
 
 const formatDateForEnvironment = (date, environment) => {
   return moment(date).fromNow();
@@ -36,11 +37,19 @@ export const BlogPostHeader = ({ environment, post, pageType, children }) => {
   return (
     <header>
       <div className="BlogPost-Subtitle">
-        <PublishedTimetamp
-          publishedAt={post.publishedAt}
-          status={post.status}
-          environment={environment}
-        />
+        <a href={post.url}>
+          <PublishedTimetamp
+            publishedAt={post.publishedAt}
+            status={post.status}
+            environment={environment}
+          />
+        </a>
+
+        <div className="Separator Separator--small" />
+
+        <div className="ReadingTime">
+          {readingTime(post.files["post.mdx"].trim()).text}
+        </div>
 
         {/* SEO stuff */}
         <meta itemProp="author.alternateName" content={post.author.subdomain} />

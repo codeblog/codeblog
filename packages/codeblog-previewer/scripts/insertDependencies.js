@@ -13,6 +13,8 @@ const BUNDLED_DEPS = _.pick(packageJSON.dependencies, [
   "codeblog",
   "prop-types",
   "react-is",
+  "react-lottie",
+  "shadertoy-react",
   "codeblog-components",
   "moment",
   "classnames",

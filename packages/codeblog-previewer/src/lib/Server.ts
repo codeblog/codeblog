@@ -159,7 +159,7 @@ export class Server {
     if (
       !this.hasBuildError &&
       this.startedLoadingPostAt &&
-      (new Date().getTime() - this.startedLoadingPostAt.getTime()) / 1000 < 30
+      (new Date().getTime() - this.startedLoadingPostAt.getTime()) / 1000 < 10
     ) {
       return;
     }

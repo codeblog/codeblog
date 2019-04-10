@@ -8,16 +8,12 @@ span,
 applet,
 object,
 iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
 blockquote,
 pre,
 a,
+ul,
+li,
+ol,
 abbr,
 acronym,
 address,
@@ -47,9 +43,6 @@ center,
 dl,
 dt,
 dd,
-ol,
-ul,
-li,
 fieldset,
 form,
 label,
@@ -89,6 +82,11 @@ video {
     vertical-align: baseline;
 }
 
+/* Not supported on Safari, but hey it's better than a polyfill. */
+html {
+    scroll-behavior: smooth;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -98,24 +96,23 @@ video {
 /* ---- CSS variables ---- */
 
 :root {
-    --monospace-font: "IBM Plex Mono", monospace;
-    --body-font: "Open Sans";
-    --headings-font: "Open Sans";
+    --monospace-font: "Inconsolata", monospace;
+    --body-font: "Source Serif Pro", sans-serif;
+    --headings-font: "Work Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     --offset-small: 4px;
-    --offset-normalish: 8px;
-    --offset-normal: 12px;
+    --offset-snormal: 8px;
+    --offset-normal: 14px;
     --offset-xnormal: 12px;
-    --offset-medium: 24px;
+    --offset-medium: 20px;
     --offset-big: 38px;
     --offset-large: 64px;
-    --color-dark: rgb(32, 31, 31);
-    --color-black: rgb(51, 51, 51);
+    --color-dark: rgb(31, 31, 31);
+    --color-black: rgb(13, 9, 13);
     --color-white: rgb(255, 255, 255);
     --color-dark-gray: rgb(83, 83, 83);
     --color-medium-gray: rgb(92, 92, 92);
     --color-light-gray: rgb(233, 233, 233);
     --color-primary: rgb(224, 55, 55);
-    --color-gradient-orange: linear-gradient(-180deg, #FFC651 0%, #FFCF60 100%);
     --color-primary-muted: rgba(224, 55, 55, 0.45);
     --color-error: rgb(199, 14, 14);
     --color-muted: #979797;
@@ -126,7 +123,7 @@ video {
     --text-dark-color: var(--color-black);
     --link-color: var(--text-color);
     --blog-width: 100%;
-    --blog-post-width: 670px;
+    --blog-post-width: 686px;
 }
 
 code {
@@ -142,8 +139,54 @@ body {
     background-color: var(--page-background);
     transition: background-color 0.1s linear;
     transition-property: background-color, color;
-    font-family: var(--body-font);
-    font-size: 18px;
+    font-family: var(--headings-font);
+    font-size: 21px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    line-height: 1.35;
+    font-weight: 600;
+    font-family: var(--headings-font);
+    position: relative;
+}
+
+.BlogPost-Body h1,
+.BlogPost-Body h2,
+.BlogPost-Body h3,
+.BlogPost-Body h4,
+.BlogPost-Body h5,
+.BlogPost-Body h6 {
+    margin-left: calc(var(--offset-big) * -1);
+    padding-left: calc(var(--offset-big));
+}
+
+.HeaderAnchorLink {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-color);
+    opacity: 0.35;
+    cursor: pointer;
+    display: none;
+}
+
+.HeaderAnchorLink:hover {
+    opacity: 1;
+}
+
+h1:hover .HeaderAnchorLink,
+h2:hover .HeaderAnchorLink,
+h3:hover .HeaderAnchorLink,
+h4:hover .HeaderAnchorLink,
+h5:hover .HeaderAnchorLink,
+h6:hover .HeaderAnchorLink {
+    display: inline-block;
 }
 
 .BlogPost-Title,
@@ -152,18 +195,9 @@ h2,
 h3,
 h4,
 h5,
-h6 {
-    font-weight: bold;
-    margin-block-start: var(--offset-large);
-    margin-block-end: var(--offset-normal);
-    line-height: 1.35;
-    font-family: var(--headings-font);
+h6,
+strong {
     color: var(--text-dark-color);
-}
-
-p {
-    margin-block-end: var(--offset-normal);
-    font-size: 1em;
 }
 
 a,
@@ -182,11 +216,19 @@ a:visited {
     margin-bottom: var(--offset-large);
     color: var(--text-color);
     text-rendering: optimizeLegibility;
-    line-height: 1.75;
+    line-height: 1.6;
+    font-family: var(--body-font);
 }
 
 .BlogPost-Body > div {
+    margin-block-start: var(--offset-normal);
+    margin-block-end: var(--offset-normal);
     position: relative;
+    font-family: var(--headings-font);
+}
+
+.BlogPost-Body:first-child {
+    margin-top: 0;
 }
 
 .BlogPost-Title,
@@ -227,15 +269,27 @@ a:visited {
 }
 
 .BlogHeader {
+    --page-background: var(--color-black);
+    padding: var(--offset-normal);
+    background-color: var(--page-background);
+}
+
+.BlogHeaderContent {
     display: flex;
-    padding: var(--offset-medium);
     align-items: center;
+    text-decoration: none;
+    background-color: var(--page-background);
+    --text-color: var(--color-white);
+}
+
+a.BlogHeaderContent:hover {
+    text-decoration: underline;
 }
 
 .BlogTitle {
-    text-transform: uppercase;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 600;
+    color: var(--text-color);
 }
 
 .BlogHeader-image {
@@ -245,8 +299,8 @@ a:visited {
 }
 
 .BlogHeader-image--fallback {
-    height: 42px;
-    width: 42px;
+    height: 30px;
+    width: 30px;
     background-color: var(--text-color);
     border: 2px solid var(--color-primary);
 }
@@ -273,31 +327,46 @@ li {
     margin-block-end: var(--offset-normal);
 }
 
+ol li:last-of-type,
+ul li:last-of-type {
+    margin-block-end: 0;
+}
+
 .BlogPost-Title {
-    font-size: 2em;
-    font-weight: bold;
-    margin-block-start: var(--offset-small);
-    margin-block-end: var(--offset-small);
+    margin-block-start: 0;
+    margin-block-end: 0;
+    font-size: 1.9em;
+    line-height: 1.15;
 }
 
-.BlogPost-Title:hover a {
-    text-decoration: hover;
-}
-
-.BlogPost-Title a {
-    text-decoration: none;
+.BlogPost > header {
+    margin-block-start: var(--offset-large);
+    margin-block-end: var(--offset-large);
 }
 
 .BlogPost-Subtitle {
     margin-block-end: 0;
     margin-block-start: 0;
     display: flex;
-    color: var(--color-primary);
-    font-weight: bold;
+    color: var(--color-muted);
+    font-weight: 600;
+    font-family: var(--headings-font);
+    font-size: 0.7em;
+}
+
+.BlogPost-Title a,
+.BlogPost-Subtitle a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.BlogPost-Title a:hover,
+.BlogPost-Subtitle a:hover {
+    text-decoration: underline;
 }
 
 .Separator {
-    background-color: var(--color-primary);
+    background-color: currentColor;
     border-radius: 50%;
     content: "";
     margin-top: auto;
@@ -308,8 +377,8 @@ li {
 .Separator--small {
     margin-left: var(--offset-small);
     margin-right: var(--offset-small);
-    width: 4px;
-    height: 4px;
+    width: 2px;
+    height: 2px;
 }
 
 .BlogIndex-description {
@@ -348,93 +417,86 @@ li {
     margin-top: var(--offset-normalish);
 }
 
-.BlogPost-Body > div > div > pre,
-.BlogPost-Body > div > div > pre > .hljs {
+.hljs {
     direction: ltr;
     text-align: left;
     white-space: pre;
     word-spacing: normal;
     word-break: normal;
     tab-size: 4;
-    -webkit-hyphens: none;
-    -moz-hyphens: none;
-    -ms-hyphens: none;
+    padding: var(--offset-medium);
+    background-color: var(--text-dark-color);
+    color: var(--page-background);
     hyphens: none;
+    border-radius: var(--border-radius);
+    font-size: 16px;
     font-family: var(--monospace-font);
 }
 
-.BlogPost-Body div > p > code:after,
-.BlogPost-Body div > p > code:before {
-    content: " ";
+.hljs * {
+    background: unset !important;
 }
 
-.BlogPost-Body div > p > code {
-    color: #3182bd;
-    font-weight: 600;
+.hljs code:first-of-type {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.hljs code + code {
+    margin-left: var(--offset-medium);
+    display: block;
+}
+
+.react-syntax-highlighter-line-number {
+    color: #827D82;
 }
 
 /* ---- Syntax highlighting ---- */
 
-.hljs {
-    display: block;
-    overflow-x: auto;
-    padding: var(--offset-normal) var(--offset-xnormal);
-    font-family: var(--monospace-font);
-}
-
-.hljs,
-.hljs-subst {
-    color: #000;
-}
-
-.hljs-string,
-.hljs-meta,
-.hljs-symbol,
-.hljs-template-tag,
-.hljs-template-variable,
-.hljs-addition {
-    color: #756bb1;
+.hljs .string,
+.hljs .meta,
+.hljs .symbol,
+.hljs .template-tag,
+.hljs .template-variable,
+.hljs .addition {
+    color: #769FFF;
     font-weight: normal;
 }
 
-.hljs-comment,
-.hljs-quote {
+.hljs .comment,
+.hljs .quote {
     color: #636363;
 }
 
-.hljs-number,
-.hljs-regexp,
-.hljs-literal,
-.hljs-link {
+.hljs .number,
+.hljs .regexp,
+.hljs .literal,
+.hljs .link {
     color: #31a354;
 }
 
-.hljs-deletion,
-.hljs-variable {
-    color: #88f;
+.hljs .deletion,
+.hljs .variable {
+    color: #7E9EFF;
     font-weight: normal;
 }
 
-.hljs-keyword,
-.hljs-selector-tag,
-.hljs-title,
-.hljs-built_in,
-.hljs-doctag,
-.hljs-type,
-.hljs-tag,
-.hljs-name,
-.hljs-selector-id,
-.hljs-selector-class {
-    color: #3182bd;
+.hljs .keyword,
+.hljs .operator {
+    color: #FF6C6C;
 }
 
-.hljs-strong,
-.hljs-tag,
-.hljs-section {
+.hljs .function {
+    color: #D46DFF;
+}
+
+.hljs .strong,
+.hljs .tag,
+.hljs .section {
     font-weight: 600;
 }
 
-.hljs-link {
+.hljs .link {
     color: var(--link-color);
 }
 
@@ -442,268 +504,97 @@ li {
     font-family: monospace;
 }
 
-.hljs-emphasis {
+.hljs .emphasis {
     font-style: italic;
 }
 
-.hljs-attr {
+.hljs .attr {
     font-weight: normal;
 }
 
-.hljs-attribute {
+.hljs .attribute {
     color: #e6550d;
 }
 
 /* ---- Syntax highlighting ---- */
 
-/* cyrillic-ext */
-@font-face {
-    font-family: "Open Sans";
-    font-style: italic;
-    font-weight: 400;
-    src: local("Open Sans Italic"), local("OpenSans-Italic"), url(https://fonts.gstatic.com/s/opensans/v16/mem6YaGs126MiZpBA-UFUK0Udc1GAK6bt6o.woff2) format("woff2");
-    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
-}
-
-/* cyrillic */
-@font-face {
-    font-family: "Open Sans";
-    font-style: italic;
-    font-weight: 400;
-    src: local("Open Sans Italic"), local("OpenSans-Italic"), url(https://fonts.gstatic.com/s/opensans/v16/mem6YaGs126MiZpBA-UFUK0ddc1GAK6bt6o.woff2) format("woff2");
-    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-}
-
-/* greek-ext */
-@font-face {
-    font-family: "Open Sans";
-    font-style: italic;
-    font-weight: 400;
-    src: local("Open Sans Italic"), local("OpenSans-Italic"), url(https://fonts.gstatic.com/s/opensans/v16/mem6YaGs126MiZpBA-UFUK0Vdc1GAK6bt6o.woff2) format("woff2");
-    unicode-range: U+1F00-1FFF;
-}
-
-/* greek */
-@font-face {
-    font-family: "Open Sans";
-    font-style: italic;
-    font-weight: 400;
-    src: local("Open Sans Italic"), local("OpenSans-Italic"), url(https://fonts.gstatic.com/s/opensans/v16/mem6YaGs126MiZpBA-UFUK0adc1GAK6bt6o.woff2) format("woff2");
-    unicode-range: U+0370-03FF;
-}
-
-/* vietnamese */
-@font-face {
-    font-family: "Open Sans";
-    font-style: italic;
-    font-weight: 400;
-    src: local("Open Sans Italic"), local("OpenSans-Italic"), url(https://fonts.gstatic.com/s/opensans/v16/mem6YaGs126MiZpBA-UFUK0Wdc1GAK6bt6o.woff2) format("woff2");
-    unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
-}
-
 /* latin-ext */
 @font-face {
-    font-family: "Open Sans";
-    font-style: italic;
+    font-family: 'Source Serif Pro';
+    font-style: normal;
     font-weight: 400;
-    src: local("Open Sans Italic"), local("OpenSans-Italic"), url(https://fonts.gstatic.com/s/opensans/v16/mem6YaGs126MiZpBA-UFUK0Xdc1GAK6bt6o.woff2) format("woff2");
+    src: local("Source Serif Pro"), local("SourceSerifPro-Regular"), url(https://fonts.gstatic.com/s/sourceserifpro/v6/neIQzD-0qpwxpaWvjeD0X88SAOeauXo-oAGIyY0Wfw.woff2) format("woff2");
     unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 /* latin */
 @font-face {
-    font-family: "Open Sans";
-    font-style: italic;
+    font-family: 'Source Serif Pro';
+    font-style: normal;
     font-weight: 400;
-    src: local("Open Sans Italic"), local("OpenSans-Italic"), url(https://fonts.gstatic.com/s/opensans/v16/mem6YaGs126MiZpBA-UFUK0Zdc1GAK6b.woff2) format("woff2");
+    src: local("Source Serif Pro"), local("SourceSerifPro-Regular"), url(https://fonts.gstatic.com/s/sourceserifpro/v6/neIQzD-0qpwxpaWvjeD0X88SAOeauXQ-oAGIyY0.woff2) format("woff2");
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/* cyrillic-ext */
-@font-face {
-    font-family: "Open Sans";
-    font-style: normal;
-    font-weight: 400;
-    src: local("Open Sans Regular"), local("OpenSans-Regular"), url(https://fonts.gstatic.com/s/opensans/v16/mem8YaGs126MiZpBA-UFWJ0bf8pkAp6a.woff2) format("woff2");
-    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
-}
-
-/* cyrillic */
-@font-face {
-    font-family: "Open Sans";
-    font-style: normal;
-    font-weight: 400;
-    src: local("Open Sans Regular"), local("OpenSans-Regular"), url(https://fonts.gstatic.com/s/opensans/v16/mem8YaGs126MiZpBA-UFUZ0bf8pkAp6a.woff2) format("woff2");
-    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-}
-
-/* greek-ext */
-@font-face {
-    font-family: "Open Sans";
-    font-style: normal;
-    font-weight: 400;
-    src: local("Open Sans Regular"), local("OpenSans-Regular"), url(https://fonts.gstatic.com/s/opensans/v16/mem8YaGs126MiZpBA-UFWZ0bf8pkAp6a.woff2) format("woff2");
-    unicode-range: U+1F00-1FFF;
-}
-
-/* greek */
-@font-face {
-    font-family: "Open Sans";
-    font-style: normal;
-    font-weight: 400;
-    src: local("Open Sans Regular"), local("OpenSans-Regular"), url(https://fonts.gstatic.com/s/opensans/v16/mem8YaGs126MiZpBA-UFVp0bf8pkAp6a.woff2) format("woff2");
-    unicode-range: U+0370-03FF;
-}
-
-/* vietnamese */
-@font-face {
-    font-family: "Open Sans";
-    font-style: normal;
-    font-weight: 400;
-    src: local("Open Sans Regular"), local("OpenSans-Regular"), url(https://fonts.gstatic.com/s/opensans/v16/mem8YaGs126MiZpBA-UFWp0bf8pkAp6a.woff2) format("woff2");
-    unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
-}
-
 /* latin-ext */
 @font-face {
-    font-family: "Open Sans";
+    font-family: 'Source Serif Pro';
     font-style: normal;
-    font-weight: 400;
-    src: local("Open Sans Regular"), local("OpenSans-Regular"), url(https://fonts.gstatic.com/s/opensans/v16/mem8YaGs126MiZpBA-UFW50bf8pkAp6a.woff2) format("woff2");
+    font-weight: 700;
+    src: local("Source Serif Pro Bold"), local("SourceSerifPro-Bold"), url(https://fonts.gstatic.com/s/sourceserifpro/v6/neIXzD-0qpwxpaWvjeD0X88SAOeasc8btSKqxKcsdrOPbQ.woff2) format("woff2");
     unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 /* latin */
 @font-face {
-    font-family: "Open Sans";
+    font-family: 'Source Serif Pro';
     font-style: normal;
-    font-weight: 400;
-    src: local("Open Sans Regular"), local("OpenSans-Regular"), url(https://fonts.gstatic.com/s/opensans/v16/mem8YaGs126MiZpBA-UFVZ0bf8pkAg.woff2) format("woff2");
+    font-weight: 700;
+    src: local("Source Serif Pro Bold"), local("SourceSerifPro-Bold"), url(https://fonts.gstatic.com/s/sourceserifpro/v6/neIXzD-0qpwxpaWvjeD0X88SAOeasc8btSyqxKcsdrM.woff2) format("woff2");
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/* cyrillic-ext */
-@font-face {
-    font-family: "Open Sans";
-    font-style: normal;
-    font-weight: 600;
-    src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOX-hpKKSTj5PW.woff2) format("woff2");
-    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
-}
-
-/* cyrillic */
-@font-face {
-    font-family: "Open Sans";
-    font-style: normal;
-    font-weight: 600;
-    src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOVuhpKKSTj5PW.woff2) format("woff2");
-    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-}
-
-/* greek-ext */
-@font-face {
-    font-family: "Open Sans";
-    font-style: normal;
-    font-weight: 600;
-    src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOXuhpKKSTj5PW.woff2) format("woff2");
-    unicode-range: U+1F00-1FFF;
-}
-
-/* greek */
-@font-face {
-    font-family: "Open Sans";
-    font-style: normal;
-    font-weight: 600;
-    src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOUehpKKSTj5PW.woff2) format("woff2");
-    unicode-range: U+0370-03FF;
-}
-
-/* vietnamese */
-@font-face {
-    font-family: "Open Sans";
-    font-style: normal;
-    font-weight: 600;
-    src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOXehpKKSTj5PW.woff2) format("woff2");
-    unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
-}
-
 /* latin-ext */
 @font-face {
-    font-family: "Open Sans";
+    font-family: 'Work Sans';
     font-style: normal;
     font-weight: 600;
-    src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOXOhpKKSTj5PW.woff2) format("woff2");
+    src: local("Work Sans SemiBold"), local("WorkSans-SemiBold"), url(https://fonts.gstatic.com/s/worksans/v4/QGYpz_wNahGAdqQ43Rh3o4T8lthNy_r-K7mV.woff2) format("woff2");
     unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 /* latin */
 @font-face {
-    font-family: "Open Sans";
+    font-family: 'Work Sans';
     font-style: normal;
     font-weight: 600;
-    src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UNirkOUuhpKKSTjw.woff2) format("woff2");
+    src: local("Work Sans SemiBold"), local("WorkSans-SemiBold"), url(https://fonts.gstatic.com/s/worksans/v4/QGYpz_wNahGAdqQ43Rh3o4T8mNhNy_r-Kw.woff2) format("woff2");
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/* cyrillic-ext */
-@font-face {
-    font-family: "Open Sans";
-    font-style: normal;
-    font-weight: 700;
-    src: local("Open Sans Bold"), local("OpenSans-Bold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UN7rgOX-hpKKSTj5PW.woff2) format("woff2");
-    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
-}
-
-/* cyrillic */
-@font-face {
-    font-family: "Open Sans";
-    font-style: normal;
-    font-weight: 700;
-    src: local("Open Sans Bold"), local("OpenSans-Bold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UN7rgOVuhpKKSTj5PW.woff2) format("woff2");
-    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-}
-
-/* greek-ext */
-@font-face {
-    font-family: "Open Sans";
-    font-style: normal;
-    font-weight: 700;
-    src: local("Open Sans Bold"), local("OpenSans-Bold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UN7rgOXuhpKKSTj5PW.woff2) format("woff2");
-    unicode-range: U+1F00-1FFF;
-}
-
-/* greek */
-@font-face {
-    font-family: "Open Sans";
-    font-style: normal;
-    font-weight: 700;
-    src: local("Open Sans Bold"), local("OpenSans-Bold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UN7rgOUehpKKSTj5PW.woff2) format("woff2");
-    unicode-range: U+0370-03FF;
-}
-
 /* vietnamese */
 @font-face {
-    font-family: "Open Sans";
+    font-family: 'Inconsolata';
     font-style: normal;
-    font-weight: 700;
-    src: local("Open Sans Bold"), local("OpenSans-Bold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UN7rgOXehpKKSTj5PW.woff2) format("woff2");
+    font-weight: 400;
+    src: local("Inconsolata Regular"), local("Inconsolata-Regular"), url(https://fonts.gstatic.com/s/inconsolata/v17/QldKNThLqRwH-OJ1UHjlKGlW5qhExfHwNJU.woff2) format("woff2");
     unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
 }
 
 /* latin-ext */
 @font-face {
-    font-family: "Open Sans";
+    font-family: 'Inconsolata';
     font-style: normal;
-    font-weight: 700;
-    src: local("Open Sans Bold"), local("OpenSans-Bold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UN7rgOXOhpKKSTj5PW.woff2) format("woff2");
+    font-weight: 400;
+    src: local("Inconsolata Regular"), local("Inconsolata-Regular"), url(https://fonts.gstatic.com/s/inconsolata/v17/QldKNThLqRwH-OJ1UHjlKGlX5qhExfHwNJU.woff2) format("woff2");
     unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 /* latin */
 @font-face {
-    font-family: "Open Sans";
+    font-family: 'Inconsolata';
     font-style: normal;
-    font-weight: 700;
-    src: local("Open Sans Bold"), local("OpenSans-Bold"), url(https://fonts.gstatic.com/s/opensans/v16/mem5YaGs126MiZpBA-UN7rgOUuhpKKSTjw.woff2) format("woff2");
+    font-weight: 400;
+    src: local("Inconsolata Regular"), local("Inconsolata-Regular"), url(https://fonts.gstatic.com/s/inconsolata/v17/QldKNThLqRwH-OJ1UHjlKGlZ5qhExfHw.woff2) format("woff2");
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }

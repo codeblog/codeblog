@@ -32,7 +32,6 @@ export const transformMDX = async (
           require("remark-emoji")
         ],
 
-        rehypePlugins: [require("rehype-highlight")],
         skipExport: true
       }
     );

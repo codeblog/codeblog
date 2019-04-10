@@ -132,9 +132,13 @@ module.exports = {
   },
   plugins: [
     new webpack.EnvironmentPlugin({
-      NODE_ENV: "development", // use 'development' unless process.env.NODE_ENV is defined
       DEBUG: true,
       __DEV__: true
+    }),
+    new webpack.DefinePlugin({
+      __DEV__: true,
+      IS_DEVELOPMENT: true,
+      "process.env.NODE_ENV": "'development'"
     }),
     new webpack.ProvidePlugin({
       React: "React",
