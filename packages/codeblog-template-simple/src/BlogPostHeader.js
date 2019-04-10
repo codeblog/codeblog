@@ -45,11 +45,15 @@ export const BlogPostHeader = ({ environment, post, pageType, children }) => {
           />
         </a>
 
-        <div className="Separator Separator--small" />
+        {!!post.files["post.mdx"] && (
+          <>
+            <div className="Separator Separator--small" />
 
-        <div className="ReadingTime">
-          {readingTime(post.files["post.mdx"].trim()).text}
-        </div>
+            <div className="ReadingTime">
+              {readingTime(String(post.files["post.mdx"]).trim()).text}
+            </div>
+          </>
+        )}
 
         {/* SEO stuff */}
         <meta itemProp="author.alternateName" content={post.author.subdomain} />
