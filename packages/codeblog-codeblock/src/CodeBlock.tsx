@@ -165,7 +165,7 @@ export class CodeBlock extends React.PureComponent<Props, State> {
               left: 0;
               right: 0;
               width: 100%;
-              height: 200px;
+              height: 100px;
               display: flex;
               justify-content: center;
               align-items: center;

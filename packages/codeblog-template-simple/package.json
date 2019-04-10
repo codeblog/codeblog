@@ -16,7 +16,7 @@
   ],
   "dependencies": {
     "classnames": "^2.2.6",
-    "codeblog-codeblock": "^2.3.0",
+    "codeblog-codeblock": "^2.3.1",
     "moment": "^2.24.0",
     "react-headroom": "^2.2.8",
     "reading-time": "^1.1.3"
