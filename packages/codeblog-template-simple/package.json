@@ -1,6 +1,6 @@
 {
   "name": "codeblog-template-simple",
-  "version": "2.2.4",
+  "version": "2.3.0",
   "browser": "dist/index.js",
   "main": "dist/index.js",
   "license": "MIT",
@@ -16,7 +16,7 @@
   ],
   "dependencies": {
     "classnames": "^2.2.6",
-    "codeblog-codeblock": "^2.2.11",
+    "codeblog-codeblock": "^2.3.0",
     "moment": "^2.24.0",
     "react-headroom": "^2.2.8",
     "reading-time": "^1.1.3"
