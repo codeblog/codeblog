@@ -235,7 +235,6 @@ export class CodeBlock extends React.PureComponent<Props> {
             color: #e6550d;
           }
         `}</style>
-        )}
       </>
     );
   }
