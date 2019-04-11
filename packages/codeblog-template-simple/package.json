@@ -8,7 +8,8 @@
     "dev": "webpack --config webpack.config.js --mode development --watch",
     "build": "webpack --config webpack.config.js --mode production",
     "build-typescript": "yarn tsc -p tsconfig.json",
-    "deploy": "yarn build && yarn publish"
+    "deploy": "yarn build && yarn publish",
+    "postpublish": "cnpm sync codeblog-template-simple"
   },
   "files": [
     "dist",

@@ -10,7 +10,8 @@
     "build": "webpack --config webpack.config.js --mode production",
     "build-typescript": "yarn tsc -p tsconfig.json",
     "postbuild": "yarn build-typescript",
-    "deploy": "yarn build && yarn publish"
+    "deploy": "yarn build && yarn publish",
+    "postpublish": "cnpm sync codeblog"
   },
   "files": [
     "dist"

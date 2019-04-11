@@ -16,7 +16,8 @@
     "dev": "webpack --config webpack.config.js --mode development --watch",
     "build": "webpack --config webpack.config.js --mode production",
     "prepublish": "yarn build && yarn test",
-    "test": "yarn jest"
+    "test": "yarn jest",
+    "postpublish": "cnpm sync codeblog-build-npm-package"
   },
   "bugs": {
     "url": "https://github.com/codeblog/codeblog/issues"
