@@ -105,7 +105,7 @@ export class CodeBlock extends React.PureComponent<Props> {
             white-space: pre;
             overflow: auto;
             max-height: 500px;
-            line-height: 1.3;
+            line-height: 1.2;
 
             tab-size: 2;
             padding: var(--offset-medium);
@@ -130,7 +130,7 @@ export class CodeBlock extends React.PureComponent<Props> {
 
           @media (max-width: 500px) {
             .hls {
-              max-height: 300px;
+              max-height: 800px;
             }
           }
 
