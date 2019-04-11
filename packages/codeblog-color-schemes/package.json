@@ -1,0 +1,34 @@
+{
+  "name": "codeblog-color-schemes",
+  "version": "2.1.4",
+  "description": "> TODO: description",
+  "author": "Jarred Sumner <jarred@jarredsumner.com>",
+  "homepage": "https://github.com/codeblog/codeblog#readme",
+  "license": "ISC",
+  "main": "lib/codeblog-color-schemes.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codeblog/codeblog.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/codeblog/codeblog/issues"
+  },
+  "dependencies": {
+    "get-contrast": "^2.0.0",
+    "is-dark-color": "^1.2.0",
+    "lodash": "^4.17.11",
+    "name-this-color": "^1.0.2",
+    "onecolor": "^3.1.0",
+    "slugify": "^1.3.4"
+  }
+}
