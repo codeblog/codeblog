@@ -4,19 +4,16 @@ import {
 } from "codeblog-packager";
 import { CompiledPackage, ServerStatus } from "./messages";
 import Bluebird from "bluebird";
-import { isEqual, omit, get } from "lodash";
+import { isEqual, omit, get, isEmpty } from "lodash";
 import * as BrowserFS from "codesandbox-browserfs";
 import localForage from "localforage";
 import BUNDLED_DEPENDENCIES from "./BUNDLED_DEPENDENCIES.json";
-import * as MDXReact from "@mdx-js/react/dist/index.es";
 const BUNDLED_DEPENDENCY_NAMES = BUNDLED_DEPENDENCIES.dependencies.map(
   ({ name }) => name
 );
 
 window.REQUIRE_MAPPINGS = {
-  "styled-jsx/style": require("styled-jsx/style"),
-  "@mdx-js/mdx": require("@mdx-js/mdx"),
-  "@mdx-js/react": MDXReact
+  "styled-jsx/style": require("styled-jsx/style")
 };
 
 // const createLocalStorageFS = Bluebird.promisify(
@@ -56,7 +53,6 @@ module.constructor.prototype.require = function(moduleName) {
 const React = require("react");
 const ReactDOM = require("@hot-loader/react-dom");
 const MDXJS = require("@mdx-js/react");
-
 const AppContainer = require("react-hot-loader").AppContainer;
 
 
@@ -66,8 +62,9 @@ const MDXProvider = MDXJS.MDXProvider;
 
 const Codeblog = require("codeblog");
 window.React = React;
-window.ReactDOM = ReactDOM;
 window.mdx = mdx;
+window.ReactDOM = ReactDOM;
+
 
 
 const CodeblogPreviewer = ({props, Blog, BlogPost, Post, Components}) => (
@@ -246,12 +243,20 @@ export class DependencyManager {
       Object.assign(deps, dependencies, peerDependencies);
     }
 
-    return omit(deps, BUNDLED_DEPENDENCY_NAMES);
+    return omit(deps, [
+      ...BUNDLED_DEPENDENCY_NAMES,
+      "@mdx-js/mdx",
+      "@mdx-js/react"
+    ]);
+  };
+
+  hasDependenciesChanged = dependencies => {
+    return isEqual(LAST_MANIFEST, dependencies);
   };
 
   installDependencies = async () => {
     const dependencies = this.getDependencies();
-    if (isEqual(LAST_MANIFEST, dependencies)) {
+    if (!this.hasDependenciesChanged(dependencies) || isEmpty(dependencies)) {
       this.status = ServerStatus.installing_dependencies_finished;
       return;
     }

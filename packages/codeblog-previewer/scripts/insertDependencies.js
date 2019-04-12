@@ -14,8 +14,11 @@ const BUNDLED_DEPS = _.pick(packageJSON.dependencies, [
   "prop-types",
   "react-lottie",
   "react-is",
+  "@mdx-js/react",
   "shadertoy-react",
   "codeblog-components",
+  "react-headroom",
+  "reading-time",
   "codeblog-codeblock",
   "moment",
   "classnames",
@@ -28,7 +31,7 @@ const BUNDLED_DEPS = _.pick(packageJSON.dependencies, [
 
 const pullFromLocal = console.log(BUNDLED_DEPS);
 
-console.log("Fetching ", Object.keys(BUNDLED_DEPS).length, "dependencies");
+console.log("Fetching", Object.keys(BUNDLED_DEPS).length, "dependencies");
 
 fetchDependencies(_.toPairs(BUNDLED_DEPS)).then(
   deps => {

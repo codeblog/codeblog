@@ -7,7 +7,7 @@ import {
   ServerCommandMessageEventData
 } from "./messages";
 import { CodeLoader } from "./CodeLoader";
-import { isEqual } from "lodash";
+import { isEqual, throttle } from "lodash";
 import { reportBuildError, dismissError } from "../components/ErrorBar";
 
 const VERBOSE_LOGGING = false;
@@ -67,7 +67,7 @@ export class Server {
     window.addEventListener("message", this.listenForCommands);
   };
 
-  handleError = (error: Error, status: ServerStatus) => {
+  _handleError = (error: Error, status: ServerStatus) => {
     console.group("[Server]", status);
     console.error(error);
     console.groupEnd();
@@ -93,6 +93,11 @@ export class Server {
       error: error
     });
   };
+
+  handleError = throttle(this._handleError, 2000, {
+    leading: true,
+    trailing: true
+  });
 
   sendStatusUpdate = (status?: ServerStatus) => {
     sendMessage({
@@ -155,7 +160,7 @@ export class Server {
     }
   };
 
-  handleLoadPost = async (post: any, template: any, props: any) => {
+  _handleLoadPost = async (post: any, template: any, props: any) => {
     if (
       !this.hasBuildError &&
       this.startedLoadingPostAt &&
@@ -220,6 +225,8 @@ export class Server {
       return;
     }
 
+    this.handleError.cancel();
+
     this.status = this.dependencyManager.status;
     this.dependencyManager.templatePkg = compiledTemplate;
     this.dependencyManager.postPkg = compiledPost;
@@ -248,6 +255,8 @@ export class Server {
       return;
     }
 
+    this.handleError.cancel();
+
     this.status = ServerStatus.loading_code;
     this.sendStatusUpdate();
 
@@ -262,7 +271,10 @@ export class Server {
       vtimeEnd("[Server] Load code");
     } catch (error) {
       this.handleError(error, ServerStatus.loading_code_error);
+      return;
     }
+
+    this.handleError.cancel();
 
     this.status = ServerStatus.ready;
     this.sendStatusUpdate();
@@ -277,6 +289,11 @@ export class Server {
     this.lastCompiledPost = compiledPost;
     this.lastCompiledTemplate = compiledTemplate;
   };
+
+  handleLoadPost = throttle(this._handleLoadPost, 150, {
+    trailing: true,
+    leading: false
+  });
 
   handleLoadTemplate = (template: any, props: any) => {};
   handleSendHTML = () => {
