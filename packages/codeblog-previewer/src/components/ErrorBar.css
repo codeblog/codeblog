@@ -65,3 +65,31 @@ html, body {
 .CodeblogPreviewRuntimeError.CodeblogPreviewBuildError #codeblog-runtime-error-box {
     display: none;
 }
+
+.ErrorBar--loading {
+    display: flex;
+    align-items: center;
+    border-radius: 0;
+    padding: 12px 14px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    background-color: white;
+    border-bottom: 1px solid #efefef;
+    font-size: 16px;
+    color: rgb(31, 62, 113);
+}
+
+.LoadingSpinner {
+    height: 24px;
+    width: 50px;
+    padding: 12px 14px;
+    margin: -12px -14px;
+    border-right: 1px solid #ccc;
+    box-sizing: content-box;
+}
+
+.ErrorBar--loading .ErrorBar-message {
+    display: flex;
+    margin-left: 28px;
+    margin-top: auto;
+    margin-bottom: auto;
+}

@@ -8,6 +8,7 @@ import { isEqual, omit, get, isEmpty } from "lodash";
 import * as BrowserFS from "codesandbox-browserfs";
 import localForage from "localforage";
 import BUNDLED_DEPENDENCIES from "./BUNDLED_DEPENDENCIES.json";
+import { reportLoadingStatus, dismissLoading } from "../components/ErrorBar";
 const BUNDLED_DEPENDENCY_NAMES = BUNDLED_DEPENDENCIES.dependencies.map(
   ({ name }) => name
 );
@@ -180,6 +181,7 @@ export class DependencyManager {
 
     this.status = ServerStatus.fs_init;
 
+    reportLoadingStatus("Starting development environment", this.status);
     const inMemory = await createMemoryFS();
     // const idbfs = await createIDBFS({ storeName: "codeblog-previewer" });
 
@@ -224,6 +226,7 @@ export class DependencyManager {
       await this.installer.install();
     }
 
+    dismissLoading();
     this.status = ServerStatus.fs_finished;
   };
 
@@ -251,7 +254,7 @@ export class DependencyManager {
   };
 
   hasDependenciesChanged = dependencies => {
-    return isEqual(LAST_MANIFEST, dependencies);
+    return !isEqual(LAST_MANIFEST, dependencies);
   };
 
   installDependencies = async () => {
@@ -264,6 +267,8 @@ export class DependencyManager {
     const fs = BrowserFS.BFSRequire("fs");
 
     this.status = ServerStatus.installing_dependencies;
+
+    reportLoadingStatus("Installing dependencies...", this.status);
 
     this.installer = await downloadAndInstallFromPackageJSON({
       packageJSON: Object.assign({}, this.postPkg["package.json"], {
@@ -285,6 +290,7 @@ export class DependencyManager {
       dependencies
     );
 
+    dismissLoading();
     LAST_MANIFEST = dependencies;
   };
 

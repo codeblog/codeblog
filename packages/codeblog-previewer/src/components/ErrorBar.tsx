@@ -5,14 +5,16 @@ import {
   ErrorBoundaryComponent
 } from "./CodeblogErrorContainer";
 import { ServerStatus } from "../lib/messages";
-import { File, SpeechBubble } from "react-kawaii";
 import { trim } from "lodash";
 import "./ErrorBar.css";
+import LoadingSpinner from "./LoadingSpinner";
 
 type Props = {
-  error: Error;
+  error?: Error;
+  isLoading?: boolean;
   status: ServerStatus;
-  isFatal: boolean;
+  message?: string;
+  isFatal?: boolean;
 };
 
 const LEVEL_CLASS_NAME = {
@@ -110,7 +112,7 @@ export class ErrorBar extends React.Component<Props> {
   toggleExpanded = () => this.setState({ isExpanded: !this.state.isExpanded });
 
   render() {
-    const { error, isFatal, status } = this.props;
+    const { error, isFatal, status, isLoading, message } = this.props;
     const { normalizedError } = this.state;
 
     if (error && !normalizedError) {
@@ -172,6 +174,13 @@ export class ErrorBar extends React.Component<Props> {
           {this.state.isExpanded && <ErrorBoundaryComponent error={error} />}
         </>
       );
+    } else if (isLoading) {
+      return (
+        <div className="ErrorBar ErrorBar--loading">
+          <LoadingSpinner />
+          <span className="ErrorBar-message">{message || "Loading..."}</span>
+        </div>
+      );
     } else {
       return null;
     }
@@ -197,8 +206,27 @@ export const reportBuildError = (
   );
 };
 
+export const reportLoadingStatus = (
+  message: string | null,
+  status: ServerStatus
+) => {
+  if (!document.querySelector(ERROR_DIV_SELECTOR)) {
+    const el = document.createElement("div");
+    el.id = "__codeblog-error-bar";
+    document.body.prepend(el);
+  }
+
+  ReactDOM.render(
+    <ErrorBar isLoading status={status} message={message} />,
+    document.querySelector(ERROR_DIV_SELECTOR)
+  );
+};
+
 export const dismissError = () => {
   if (ReactDOM.findDOMNode(document.querySelector(ERROR_DIV_SELECTOR))) {
     ReactDOM.unmountComponentAtNode(document.querySelector(ERROR_DIV_SELECTOR));
   }
 };
+
+// export const dismissLoading = dismissError;
+export const dismissLoading = () => dismissError;
