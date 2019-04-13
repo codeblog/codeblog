@@ -41,7 +41,7 @@
     "build-bundle": "browserify . -s remarkMDXToPlainText > remark-mdx-to-plain-text.js",
     "build-mangle": "browserify . -s remarkMDXToPlainText -p tinyify > remark-mdx-to-plain-text.js.min.js",
     "build": "yarn --silent build-bundle && yarn --silent build-mangle",
-    "test-api": "node test",
+    "test-api": "node spec",
     "test": "yarn --silent format && yarn --silent build && yarn test-api"
   },
   "prettier": {
