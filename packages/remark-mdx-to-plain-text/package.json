@@ -63,5 +63,6 @@
     "plugins": [
       "preset-wooorm"
     ]
-  }
+  },
+  "gitHead": "a90998bda68cc628b98c035411c9721fd6ad3bea"
 }
