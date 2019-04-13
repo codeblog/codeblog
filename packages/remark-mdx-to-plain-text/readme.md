@@ -1,7 +1,5 @@
 # remark-mdx-to-plain-text
 
-[![Downloads][downloads-badge]][downloads]
-
 Remove MDX formatting with [**remark**][remark]. This essentially removes
 everything but paragraphs and text nodes.
 
@@ -9,10 +7,16 @@ This plugin is a fork of https://github.com/remarkjs/strip-markdown, but for MDX
 
 ## Installation
 
-[npm][]:
+npm:
 
 ```bash
 npm install remark-mdx-to-plain-text remark-mdx
+```
+
+yarn:
+
+```bash
+yarn add remark-mdx-to-plain-text remark-mdx
 ```
 
 **You'll need to have `remark-mdx` installed for this to work.**
@@ -53,11 +57,11 @@ You might want to call `.trim()` on the result, since this can leave empty lines
 
 Modifies **remark** to expose plain-text.
 
-- Removes `jsx`, 'import', 'export', `code`, `horizontalRule`, `table`, `yaml`, `toml`, and their
+- Removes `jsx`, `import`, `export`, `code`, `horizontalRule`, `table`, `yaml`, `toml`, and their
   content
 - Render everything else as simple paragraphs without formatting
 - Uses `alt` text for images
 
 ## License
 
-[MIT][license] © [Jarred Sumner][author]
+MIT License © Jarred Sumner
