@@ -29,7 +29,7 @@ let mdx = require('remark-mdx')
 let strip = require('remark-mdx-to-plain-text')
 
 let sample = [
-  "import Bagel from './bagel';",
+  "import Bagel from './bagel';\n",
   'Some _emphasis_, **importance**, and `code`.',
   '<Bagel />'
 ].join('\n')
