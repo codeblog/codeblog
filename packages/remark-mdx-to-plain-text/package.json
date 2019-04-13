@@ -23,7 +23,6 @@
   ],
   "browser": "remark-mdx-to-plain-text.js",
   "index": "remark-mdx-to-plain-text.js",
-  "dependencies": {},
   "devDependencies": {
     "browserify": "^16.0.0",
     "nyc": "^13.0.0",
