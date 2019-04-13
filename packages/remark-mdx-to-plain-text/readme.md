@@ -1,6 +1,6 @@
 # remark-mdx-to-plain-text
 
-Remove MDX formatting with [**remark**][remark]. This essentially removes
+Remove MDX formatting with **remark**. This essentially removes
 everything but paragraphs and text nodes.
 
 This plugin is a fork of https://github.com/remarkjs/strip-markdown, but for MDX. It completely removes `jsx`, `import`, and `export` nodes, leaving you with the text in the mdx file.
