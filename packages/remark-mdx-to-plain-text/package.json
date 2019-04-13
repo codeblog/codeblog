@@ -1,6 +1,6 @@
 {
   "name": "remark-mdx-to-plain-text",
-  "version": "2.3.7",
+  "version": "2.3.8",
   "description": "Remove MDX formatting",
   "license": "MIT",
   "keywords": [
@@ -17,12 +17,8 @@
     "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
     "Ohtake Tomohiro <ohtake.tomohiro@jp.fujitsu.com>"
   ],
-  "files": [
-    "remark-mdx-to-plain-text.js",
-    "remark-mdx-to-plain-text.min.js"
-  ],
-  "browser": "remark-mdx-to-plain-text.js",
-  "index": "remark-mdx-to-plain-text.js",
+  "browser": "index.js",
+  "main": "index.js",
   "devDependencies": {
     "browserify": "^16.0.0",
     "nyc": "^13.0.0",
@@ -38,11 +34,8 @@
   },
   "scripts": {
     "format": "remark . -qfo && prettier --write \"**/*.js\"",
-    "build-bundle": "browserify . -s remarkMDXToPlainText > remark-mdx-to-plain-text.js",
-    "build-mangle": "browserify . -s remarkMDXToPlainText -p tinyify > remark-mdx-to-plain-text.js.min.js",
-    "build": "yarn --silent build-bundle && yarn --silent build-mangle",
     "test-api": "node test.notjest.js",
-    "test": "yarn --silent format && yarn --silent build && yarn test-api"
+    "test": "yarn --silent format && yarn test-api"
   },
   "prettier": {
     "tabWidth": 2,
@@ -64,5 +57,5 @@
       "preset-wooorm"
     ]
   },
-  "gitHead": "bce84046e8ba84de16ebd181275d0e3e42d09e7e"
+  "gitHead": "4b6949be1e45fb7926391ad54143a828cabfd80e"
 }
