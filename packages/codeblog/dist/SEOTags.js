@@ -186,7 +186,7 @@ var RawBlogPostSEOTags = function RawBlogPostSEOTags(_ref) {
   }), pageType === "show" && react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, react__WEBPACK_IMPORTED_MODULE_0__["createElement"](MetaTag, {
     property: "article:publisher",
     content: "https://codeblog.com"
-  }), post.title && react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_head__WEBPACK_IMPORTED_MODULE_2__["Title"], null, post.title, " | via Codeblog"), react__WEBPACK_IMPORTED_MODULE_0__["createElement"](MetaTag, {
+  }), post.title && react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_head__WEBPACK_IMPORTED_MODULE_2__["Title"], null, post.title.trim(), " | via Codeblog"), react__WEBPACK_IMPORTED_MODULE_0__["createElement"](MetaTag, {
     property: "og:title",
     content: "".concat(post.title, " | via Codeblog")
   }), react__WEBPACK_IMPORTED_MODULE_0__["createElement"](MetaTag, {

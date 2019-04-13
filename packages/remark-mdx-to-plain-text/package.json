@@ -1,24 +1,28 @@
 {
-  "name": "strip-markdown",
-  "version": "3.0.3",
-  "description": "Remove markdown formatting",
+  "name": "remark-mdx-to-plain-text",
+  "version": "2.3.4",
+  "description": "Remove MDX formatting",
   "license": "MIT",
   "keywords": [
     "text",
     "markdown",
+    "mdx",
     "plain",
     "text"
   ],
-  "repository": "remarkjs/strip-markdown",
-  "bugs": "https://github.com/remarkjs/strip-markdown/issues",
-  "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+  "repository": "codeblog/codeblog",
+  "bugs": "https://github.com/codeblog/codeblog/issues",
+  "author": "Jarred Sumner <jarred@jarredsumner.com> (https://jarredsumner.com)",
   "contributors": [
     "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
     "Ohtake Tomohiro <ohtake.tomohiro@jp.fujitsu.com>"
   ],
   "files": [
-    "index.js"
+    "remark-mdx-to-plain-text.js",
+    "remark-mdx-to-plain-text.min.js"
   ],
+  "browser": "remark-mdx-to-plain-text.js",
+  "index": "remark-mdx-to-plain-text.js",
   "dependencies": {},
   "devDependencies": {
     "browserify": "^16.0.0",
@@ -26,6 +30,7 @@
     "prettier": "^1.14.2",
     "remark": "^10.0.0",
     "remark-cli": "^6.0.0",
+    "remark-mdx": "^1.0.2",
     "remark-preset-wooorm": "^4.0.0",
     "tape": "^4.4.0",
     "tinyify": "^2.4.3",
@@ -33,19 +38,12 @@
     "xo": "^0.23.0"
   },
   "scripts": {
-    "format": "remark . -qfo && prettier --write \"**/*.js\" && xo --fix",
-    "build-bundle": "browserify . -s stripMarkdown > strip-markdown.js",
-    "build-mangle": "browserify . -s stripMarkdown -p tinyify > strip-markdown.min.js",
-    "build": "npm run build-bundle && npm run build-mangle",
+    "format": "remark . -qfo && prettier --write \"**/*.js\"",
+    "build-bundle": "browserify . -s remarkMDXToPlainText > remark-mdx-to-plain-text.js",
+    "build-mangle": "browserify . -s remarkMDXToPlainText -p tinyify > remark-mdx-to-plain-text.js.min.js",
+    "build": "yarn --silent build-bundle && yarn --silent build-mangle",
     "test-api": "node test",
-    "test-coverage": "nyc --reporter lcov tape test.js",
-    "test": "npm run format && npm run build && npm run test-coverage"
-  },
-  "nyc": {
-    "check-coverage": true,
-    "lines": 100,
-    "functions": 100,
-    "branches": 100
+    "test": "yarn --silent format && yarn --silent build && yarn test-api"
   },
   "prettier": {
     "tabWidth": 2,

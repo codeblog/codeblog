@@ -2,11 +2,13 @@
 
 var test = require('tape')
 var remark = require('remark')
+var mdx = require('remark-mdx')
 var u = require('unist-builder')
 var strip = require('.')
 
 function proc(value) {
   return remark()
+    .use(mdx)
     .use(strip)
     .processSync(value)
     .toString()
@@ -75,13 +77,24 @@ test('stripMarkdown()', function(t) {
   t.equal(proc('| A | B |\n| - | - |\n| C | D |'), '', 'table')
   t.equal(proc('\talert("hello");'), '', 'code (1)')
   t.equal(proc('```js\nconsole.log("world");\n```'), '', 'code (2)')
-  t.equal(proc('<sup>Hello</sup>'), 'Hello', 'html (1)')
   t.equal(proc('<script>alert("world");</script>'), '', 'html (2)')
   t.equal(
     proc('[<img src="http://example.com/a.jpg" />](http://example.com)'),
     '',
     'html (3)'
   )
+
+  // Tests for import
+  t.equal(proc("import Bagel from 'noahs-bagels';"), '', 'import')
+  t.equal(proc("import {Bagel} from 'noahs-bagels';"), '', 'import')
+  t.equal(proc("import * as Bagel from 'noahs-bagels';"), '', 'import')
+
+  t.equal(proc(`export const Bagel = "sesame"`), '', 'export')
+
+  // Tests for jsx
+  t.equal(proc('<Bagel />'), '', 'self-closing JSX tag')
+  t.equal(proc('<Bagel>Sesame</Bagel>'), '', 'JSX tag with child')
+  t.equal(proc('<Bagel></Bagel>'), '', 'JSX tag with no child')
 
   t.end()
 })
