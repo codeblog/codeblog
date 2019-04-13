@@ -41,7 +41,7 @@
     "build-bundle": "browserify . -s remarkMDXToPlainText > remark-mdx-to-plain-text.js",
     "build-mangle": "browserify . -s remarkMDXToPlainText -p tinyify > remark-mdx-to-plain-text.js.min.js",
     "build": "yarn --silent build-bundle && yarn --silent build-mangle",
-    "test-api": "node spec",
+    "test-api": "node test.notjest.js",
     "test": "yarn --silent format && yarn --silent build && yarn test-api"
   },
   "prettier": {
@@ -64,5 +64,5 @@
       "preset-wooorm"
     ]
   },
-  "gitHead": "a90998bda68cc628b98c035411c9721fd6ad3bea"
+  "gitHead": "2fc2c57d5f4cc2259bf0dbbf18a11237d86f8eb1"
 }
