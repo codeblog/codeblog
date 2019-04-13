@@ -42,7 +42,7 @@ const RawBlogPostSEOTags = ({ post, pageType }: CodeblogContextInterface) => (
 
         {post.title && (
           <>
-            <Title>{post.title} | via Codeblog</Title>
+            <Title>{post.title.trim()} | via Codeblog</Title>
             <MetaTag
               property="og:title"
               content={`${post.title} | via Codeblog`}
