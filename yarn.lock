@@ -961,7 +961,7 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
-"@babel/runtime@^7.3.1", "@babel/runtime@^7.4.2":
+"@babel/runtime@^7.3.1", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.3":
   version "7.4.3"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.4.3.tgz#79888e452034223ad9609187a0ad1fe0d2ad4bdc"
   integrity sha512-9lsJwJLxDh/T3Q3SZszfWOTkk3pHbkmH+3KY+zwIDmsNlxsumuhS2TH3NIpktU4kNvfzy+k3eLT7aTJSPTo0OA==
@@ -4091,10 +4091,10 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
-codeblog-packager@1.5.8:
-  version "1.5.8"
-  resolved "https://registry.yarnpkg.com/codeblog-packager/-/codeblog-packager-1.5.8.tgz#fde218420d7a775e26f8b34398636bf7ac0af64f"
-  integrity sha512-ps+V6WexeYb4bPP+gcbCJpmiJrcvIy4ctPzEoc/8Tmnu/mqHCzOtbG0q7BNOJWJhkep7jXWMvStGEei1CfUHWQ==
+codeblog-packager@1.5.10:
+  version "1.5.10"
+  resolved "https://registry.yarnpkg.com/codeblog-packager/-/codeblog-packager-1.5.10.tgz#11b38431691249fcfc17ca0664b0abe0a6ccef9f"
+  integrity sha512-1GrrRxfm5dY8lPdK529QW1w7JIRliyy1zhBpftbUfgpaZ00RIbOEuLTrwsCVcVWVAMoFwtlVP4lmrjiIo1pPkg==
   dependencies:
     async "^2.6.2"
     bluebird "^3.5.3"
@@ -10631,7 +10631,7 @@ obj-props@^1.0.0:
   resolved "https://registry.yarnpkg.com/obj-props/-/obj-props-1.1.0.tgz#626313faa442befd4a44e9a02c3cb6bde937b511"
   integrity sha1-YmMT+qRCvv1KROmgLDy2vek3tRE=
 
-object-assign@4.1.1, object-assign@^4, object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
+object-assign@^4, object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
   integrity sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=

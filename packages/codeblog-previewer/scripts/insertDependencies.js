@@ -12,6 +12,9 @@ const packageJSON = JSON.parse(fs.readFileSync(PACKAGE_JSON_PATH));
 const BUNDLED_DEPS = _.pick(packageJSON.dependencies, [
   "codeblog",
   "prop-types",
+  "object-assign",
+  "loose-envify",
+  "js-tokens",
   "react-lottie",
   "react-is",
   "@mdx-js/react",

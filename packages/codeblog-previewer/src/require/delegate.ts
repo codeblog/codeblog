@@ -1,4 +1,5 @@
-import * as resolve from "resolve";
+import * as resolve from "browser-resolve";
+
 // weird variable namespace because eval has access to all variables in its parent scopes :\
 // we shadow this one out though, so it's safe to put stuff in here
 const __vars__ = {
