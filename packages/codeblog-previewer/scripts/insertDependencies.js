@@ -15,7 +15,7 @@ const BUNDLED_DEPS = _.pick(packageJSON.dependencies, [
   "object-assign",
   "loose-envify",
   "js-tokens",
-  "react-lottie",
+  "codeblog-lottie",
   "react-is",
   "@mdx-js/react",
   "shadertoy-react",
