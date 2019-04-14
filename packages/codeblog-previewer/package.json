@@ -65,7 +65,7 @@
     "codeblog-build-npm-package": "^2.3.7",
     "codeblog-codeblock": "^2.3.3",
     "codeblog-components": "^2.3.7",
-    "codeblog-packager": "1.5.0",
+    "codeblog-packager": "1.5.8",
     "codeblog-template-simple": "^2.3.7",
     "codesandbox-browserfs": "^2.0.1",
     "iframe-resizer": "^4.0.4",

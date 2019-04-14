@@ -4,7 +4,7 @@ import {
 } from "codeblog-packager";
 import { CompiledPackage, ServerStatus } from "./messages";
 import Bluebird from "bluebird";
-import { isEqual, omit, get, isEmpty } from "lodash";
+import { isEqual, omit, get, isEmpty, toPairs } from "lodash";
 import * as BrowserFS from "codesandbox-browserfs";
 import localForage from "localforage";
 import BUNDLED_DEPENDENCIES from "./BUNDLED_DEPENDENCIES.json";
@@ -12,6 +12,12 @@ import { reportLoadingStatus, dismissLoading } from "../components/ErrorBar";
 const BUNDLED_DEPENDENCY_NAMES = BUNDLED_DEPENDENCIES.dependencies.map(
   ({ name }) => name
 );
+
+const PREINSTALLED_LIST = [
+  ...BUNDLED_DEPENDENCY_NAMES,
+  "@mdx-js/mdx",
+  "@mdx-js/react"
+];
 
 window.REQUIRE_MAPPINGS = {
   "styled-jsx/style": require("styled-jsx/style")
@@ -246,11 +252,7 @@ export class DependencyManager {
       Object.assign(deps, dependencies, peerDependencies);
     }
 
-    return omit(deps, [
-      ...BUNDLED_DEPENDENCY_NAMES,
-      "@mdx-js/mdx",
-      "@mdx-js/react"
-    ]);
+    return omit(deps, PREINSTALLED_LIST);
   };
 
   hasDependenciesChanged = dependencies => {
@@ -276,6 +278,9 @@ export class DependencyManager {
       }),
       fs,
       logger: function() {},
+      ignoreList: toPairs(LAST_MANIFEST || {})
+        .map(pair => pair[0])
+        .concat(PREINSTALLED_LIST),
       rootDir: "/"
     });
     this.status = ServerStatus.installing_dependencies_finished;

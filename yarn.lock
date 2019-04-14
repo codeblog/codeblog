@@ -4091,15 +4091,14 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
-codeblog-packager@1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/codeblog-packager/-/codeblog-packager-1.5.0.tgz#418dc41c42341d6d3c0eb492f55df43a5fd1decf"
-  integrity sha512-ubw2P/NnlcaX/aTm3ujhyGBnY/fvR2qzyQ2zgafx0TR5wHrFO2a92UNXL/2FJUnlP4tA5v6wvK5KGKh1BC+etQ==
+codeblog-packager@1.5.8:
+  version "1.5.8"
+  resolved "https://registry.yarnpkg.com/codeblog-packager/-/codeblog-packager-1.5.8.tgz#fde218420d7a775e26f8b34398636bf7ac0af64f"
+  integrity sha512-ps+V6WexeYb4bPP+gcbCJpmiJrcvIy4ctPzEoc/8Tmnu/mqHCzOtbG0q7BNOJWJhkep7jXWMvStGEei1CfUHWQ==
   dependencies:
     async "^2.6.2"
     bluebird "^3.5.3"
     graphlib "^2.1.7"
-    isomorphic-fetch "^2.2.1"
     lodash "^4.17.11"
     npm-package-arg "^6.1.0"
     semver "^5.6.0"
