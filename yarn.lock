@@ -973,6 +973,11 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
+"@babel/standalone@^7.2.2":
+  version "7.4.3"
+  resolved "https://registry.yarnpkg.com/@babel/standalone/-/standalone-7.4.3.tgz#3b01c553feff68c7d15ba66a0d9675a2d6a5458b"
+  integrity sha512-oxW+74VtlH+F6xY+Msubyh/2GJwgdKv9PBucMnVQoSorEGHKNAmubtPebpPhL3liS2hlDvH9qM9NZupS2LbcEQ==
+
 "@babel/standalone@^7.3.4":
   version "7.3.4"
   resolved "https://registry.yarnpkg.com/@babel/standalone/-/standalone-7.3.4.tgz#b622c1e522acef91b2a14f22bdcdd4f935a1a474"
@@ -5263,6 +5268,21 @@ codeblog-packager@1.5.10:
     lodash "^4.17.11"
     npm-package-arg "^6.1.0"
     semver "^5.6.0"
+
+codeblog-remark-mdx@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/codeblog-remark-mdx/-/codeblog-remark-mdx-1.0.5.tgz#8a815289ed4d31539bb78e4f49204d1948cbc636"
+  integrity sha512-BGONgTKZ+6R0p9Ele8FzvTMO1V3P5UimZANK5bMZxXDqf/t+hLvwDT2Op0ee0tkT8902XcfRLvFoZ3JnZTPglg==
+  dependencies:
+    is-alphabetical "^1.0.2"
+    remark-parse "^6.0.0"
+    unified "^7.0.0"
+  optionalDependencies:
+    "@babel/core" "^7.2.2"
+    "@babel/helper-plugin-utils" "^7.0.0"
+    "@babel/plugin-proposal-object-rest-spread" "^7.3.2"
+    "@babel/plugin-syntax-jsx" "^7.2.0"
+    "@babel/standalone" "^7.2.2"
 
 codesandbox-browserfs@^2.0.1:
   version "2.0.1"
@@ -15128,7 +15148,7 @@ quote-stream@^1.0.1, quote-stream@~1.0.2:
     minimist "^1.1.3"
     through2 "^2.0.0"
 
-raf@^3.3.0:
+raf@^3.3.0, raf@^3.4.1:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/raf/-/raf-3.4.1.tgz#0742e99a4a6552f445d73e3ee0328af0ff1ede39"
   integrity sha512-Sq4CW4QhwOHE8ucn6J34MqtZCeWFP2aQSmrlroYgqAV1PjStIhJXxYuTgUIfkEk7zTLjmIjLmU5q+fbD1NnOJA==
@@ -16773,6 +16793,11 @@ request@^2.74.0, request@^2.79.0, request@^2.87.0:
     tough-cookie "~2.4.3"
     tunnel-agent "^0.6.0"
     uuid "^3.3.2"
+
+requestidlecallback-polyfill@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/requestidlecallback-polyfill/-/requestidlecallback-polyfill-1.0.2.tgz#02eefae286ff86ef04232087dba19f005308b18e"
+  integrity sha512-zzkRzvMe7UdV0M7AIU70vl2fh4rFnNYDL8U0ISwWiOX/5MowBV1ESYCWSQP/KsgJNUOC/AS6X3DApOmxoyE6MA==
 
 "require-browser@https://github.com/suchipi/require-browser":
   version "0.1.3"

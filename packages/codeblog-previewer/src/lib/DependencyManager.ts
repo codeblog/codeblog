@@ -4,7 +4,7 @@ import {
 } from "codeblog-packager";
 import { CompiledPackage, ServerStatus } from "./messages";
 import Bluebird from "bluebird";
-import { isEqual, omit, get, isEmpty, toPairs } from "lodash";
+import { isEqual, omit, get, isEmpty, toPairs, truncate } from "lodash";
 import * as BrowserFS from "codesandbox-browserfs";
 import localForage from "localforage";
 import BUNDLED_DEPENDENCIES from "./BUNDLED_DEPENDENCIES.json";
@@ -270,7 +270,12 @@ export class DependencyManager {
 
     this.status = ServerStatus.installing_dependencies;
 
-    reportLoadingStatus("Installing dependencies...", this.status);
+    reportLoadingStatus(
+      `Installing ${truncate(Object.keys(dependencies).join(", "), {
+        length: 50
+      })}`,
+      this.status
+    );
 
     this.installer = await downloadAndInstallFromPackageJSON({
       packageJSON: Object.assign({}, this.postPkg["package.json"], {

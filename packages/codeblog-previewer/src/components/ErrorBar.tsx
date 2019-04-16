@@ -228,5 +228,4 @@ export const dismissError = () => {
   }
 };
 
-// export const dismissLoading = dismissError;
-export const dismissLoading = () => dismissError;
+export const dismissLoading = dismissError;

@@ -8,7 +8,10 @@ const _ = require("lodash");
 
 module.exports = {
   entry: {
-    codeblog_previewer: path.resolve(__dirname, "src/index.tsx")
+    codeblog_previewer: [
+      path.resolve(__dirname, "src/polyfills.tsx"),
+      path.resolve(__dirname, "src/index.tsx")
+    ]
   },
   output: {
     path: path.resolve(__dirname, "./dist"),
@@ -24,6 +27,7 @@ module.exports = {
     alias: {
       osenv: path.resolve(__dirname, "src/osenv-shim.js"),
       fs: "codesandbox-browserfs/dist/shims/fs.js",
+      "remark-mdx": "codeblog-remark-mdx",
       buffer: "codesandbox-browserfs/dist/shims/buffer.js",
       browserfs: "codesandbox-browserfs",
       path: "codesandbox-browserfs/dist/shims/path.js",
@@ -138,7 +142,8 @@ module.exports = {
     new webpack.DefinePlugin({
       __DEV__: true,
       IS_DEVELOPMENT: true,
-      "process.env.NODE_ENV": "'development'"
+      "process.env.NODE_ENV": "'development'",
+      "typeof window !== 'undefined'": "false"
     }),
     new webpack.ProvidePlugin({
       React: "React",
