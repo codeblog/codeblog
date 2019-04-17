@@ -36,8 +36,8 @@
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "@mdx-js/mdx": "^1.0.0-alpha.13",
-    "@mdx-js/react": "^1.0.0-alpha.13",
+    "@mdx-js/mdx": "1.0.8",
+    "@mdx-js/react": "1.0.6",
     "html2canvas": "^1.0.0-alpha.12",
     "lodash": "^4.17.11"
   },

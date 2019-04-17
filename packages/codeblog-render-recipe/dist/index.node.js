@@ -148,7 +148,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _toConsumableArray2, _regenerator, _asyncToGenerator2, _classCallCheck2, _createClass2, _possibleConstructorReturn2, _getPrototypeOf2, _assertThisInitialized2, _inherits2, _defineProperty2, _objectWithoutProperties2, React, _createElement, _html2canvas, _Whammy) {
+})(this, function (_exports, _toConsumableArray2, _regenerator, _asyncToGenerator2, _classCallCheck2, _createClass2, _possibleConstructorReturn2, _getPrototypeOf2, _assertThisInitialized2, _inherits2, _defineProperty2, _objectWithoutProperties2, React, _react2, _html2canvas, _Whammy) {
   "use strict";
 
   var _interopRequireWildcard = __webpack_require__(19);
@@ -171,13 +171,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   _defineProperty2 = _interopRequireDefault(_defineProperty2);
   _objectWithoutProperties2 = _interopRequireDefault(_objectWithoutProperties2);
   React = _interopRequireWildcard(React);
-  _createElement = _interopRequireDefault(_createElement);
   _html2canvas = _interopRequireDefault(_html2canvas);
   _Whammy = _interopRequireDefault(_Whammy);
   var DEFAULT_MODULE_NAMES = {
     React: React,
-    MDXTag: _createElement.default,
-    mdx: _createElement.default,
+    MDXTag: _react2.mdx,
+    mdx: _react2.mdx,
     div: "div",
     span: "span",
     strong: "strong",
@@ -410,7 +409,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__14__;
 /* 15 */
 /***/ (function(module, exports) {
 
-module.exports = require("@mdx-js/react/dist/create-element");
+module.exports = require("@mdx-js/react");
 
 /***/ }),
 /* 16 */

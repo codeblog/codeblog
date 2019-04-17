@@ -27,7 +27,6 @@ module.exports = {
     alias: {
       osenv: path.resolve(__dirname, "src/osenv-shim.js"),
       fs: "codesandbox-browserfs/dist/shims/fs.js",
-      "remark-mdx": "codeblog-remark-mdx",
       buffer: "codesandbox-browserfs/dist/shims/buffer.js",
       browserfs: "codesandbox-browserfs",
       path: "codesandbox-browserfs/dist/shims/path.js",

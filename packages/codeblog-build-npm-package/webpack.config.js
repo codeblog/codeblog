@@ -8,7 +8,7 @@ const baseConfig = {
     index: path.resolve(__dirname, "src/index.ts")
   },
   optimization: {
-    minimize: false // heap error if this is turned on
+    minimize: true // heap error if this is turned on
   },
   output: {
     path: path.resolve(__dirname, "./dist"),

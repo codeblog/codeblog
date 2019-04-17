@@ -36,7 +36,12 @@
     "babel-jest": "^24.4.0",
     "core-js": "^2.6.5",
     "jest": "^24.4.0",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.0",
     "webpack-node-externals": "^1.7.2"
+  },
+  "resolutions": {
+    "remark-mdx": "1.0.8"
   },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.3.4",
@@ -45,8 +50,8 @@
     "@babel/plugin-transform-object-assign": "^7.2.0",
     "@babel/plugin-transform-runtime": "^7.3.4",
     "@babel/preset-react": "^7.0.0",
-    "@mdx-js/mdx": "^1.0.0-rc.0",
-    "@mdx-js/react": "^1.0.0-rc.0",
+    "@mdx-js/mdx": "1.0.8",
+    "@mdx-js/react": "1.0.6",
     "acorn": "^6.1.1",
     "acorn-umd": "^0.4.0",
     "babel-plugin-source-map-support": "^2.0.1",

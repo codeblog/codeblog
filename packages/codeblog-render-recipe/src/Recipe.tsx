@@ -1,13 +1,13 @@
 import * as React from "react";
-import MDXTag from "@mdx-js/react/dist/create-element";
+import { mdx } from "@mdx-js/react";
 import html2canvas from "html2canvas";
 import Whammy from "./lib/Whammy";
 import { range } from "lodash";
 
 const DEFAULT_MODULE_NAMES = {
   React,
-  MDXTag,
-  mdx: MDXTag,
+  MDXTag: mdx,
+  mdx: mdx,
   div: "div",
   span: "span",
   strong: "strong",

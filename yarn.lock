@@ -973,11 +973,6 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
-"@babel/standalone@^7.2.2":
-  version "7.4.3"
-  resolved "https://registry.yarnpkg.com/@babel/standalone/-/standalone-7.4.3.tgz#3b01c553feff68c7d15ba66a0d9675a2d6a5458b"
-  integrity sha512-oxW+74VtlH+F6xY+Msubyh/2GJwgdKv9PBucMnVQoSorEGHKNAmubtPebpPhL3liS2hlDvH9qM9NZupS2LbcEQ==
-
 "@babel/standalone@^7.3.4":
   version "7.3.4"
   resolved "https://registry.yarnpkg.com/@babel/standalone/-/standalone-7.3.4.tgz#b622c1e522acef91b2a14f22bdcdd4f935a1a474"
@@ -2024,7 +2019,7 @@
     npmlog "^4.1.2"
     write-file-atomic "^2.3.0"
 
-"@mdx-js/mdx@1.0.0-rc.0", "@mdx-js/mdx@^1.0.0-rc.0":
+"@mdx-js/mdx@1.0.0-rc.0":
   version "1.0.0-rc.0"
   resolved "https://registry.yarnpkg.com/@mdx-js/mdx/-/mdx-1.0.0-rc.0.tgz#c31c8dae9c08e6494018e0fde4a0d87a7364f7a8"
   integrity sha512-PpDmC9i1LJKAK/BNce75D8QZS05ccfVMJZKGalogvGw0b8R+vQcMBtlklbVOqk10oVBe1TYYbRdniOkt1ziHMw==
@@ -2043,18 +2038,20 @@
     unist-builder "^1.0.1"
     unist-util-visit "^1.3.0"
 
-"@mdx-js/mdx@^1.0.0-alpha.13":
-  version "1.0.0-alpha.13"
-  resolved "https://registry.yarnpkg.com/@mdx-js/mdx/-/mdx-1.0.0-alpha.13.tgz#d7d5266ca522e7ec8da6608e5500e7f58f77334e"
-  integrity sha512-l/NJibkoa7ZGL8OjqjVI47UcFXkesF4Mz3eew8koEkZTJqMWVBR4TenMa677PKHXOq5k4kmhyXMn/3YG4WioVw==
+"@mdx-js/mdx@1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@mdx-js/mdx/-/mdx-1.0.8.tgz#a27c83f02289a3016b625d272fb3e7fd5894e385"
+  integrity sha512-C52DgZnTx97zNIJkmprIqc3cp/VBB8gu/3hoey87ryRr8hMhNazWDHF5Unuo9izoqfybcdvUXxZzm+zvif9cBQ==
   dependencies:
-    "@babel/plugin-proposal-object-rest-spread" "^7.3.2"
+    "@babel/helper-plugin-utils" "^7.0.0"
     "@babel/plugin-syntax-jsx" "^7.2.0"
+    "@babel/plugin-syntax-object-rest-spread" "^7.2.0"
     change-case "^3.0.2"
     detab "^2.0.0"
     hast-util-raw "^5.0.0"
+    lodash.uniq "^4.5.0"
     mdast-util-to-hast "^4.0.0"
-    remark-mdx "^1.0.0-alpha.13"
+    remark-mdx "^1.0.8"
     remark-parse "^6.0.0"
     remark-squeeze-paragraphs "^3.0.1"
     to-style "^1.3.3"
@@ -2062,15 +2059,10 @@
     unist-builder "^1.0.1"
     unist-util-visit "^1.3.0"
 
-"@mdx-js/react@1.0.0-rc.0", "@mdx-js/react@^1.0.0-rc.0":
-  version "1.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@mdx-js/react/-/react-1.0.0-rc.0.tgz#1863287fe20a396c13280e155a29dbf9f8a40889"
-  integrity sha512-yE/eEUDBkdSdsSdXvantAn8Q6CdM+u2Nor2IRaN8Fe+p8IGpMfHqLFS3WSIZpodGB4PYUxRsGINDl7ITSZXQyg==
-
-"@mdx-js/react@^1.0.0-alpha.13":
-  version "1.0.0-alpha.13"
-  resolved "https://registry.yarnpkg.com/@mdx-js/react/-/react-1.0.0-alpha.13.tgz#1058765cb8d59bfec2ce7221e311bb0d07aee486"
-  integrity sha512-CxylbBUs8C74AgSGX7UfTHPNvAq5tw5uDevzXdlBwy+9OTqs6ZVuRcyt+zhLaOQUUQMx8GPgGk2qmwRWJKB/aQ==
+"@mdx-js/react@1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@mdx-js/react/-/react-1.0.6.tgz#59bc131b68cc4f1a246d1e2b79f1223a897e6b65"
+  integrity sha512-y7Oua/TqZ+2JxRP7Skdno6SPuRnStAgk5LVFLcsowlhu2h6WuUfVI0HvL0KVouCW030v95qDAiLZDVhBiuDSNQ==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -5268,21 +5260,6 @@ codeblog-packager@1.5.10:
     lodash "^4.17.11"
     npm-package-arg "^6.1.0"
     semver "^5.6.0"
-
-codeblog-remark-mdx@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/codeblog-remark-mdx/-/codeblog-remark-mdx-1.0.5.tgz#8a815289ed4d31539bb78e4f49204d1948cbc636"
-  integrity sha512-BGONgTKZ+6R0p9Ele8FzvTMO1V3P5UimZANK5bMZxXDqf/t+hLvwDT2Op0ee0tkT8902XcfRLvFoZ3JnZTPglg==
-  dependencies:
-    is-alphabetical "^1.0.2"
-    remark-parse "^6.0.0"
-    unified "^7.0.0"
-  optionalDependencies:
-    "@babel/core" "^7.2.2"
-    "@babel/helper-plugin-utils" "^7.0.0"
-    "@babel/plugin-proposal-object-rest-spread" "^7.3.2"
-    "@babel/plugin-syntax-jsx" "^7.2.0"
-    "@babel/standalone" "^7.2.2"
 
 codesandbox-browserfs@^2.0.1:
   version "2.0.1"
@@ -16494,36 +16471,10 @@ remark-lint@^6.0.0:
   dependencies:
     remark-message-control "^4.0.0"
 
-remark-mdx@^1.0.0-alpha.13:
-  version "1.0.0-alpha.13"
-  resolved "https://registry.yarnpkg.com/remark-mdx/-/remark-mdx-1.0.0-alpha.13.tgz#39f1fa55996d9a55d8d83418d046926ef8fd7a88"
-  integrity sha512-XgSCbCejpv6IDem9iyTLXgsVJ1X9UW/IeQU0Yi/k9Eqwynlare2t1/z989s2yD1kTdG+KTmjKsysvlrDnvvQcw==
-  dependencies:
-    "@babel/core" "^7.2.2"
-    "@babel/helper-plugin-utils" "^7.0.0"
-    "@babel/plugin-proposal-object-rest-spread" "^7.3.2"
-    "@babel/plugin-syntax-jsx" "^7.2.0"
-    is-alphabetical "^1.0.2"
-    remark-parse "^6.0.0"
-    unified "^7.0.0"
-
-remark-mdx@^1.0.0-rc.0:
-  version "1.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/remark-mdx/-/remark-mdx-1.0.0-rc.0.tgz#c6886f208bf7ca06368fd10a123106af7284dbac"
-  integrity sha512-hCh7/HV8aSGGWRudqThCXsxuu6j3FaXh5x2nfqLysm+50la2evldzXWxZmBU15WoNwTP5W4akXKFad+tMt1Eig==
-  dependencies:
-    "@babel/core" "^7.2.2"
-    "@babel/helper-plugin-utils" "^7.0.0"
-    "@babel/plugin-proposal-object-rest-spread" "^7.3.2"
-    "@babel/plugin-syntax-jsx" "^7.2.0"
-    is-alphabetical "^1.0.2"
-    remark-parse "^6.0.0"
-    unified "^7.0.0"
-
-remark-mdx@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/remark-mdx/-/remark-mdx-1.0.2.tgz#858b2a0109f9b56e30b79fb4eba41be71ec3ec34"
-  integrity sha512-j4jj0RvTQKRNqSeGEHHaPGVc3QX9fBwb+Y8pwRJopeUvy/44iaLpZObHjtg766CZPe2cPVOGu9gsnYFRg2CRwA==
+remark-mdx@1.0.8, remark-mdx@^1.0.0-rc.0, remark-mdx@^1.0.2, remark-mdx@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/remark-mdx/-/remark-mdx-1.0.8.tgz#ff76b6a543f525d7bd40a4268c8e4034ed708e3f"
+  integrity sha512-6MSDXzbkPW4PVGTdhDZzv+MOdESc3xhzOvIq0aDEokkiTpr6VtUNrLGiV+tdYBaxpMymsP3ZO4zNBvfb7HqFIw==
   dependencies:
     "@babel/core" "^7.2.2"
     "@babel/helper-plugin-utils" "^7.0.0"
@@ -19636,6 +19587,23 @@ webpack-cli@^3.2.3:
     v8-compile-cache "^2.0.2"
     yargs "^12.0.4"
 
+webpack-cli@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/webpack-cli/-/webpack-cli-3.3.0.tgz#55c8a74cae1e88117f9dda3a801c7272e93ca318"
+  integrity sha512-t1M7G4z5FhHKJ92WRKwZ1rtvi7rHc0NZoZRbSkol0YKl4HvcC8+DsmGDmK7MmZxHSAetHagiOsjOB6MmzC2TUw==
+  dependencies:
+    chalk "^2.4.1"
+    cross-spawn "^6.0.5"
+    enhanced-resolve "^4.1.0"
+    findup-sync "^2.0.0"
+    global-modules "^1.0.0"
+    import-local "^2.0.0"
+    interpret "^1.1.0"
+    loader-utils "^1.1.0"
+    supports-color "^5.5.0"
+    v8-compile-cache "^2.0.2"
+    yargs "^12.0.5"
+
 webpack-core@~0.6.9:
   version "0.6.9"
   resolved "https://registry.yarnpkg.com/webpack-core/-/webpack-core-0.6.9.tgz#fc571588c8558da77be9efb6debdc5a3b172bdc2"
@@ -19792,6 +19760,36 @@ webpack@^4.29.3, webpack@^4.29.5:
   version "4.29.6"
   resolved "https://registry.yarnpkg.com/webpack/-/webpack-4.29.6.tgz#66bf0ec8beee4d469f8b598d3988ff9d8d90e955"
   integrity sha512-MwBwpiE1BQpMDkbnUUaW6K8RFZjljJHArC6tWQJoFm0oQtfoSebtg4Y7/QHnJ/SddtjYLHaKGX64CFjG5rehJw==
+  dependencies:
+    "@webassemblyjs/ast" "1.8.5"
+    "@webassemblyjs/helper-module-context" "1.8.5"
+    "@webassemblyjs/wasm-edit" "1.8.5"
+    "@webassemblyjs/wasm-parser" "1.8.5"
+    acorn "^6.0.5"
+    acorn-dynamic-import "^4.0.0"
+    ajv "^6.1.0"
+    ajv-keywords "^3.1.0"
+    chrome-trace-event "^1.0.0"
+    enhanced-resolve "^4.1.0"
+    eslint-scope "^4.0.0"
+    json-parse-better-errors "^1.0.2"
+    loader-runner "^2.3.0"
+    loader-utils "^1.1.0"
+    memory-fs "~0.4.1"
+    micromatch "^3.1.8"
+    mkdirp "~0.5.0"
+    neo-async "^2.5.0"
+    node-libs-browser "^2.0.0"
+    schema-utils "^1.0.0"
+    tapable "^1.1.0"
+    terser-webpack-plugin "^1.1.0"
+    watchpack "^1.5.0"
+    webpack-sources "^1.3.0"
+
+webpack@^4.30.0:
+  version "4.30.0"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-4.30.0.tgz#aca76ef75630a22c49fcc235b39b4c57591d33a9"
+  integrity sha512-4hgvO2YbAFUhyTdlR4FNyt2+YaYBYHavyzjCMbZzgglo02rlKi/pcsEzwCuCpsn1ryzIl1cq/u8ArIKu8JBYMg==
   dependencies:
     "@webassemblyjs/ast" "1.8.5"
     "@webassemblyjs/helper-module-context" "1.8.5"
