@@ -936,12 +936,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   var compileJSFiles = function compileJSFiles(pkg) {
     var skipFiles = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ["index.js"];
+    var basePath = arguments.length > 2 ? arguments[2] : undefined;
     var jsFiles = getJSFiles(pkg);
     return new Promise(function (resolve, reject) {
       var output = {};
       Promise.all(jsFiles.map(function (file) {
         if (!skipFiles.includes(file)) {
-          return (0, _runBabel2.runBabel)(pkg[file]).then(function (code) {
+          return (0, _runBabel2.runBabel)(pkg[file], (0, _path.join)(basePath, file)).then(function (code) {
             return output[file] = code;
           });
         } else {
@@ -1001,15 +1002,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     var _ref3 = (0, _asyncToGenerator2.default)(
     /*#__PURE__*/
     _regenerator.default.mark(function _callee(_ref2) {
-      var _ref2$files, files, _ref2$indexFileName, indexFileName, skipFiles, version, description, name, dependencies, _ref2$defaultImports, defaultImports, _ref2$peerDependencie, peerDependencies, website, _ref2$license, license, jsFiles, _files;
+      var _ref2$files, files, _ref2$indexFileName, indexFileName, skipFiles, basePath, version, description, name, dependencies, _ref2$defaultImports, defaultImports, _ref2$peerDependencie, peerDependencies, website, _ref2$license, license, jsFiles, _files;
 
       return _regenerator.default.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _ref2$files = _ref2.files, files = _ref2$files === void 0 ? {} : _ref2$files, _ref2$indexFileName = _ref2.indexFileName, indexFileName = _ref2$indexFileName === void 0 ? "index.js" : _ref2$indexFileName, skipFiles = _ref2.skipFiles, version = _ref2.version, description = _ref2.description, name = _ref2.name, dependencies = _ref2.dependencies, _ref2$defaultImports = _ref2.defaultImports, defaultImports = _ref2$defaultImports === void 0 ? [] : _ref2$defaultImports, _ref2$peerDependencie = _ref2.peerDependencies, peerDependencies = _ref2$peerDependencie === void 0 ? PEER_DEPENDNENCIES : _ref2$peerDependencie, website = _ref2.website, _ref2$license = _ref2.license, license = _ref2$license === void 0 ? "UNCLIENSED" : _ref2$license;
+              _ref2$files = _ref2.files, files = _ref2$files === void 0 ? {} : _ref2$files, _ref2$indexFileName = _ref2.indexFileName, indexFileName = _ref2$indexFileName === void 0 ? "index.js" : _ref2$indexFileName, skipFiles = _ref2.skipFiles, basePath = _ref2.basePath, version = _ref2.version, description = _ref2.description, name = _ref2.name, dependencies = _ref2.dependencies, _ref2$defaultImports = _ref2.defaultImports, defaultImports = _ref2$defaultImports === void 0 ? [] : _ref2$defaultImports, _ref2$peerDependencie = _ref2.peerDependencies, peerDependencies = _ref2$peerDependencie === void 0 ? PEER_DEPENDNENCIES : _ref2$peerDependencie, website = _ref2.website, _ref2$license = _ref2.license, license = _ref2$license === void 0 ? "UNCLIENSED" : _ref2$license;
               _context.next = 3;
-              return compileJSFiles(files, skipFiles);
+              return compileJSFiles(files, skipFiles, basePath);
 
             case 3:
               jsFiles = _context.sent;
@@ -1055,6 +1056,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     return buildPackage({
       files: files,
       defaultImports: [],
+      basePath: "/node_modules/codeblog-template/",
       skipFiles: [],
       version: version,
       description: template.title || template.description || "Codeblog Template by @".concat(template.author),
@@ -1090,7 +1092,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
               dependencies = _args2.length > 2 ? _args2[2] : undefined;
               body = post.body;
               _context2.next = 6;
-              return (0, _transformMDX.transformMDX)(body, _runBabel);
+              return (0, _transformMDX.transformMDX)(body, _runBabel, "/post/index.js");
 
             case 6:
               code = _context2.sent;
@@ -1101,6 +1103,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                   "post.mdx": body
                 }),
                 dependencies: dependencies,
+                basePath: "/post/",
                 skipFiles: ["index.js"],
                 defaultImports: (0, _findImports.findImports)(code),
                 version: version,
@@ -1221,7 +1224,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   function findImports(code) {
     var ast = acorn.parse(code, {
-      ecmaVersion: 6
+      ecmaVersion: 10
     });
     var imports = (0, _acornUmd.default)(ast, {
       es6: true,
@@ -1283,7 +1286,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   function () {
     var _ref = (0, _asyncToGenerator2.default)(
     /*#__PURE__*/
-    _regenerator.default.mark(function _callee(children, runBabel) {
+    _regenerator.default.mark(function _callee(children, runBabel, filename) {
       var jsx, importLines, _children;
 
       return _regenerator.default.wrap(function _callee$(_context) {
@@ -1314,14 +1317,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
               }
 
               if (jsx && importLines.length > 0) {
-                jsx = [importLines.join("\n"), jsx].join("\n\n");
+                jsx = [importLines.join("\n"), jsx].join("\n\n").replace(/^const.*makeShortcode\(\".*\"\).*$/gim, "");
               }
 
               if (jsx && jsx.indexOf("function MDXContent") > -1) {
                 jsx = jsx.replace("function MDXContent", "export default function MDXContent");
               }
 
-              return _context.abrupt("return", runBabel(jsx));
+              return _context.abrupt("return", runBabel(jsx, filename));
 
             case 5:
             case "end":
@@ -1331,7 +1334,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       }, _callee);
     }));
 
-    return function transformMDX(_x, _x2) {
+    return function transformMDX(_x, _x2, _x3) {
       return _ref.apply(this, arguments);
     };
   }();
@@ -1408,15 +1411,18 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   var styledJSX = __webpack_require__(36);
 
-  var runBabel = function runBabel(jsx) {
+  var reactHotLoader = __webpack_require__(37);
+
+  var runBabel = function runBabel(jsx, filename) {
     var _transform = (0, _standalone.transform)(jsx, {
+      filename: filename,
       presets: [[env, {
         modules: "umd"
       }], react],
       sourceMaps: "inline",
       plugins: [[destructuring, {
         useBuiltIns: true
-      }], assign, properties, spread, styledJSX]
+      }], assign, properties, spread, styledJSX, reactHotLoader]
     }),
         code = _transform.code;
 
@@ -1473,6 +1479,12 @@ module.exports = require("@babel/plugin-transform-destructuring");
 /***/ (function(module, exports) {
 
 module.exports = require("styled-jsx/babel");
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports) {
+
+module.exports = require("react-hot-loader/dist/babel.development");
 
 /***/ })
 /******/ ]);

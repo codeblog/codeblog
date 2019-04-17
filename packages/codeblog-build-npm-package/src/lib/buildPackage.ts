@@ -1,6 +1,6 @@
 import { flatMap } from "lodash";
 import npa from "npm-package-arg";
-import { basename } from "path";
+import { basename, join } from "path";
 import { findImports } from "./findImports";
 import { transformMDX } from "./transformMDX";
 import { runBabel } from "runBabel";
@@ -25,7 +25,7 @@ const getImportsFromPackage = pkg => {
   );
 };
 
-const compileJSFiles = (pkg, skipFiles = ["index.js"]) => {
+const compileJSFiles = (pkg, skipFiles = ["index.js"], basePath?: string) => {
   const jsFiles = getJSFiles(pkg);
 
   return new Promise((resolve, reject) => {
@@ -34,7 +34,9 @@ const compileJSFiles = (pkg, skipFiles = ["index.js"]) => {
     Promise.all(
       jsFiles.map(file => {
         if (!skipFiles.includes(file)) {
-          return runBabel(pkg[file]).then(code => (output[file] = code));
+          return runBabel(pkg[file], join(basePath, file)).then(
+            code => (output[file] = code)
+          );
         } else {
           return true;
         }
@@ -90,6 +92,7 @@ export const buildPackage = async ({
   files = {},
   indexFileName = "index.js",
   skipFiles,
+  basePath,
   version,
   description,
   name,
@@ -99,7 +102,7 @@ export const buildPackage = async ({
   website,
   license = "UNCLIENSED"
 }: any) => {
-  const jsFiles = await compileJSFiles(files, skipFiles);
+  const jsFiles = await compileJSFiles(files, skipFiles, basePath);
   const _files = { ...files, ...(jsFiles || {}) };
 
   if (!_files["package.json"]) {
@@ -126,6 +129,7 @@ export const buildPackageFromTemplate = ({ template, name, version }) => {
   return buildPackage({
     files: files,
     defaultImports: [],
+    basePath: "/node_modules/codeblog-template/",
     skipFiles: [],
     version,
     description:
@@ -144,7 +148,7 @@ export const buildPackageFromPost = async (
 ) => {
   const { body } = post;
 
-  const code = await transformMDX(body, _runBabel);
+  const code = await transformMDX(body, _runBabel, "/post/index.js");
   const files = post.files || {};
 
   return buildPackage({
@@ -154,6 +158,7 @@ export const buildPackageFromPost = async (
       "post.mdx": body
     },
     dependencies,
+    basePath: "/post/",
     skipFiles: ["index.js"],
     defaultImports: findImports(code),
     version,

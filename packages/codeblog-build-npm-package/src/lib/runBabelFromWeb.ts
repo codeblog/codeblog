@@ -7,9 +7,11 @@ const properties = require("@babel/plugin-proposal-class-properties");
 const spread = require("@babel/plugin-proposal-object-rest-spread");
 const destructuring = require("@babel/plugin-transform-destructuring");
 const styledJSX = require("styled-jsx/babel");
+const reactHotLoader = require("react-hot-loader/dist/babel.development");
 
-export const runBabel = (jsx: string) => {
+export const runBabel = (jsx: string, filename: string) => {
   const { code } = transform(jsx, {
+    filename,
     presets: [
       [
         env,
@@ -25,7 +27,8 @@ export const runBabel = (jsx: string) => {
       assign,
       properties,
       spread,
-      styledJSX
+      styledJSX,
+      reactHotLoader
     ]
   });
 

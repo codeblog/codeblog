@@ -2,7 +2,8 @@ import mdx from "@mdx-js/mdx";
 
 export const transformMDX = async (
   children: string,
-  runBabel: (code: string) => string
+  runBabel: (code: string, file: string) => string,
+  filename: string
 ) => {
   let jsx;
   let importLines = [];
@@ -40,7 +41,9 @@ export const transformMDX = async (
   }
 
   if (jsx && importLines.length > 0) {
-    jsx = [importLines.join("\n"), jsx].join("\n\n");
+    jsx = [importLines.join("\n"), jsx]
+      .join("\n\n")
+      .replace(/^const.*makeShortcode\(\".*\"\).*$/gim, "");
   }
 
   if (jsx && jsx.indexOf("function MDXContent") > -1) {
@@ -50,5 +53,5 @@ export const transformMDX = async (
     );
   }
 
-  return runBabel(jsx);
+  return runBabel(jsx, filename);
 };

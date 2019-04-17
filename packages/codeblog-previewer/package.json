@@ -21,7 +21,6 @@
   "devDependencies": {
     "@babel/core": "^7.3.3",
     "@babel/plugin-proposal-class-properties": "^7.3.3",
-    "webpack-node-externals": "^1.7.2",
     "@babel/plugin-proposal-object-rest-spread": "^7.3.4",
     "@babel/plugin-transform-destructuring": "^7.3.2",
     "@babel/plugin-transform-object-assign": "^7.2.0",
@@ -52,6 +51,7 @@
     "webpack": "^4.29.5",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.2.1",
+    "webpack-node-externals": "^1.7.2",
     "worker-loader": "^2.0.0"
   },
   "resolutions": {
@@ -72,7 +72,7 @@
     "codeblog-codeblock": "^2.3.3",
     "codeblog-components": "^2.3.7",
     "codeblog-lottie": "latest",
-    "codeblog-packager": "1.5.10",
+    "codeblog-packager": "2.0.1",
     "codeblog-template-simple": "^2.3.7",
     "codesandbox-browserfs": "^2.0.1",
     "iframe-resizer": "^4.0.4",

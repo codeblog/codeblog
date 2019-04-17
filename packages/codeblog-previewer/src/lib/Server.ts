@@ -179,6 +179,8 @@ export class Server {
     this.startedLoadingPostAt = new Date();
 
     let compiledPost, compiledTemplate;
+    let isPostChanged = true;
+    let isTemplateChanged = true;
 
     try {
       const promises = [];
@@ -189,6 +191,7 @@ export class Server {
       ) {
         promises.push(this.handleCompilePost(post));
       } else {
+        isPostChanged = false;
         promises.push(this.lastCompiledPost);
       }
 
@@ -199,6 +202,7 @@ export class Server {
         promises.push(this.handleCompileTemplate(template));
       } else {
         promises.push(this.lastCompiledTemplate);
+        isTemplateChanged = false;
       }
 
       dismissError();
@@ -266,7 +270,9 @@ export class Server {
         compiledPost,
         compiledTemplate,
         this.dependencyManager.installer.styleURLs(),
-        props
+        props,
+        isTemplateChanged,
+        isPostChanged
       );
       vtimeEnd("[Server] Load code");
     } catch (error) {

@@ -57,6 +57,7 @@
     "babel-plugin-source-map-support": "^2.0.1",
     "lodash": "^4.17.11",
     "npm-package-arg": "^6.1.0",
+    "react-hot-loader": "^4.8.4",
     "rehype-highlight": "^2.2.1",
     "remark-breaks": "^1.0.2",
     "remark-emoji": "^2.0.2",

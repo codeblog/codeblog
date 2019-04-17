@@ -27,14 +27,14 @@ window.REQUIRE_MAPPINGS = {
 //   BrowserFS.FileSystem.LocalStorage.Create
 // );
 // debugger;
-// const createIDBFS = Bluebird.promisify(BrowserFS.FileSystem.IndexedDB.Create);
+const createIDBFS = Bluebird.promisify(BrowserFS.FileSystem.IndexedDB.Create);
 const createMemoryFS = Bluebird.promisify(BrowserFS.FileSystem.InMemory.Create);
 // const createMountableFS = Bluebird.promisify(
 //   BrowserFS.FileSystem.MountableFileSystem.Create
 // );
-// const createAsyncMirrorFS = Bluebird.promisify(
-//   BrowserFS.FileSystem.AsyncMirror.Create
-// );
+const createAsyncMirrorFS = Bluebird.promisify(
+  BrowserFS.FileSystem.AsyncMirror.Create
+);
 
 let LAST_MANIFEST = null;
 
@@ -189,14 +189,14 @@ export class DependencyManager {
 
     reportLoadingStatus("Starting development environment", this.status);
     const inMemory = await createMemoryFS();
-    // const idbfs = await createIDBFS({ storeName: "codeblog-previewer" });
+    const idbfs = await createIDBFS({ storeName: "codeblog-previewer" });
 
-    // const mirrorFS = await createAsyncMirrorFS({
-    //   sync: inMemory,
-    //   async: idbfs
-    // });
+    const mirrorFS = await createAsyncMirrorFS({
+      sync: inMemory,
+      async: idbfs
+    });
 
-    BrowserFS.initialize(inMemory);
+    BrowserFS.initialize(mirrorFS);
     _isFSInitialized = true;
 
     BrowserFS.install(window);
@@ -290,19 +290,22 @@ export class DependencyManager {
     });
     this.status = ServerStatus.installing_dependencies_finished;
 
-    await localForage.setItem(
-      LAST_INSTALLED_DEPENDENCIES_FILEPATH,
-      this.installer.dependencies
-    );
-
-    await localForage.setItem(
-      LAST_INSTALLED_DEPENDENCIES_MANIFEST_FILEPATH,
-      dependencies
-    );
-
     dismissLoading();
-    LAST_MANIFEST = dependencies;
   };
+
+  // saveDependencies = async () => {
+  //   const dependencies = this.getDependencies();
+  //   await localForage.setItem(
+  //     LAST_INSTALLED_DEPENDENCIES_FILEPATH,
+  //     this.installer.dependencies
+  //   );
+
+  //   await localForage.setItem(
+  //     LAST_INSTALLED_DEPENDENCIES_MANIFEST_FILEPATH,
+  //     dependencies
+  //   );
+  //   LAST_MANIFEST = dependencies;
+  // };
 
   installPost = async () => {
     const pkg = this.postPkg;

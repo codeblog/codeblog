@@ -5249,10 +5249,10 @@ codeblog-lottie@latest:
   dependencies:
     lottie-web "^5.5.1"
 
-codeblog-packager@1.5.10:
-  version "1.5.10"
-  resolved "https://registry.yarnpkg.com/codeblog-packager/-/codeblog-packager-1.5.10.tgz#11b38431691249fcfc17ca0664b0abe0a6ccef9f"
-  integrity sha512-1GrrRxfm5dY8lPdK529QW1w7JIRliyy1zhBpftbUfgpaZ00RIbOEuLTrwsCVcVWVAMoFwtlVP4lmrjiIo1pPkg==
+codeblog-packager@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/codeblog-packager/-/codeblog-packager-2.0.1.tgz#a7f3924df140336e1793fe9f408e64d5268d34d2"
+  integrity sha512-6nW7fPM/6LP6cLBdeLpkZYtowsSD5UmlqIAg4REV8jlZjPQF9GUGAbZ+L5iiuK6UNkcmIGTpGxHQ2tw9+aanuw==
   dependencies:
     async "^2.6.2"
     bluebird "^3.5.3"
@@ -15271,6 +15271,21 @@ react-hot-loader@^4.8.3:
   version "4.8.3"
   resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-4.8.3.tgz#14f018777a60ea9cfa60496c7341c2f967311253"
   integrity sha512-Is8bKbSxuDLTqsWu1yjr+o1yA6yGDGjEQ2i1E8t/Nj1xJYC6QBRbyoofTn1xkMoKpcgXHuTJTqBhK0RY6moFJA==
+  dependencies:
+    fast-levenshtein "^2.0.6"
+    global "^4.3.0"
+    hoist-non-react-statics "^3.3.0"
+    loader-utils "^1.1.0"
+    lodash "^4.17.11"
+    prop-types "^15.6.1"
+    react-lifecycles-compat "^3.0.4"
+    shallowequal "^1.0.2"
+    source-map "^0.7.3"
+
+react-hot-loader@^4.8.4:
+  version "4.8.4"
+  resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-4.8.4.tgz#357ba342e367fd42d6a870a9c0601c23fa0730c6"
+  integrity sha512-O98btZXcm24ZgP+aPBD0W9N+GEnkOg6vlLEy/IMZ53u3K/dGqO0I/RU4qrmQzE+wMDLpwNo5TwxaAjVw9Y+IBA==
   dependencies:
     fast-levenshtein "^2.0.6"
     global "^4.3.0"

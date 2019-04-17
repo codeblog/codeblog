@@ -1,7 +1,8 @@
 import { transformAsync } from "@babel/core";
 
-export const runBabel = (jsx: string) => {
+export const runBabel = (jsx: string, filename: string) => {
   return transformAsync(jsx, {
+    filename,
     presets: [
       [
         "@babel/env",

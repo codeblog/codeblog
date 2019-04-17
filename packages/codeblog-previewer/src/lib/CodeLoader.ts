@@ -57,7 +57,9 @@ export class CodeLoader {
     post: CompiledPackage,
     template: CompiledPackage,
     styleURLs: Array<string>,
-    props: any
+    props: any,
+    isTemplateChanged: boolean,
+    isPostChanged: boolean
   ) => {
     styleURLs.forEach(insertRemoteStylesheet);
     getCSSFiles(template).forEach((cssFile, index) => {
@@ -72,16 +74,25 @@ export class CodeLoader {
 
     const renderCodeblog = _require("./codeblog.js");
 
+    let paths = [];
+
+    if (isPostChanged) {
+      paths = paths.concat(getJSFiles(post).map(file => "/post/" + file));
+    }
+
+    if (isTemplateChanged) {
+      paths = paths.concat(
+        getJSFiles(template).map(
+          file => "/node_modules/codeblog-template/" + file
+        )
+      );
+    }
+
     renderCodeblog.ErrorBoundaryComponent = ErrorBar;
     return renderCodeblog({
       props,
       lastBuild: new Date().getTime(),
-      paths: [
-        ...getJSFiles(post).map(file => "/post/" + file),
-        ...getJSFiles(template).map(
-          file => "/node_modules/codeblog-template/" + file
-        )
-      ]
+      paths
     });
   };
 }
