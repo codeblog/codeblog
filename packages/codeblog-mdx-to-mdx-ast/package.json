@@ -28,5 +28,6 @@
     "unist-util-map": "^1.0.4",
     "unist-util-modify-children": "^1.1.3",
     "unist-util-visit": "^1.4.0"
-  }
+  },
+  "gitHead": "c99187293b3aa1eebd7e1240c666d626a474df72"
 }

@@ -50,5 +50,6 @@
   "dependencies": {
     "lottie-web": "^5.5.1"
   },
-  "main": "dist/index.js"
+  "main": "dist/index.js",
+  "gitHead": "c99187293b3aa1eebd7e1240c666d626a474df72"
 }

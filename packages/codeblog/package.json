@@ -45,5 +45,5 @@
     "webpack-cli": "^3.2.3",
     "webpack-fix-style-only-entries": "^0.2.0"
   },
-  "gitHead": "4b6949be1e45fb7926391ad54143a828cabfd80e"
+  "gitHead": "c99187293b3aa1eebd7e1240c666d626a474df72"
 }
