@@ -1,6 +1,6 @@
 {
   "name": "codeblog-mdx-to-mdx-ast",
-  "version": "2.0.0",
+  "version": "2.3.8",
   "description": "",
   "main": "dist/index.js",
   "browser": "dist/index.js",
