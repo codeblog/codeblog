@@ -214,7 +214,7 @@ export class DependencyManager {
         fs: BrowserFS.BFSRequire("fs"),
         dependencies: Object.assign(
           {},
-          BUNDLED_DEPENDENCIES.contents,
+          Object.assign({}, lastInstalledDeps, BUNDLED_DEPENDENCIES.contents),
           lastInstalledDeps
         ),
         logger: function() {}
