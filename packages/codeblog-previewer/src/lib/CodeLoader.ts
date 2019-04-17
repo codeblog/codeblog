@@ -1,6 +1,6 @@
 import { CompiledPackage } from "./messages";
 import { extname } from "path";
-import * as BrowserFS from "codesandbox-browserfs";
+import * as BrowserFS from "browserfs";
 import { ErrorBoundaryComponent } from "../components/CodeblogErrorContainer";
 import { ErrorBar } from "../components/ErrorBar";
 

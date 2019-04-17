@@ -20,6 +20,14 @@ const vlog = (...args) => {
   }
 };
 
+const vwarn = (...args) => {
+  if (VERBOSE_LOGGING) {
+    console.warn.call(this, args);
+  } else {
+    return;
+  }
+};
+
 const vtime = (...args) => {
   if (VERBOSE_LOGGING) {
     console.time.call(this, args);
@@ -339,7 +347,7 @@ export class Server {
     } else if (type === "get_html") {
       this.handleSendHTML();
     } else {
-      console.warn("Received unknown message", event.data);
+      vwarn("Received unknown message", event.data);
     }
   };
 }

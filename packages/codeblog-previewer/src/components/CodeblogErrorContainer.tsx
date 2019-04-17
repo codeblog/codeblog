@@ -1,5 +1,5 @@
 import React from "react";
-import * as BrowserFS from "codesandbox-browserfs";
+import * as BrowserFS from "browserfs";
 
 import { overlayStyle, iframeStyle } from "react-error-guard/lib/styles";
 // import getStackFrames from "react-error-guard/lib/utils/getStackFrames";

@@ -4382,6 +4382,14 @@ browser-unpack@^1.1.0:
     concat-stream "^1.5.0"
     minimist "^1.1.1"
 
+browserfs@latest:
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/browserfs/-/browserfs-1.4.3.tgz#92ffc6063967612daccdb8566d3fc03f521205fb"
+  integrity sha512-tz8HClVrzTJshcyIu8frE15cjqjcBIu15Bezxsvl/i+6f59iNCN3kznlWjz0FEb3DlnDx3gW5szxeT6D1x0s0w==
+  dependencies:
+    async "^2.1.4"
+    pako "^1.0.4"
+
 browserify-aes@0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/browserify-aes/-/browserify-aes-0.4.0.tgz#067149b668df31c4b58533e02d01e806d8608e2c"
@@ -5260,14 +5268,6 @@ codeblog-packager@2.0.1:
     lodash "^4.17.11"
     npm-package-arg "^6.1.0"
     semver "^5.6.0"
-
-codesandbox-browserfs@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/codesandbox-browserfs/-/codesandbox-browserfs-2.0.1.tgz#f8b02637a8dfbc4858809cfff23127414f31e6d9"
-  integrity sha512-6dY/XFuEPtjZ1vbJHrZ+2O+WsI6h1vKO8DMU72gpv3/nBmGP+Yfh6OKrivJN38zIuMHqYoPU7MKR9zHvcFzFtA==
-  dependencies:
-    async "^2.5.0"
-    pako "^1.0.5"
 
 collapse-white-space@^1.0.0, collapse-white-space@^1.0.2, collapse-white-space@^1.0.4:
   version "1.0.4"
@@ -13334,7 +13334,7 @@ pako@^0.2.5, pako@~0.2.0:
   resolved "https://registry.yarnpkg.com/pako/-/pako-0.2.9.tgz#f3f7522f4ef782348da8161bad9ecfd51bf83a75"
   integrity sha1-8/dSL073gjSNqBYbrZ7P1Rv4OnU=
 
-pako@^1.0.5, pako@~1.0.5:
+pako@^1.0.4, pako@~1.0.5:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/pako/-/pako-1.0.10.tgz#4328badb5086a426aa90f541977d4955da5c9732"
   integrity sha512-0DTvPVU3ed8+HNXOu5Bs+o//Mbdj9VNQMUOe9oKCwh8l0GNwpTDMKCWbRjgtD291AWnkAgkqA/LOnQS8AmS1tw==
@@ -17371,6 +17371,11 @@ sha.js@^2.4.0, sha.js@^2.4.8, sha.js@~2.4.4:
   dependencies:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
+
+sha256-file@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/sha256-file/-/sha256-file-1.0.0.tgz#02cade5e658da3fbc167c3270bdcdfd5409f1b65"
+  integrity sha512-nqf+g0veqgQAkDx0U2y2Tn2KWyADuuludZTw9A7J3D+61rKlIIl9V5TS4mfnwKuXZOH9B7fQyjYJ9pKRHIsAyg==
 
 shadertoy-react@^1.1.0:
   version "1.1.0"

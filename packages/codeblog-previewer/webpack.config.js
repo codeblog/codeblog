@@ -2,9 +2,10 @@ const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
-const browserfs = require("codesandbox-browserfs");
+const browserfs = require("browserfs");
 const fs = require("fs");
 const _ = require("lodash");
+const sha256file = require("sha256-file");
 
 module.exports = {
   entry: {
@@ -26,17 +27,17 @@ module.exports = {
     extensions: [".wasm", ".mjs", ".js", ".json", ".tsx", ".ts"],
     alias: {
       osenv: path.resolve(__dirname, "src/osenv-shim.js"),
-      fs: "codesandbox-browserfs/dist/shims/fs.js",
-      buffer: "codesandbox-browserfs/dist/shims/buffer.js",
-      browserfs: "codesandbox-browserfs",
-      path: "codesandbox-browserfs/dist/shims/path.js",
-      processGlobal: "codesandbox-browserfs/dist/shims/process.js",
-      bufferGlobal: "codesandbox-browserfs/dist/shims/bufferGlobal.js",
-      bfsGlobal: require.resolve("codesandbox-browserfs")
+      fs: "browserfs/dist/shims/fs.js",
+      buffer: "browserfs/dist/shims/buffer.js",
+      browserfs: "browserfs",
+      path: "browserfs/dist/shims/path.js",
+      processGlobal: "browserfs/dist/shims/process.js",
+      bufferGlobal: "browserfs/dist/shims/bufferGlobal.js",
+      bfsGlobal: require.resolve("browserfs")
     }
   },
   module: {
-    noParse: /codesandbox-browserfs\.js/,
+    noParse: /browserfs\.js/,
     rules: [
       {
         test: /\.worker\.tsx?$/,
@@ -141,6 +142,10 @@ module.exports = {
     new webpack.DefinePlugin({
       __DEV__: true,
       IS_DEVELOPMENT: true,
+      BUNDLED_DEPENDENCIES_VERSION:
+        '"' +
+        sha256file(path.join(__dirname, "src/lib/BUNDLED_DEPENDENCIES.json")) +
+        '"',
       "process.env.NODE_ENV": "'development'",
       "typeof window !== 'undefined'": "false"
     }),

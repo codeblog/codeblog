@@ -5,10 +5,11 @@ import {
 import { CompiledPackage, ServerStatus } from "./messages";
 import Bluebird from "bluebird";
 import { isEqual, omit, get, isEmpty, toPairs, truncate } from "lodash";
-import * as BrowserFS from "codesandbox-browserfs";
+import * as BrowserFS from "browserfs";
 import localForage from "localforage";
 import BUNDLED_DEPENDENCIES from "./BUNDLED_DEPENDENCIES.json";
 import { reportLoadingStatus, dismissLoading } from "../components/ErrorBar";
+
 const BUNDLED_DEPENDENCY_NAMES = BUNDLED_DEPENDENCIES.dependencies.map(
   ({ name }) => name
 );
@@ -38,10 +39,8 @@ const createAsyncMirrorFS = Bluebird.promisify(
 
 let LAST_MANIFEST = null;
 
-const LAST_INSTALLED_DEPENDENCIES_FILEPATH =
-  "/last-installed-dependencies.json";
-const LAST_INSTALLED_DEPENDENCIES_MANIFEST_FILEPATH =
-  "/last-installed-dependencies.manifest.json";
+const LAST_INSTALLED_DEPENDENCIES_FILEPATH = `/${BUNDLED_DEPENDENCIES_VERSION}-last-installed-dependencies.json`;
+const LAST_INSTALLED_DEPENDENCIES_MANIFEST_FILEPATH = `/${BUNDLED_DEPENDENCIES_VERSION}-last-installed-dependencies.manifest.json`;
 
 // const configureBrowserFS = Bluebird.promisify(BrowserFS.configure);
 
@@ -189,7 +188,9 @@ export class DependencyManager {
 
     reportLoadingStatus("Starting development environment", this.status);
     const inMemory = await createMemoryFS();
-    const idbfs = await createIDBFS({ storeName: "codeblog-previewer" });
+    const idbfs = await createIDBFS({
+      storeName: `codeblog-previewer-${BUNDLED_DEPENDENCIES_VERSION}`
+    });
 
     const mirrorFS = await createAsyncMirrorFS({
       sync: inMemory,
@@ -201,27 +202,11 @@ export class DependencyManager {
 
     BrowserFS.install(window);
 
-    const lastInstalledDeps = await localForage.getItem(
-      LAST_INSTALLED_DEPENDENCIES_FILEPATH
-    );
     const lastInstalledDepsManifest = await localForage.getItem(
       LAST_INSTALLED_DEPENDENCIES_MANIFEST_FILEPATH
     );
 
-    if (lastInstalledDeps && lastInstalledDepsManifest) {
-      this.installer = new Installer({
-        rootDir: "/",
-        fs: BrowserFS.BFSRequire("fs"),
-        dependencies: Object.assign(
-          {},
-          Object.assign({}, lastInstalledDeps, BUNDLED_DEPENDENCIES.contents),
-          lastInstalledDeps
-        ),
-        logger: function() {}
-      });
-      await this.installer.install();
-      LAST_MANIFEST = lastInstalledDepsManifest;
-    } else {
+    if (!lastInstalledDepsManifest) {
       this.installer = new Installer({
         rootDir: "/",
         fs: BrowserFS.BFSRequire("fs"),
@@ -291,6 +276,7 @@ export class DependencyManager {
     this.status = ServerStatus.installing_dependencies_finished;
 
     dismissLoading();
+    LAST_MANIFEST = dependencies;
   };
 
   // saveDependencies = async () => {
