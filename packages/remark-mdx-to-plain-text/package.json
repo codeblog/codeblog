@@ -1,6 +1,6 @@
 {
   "name": "remark-mdx-to-plain-text",
-  "version": "2.3.8",
+  "version": "2.4.0",
   "description": "Remove MDX formatting",
   "license": "MIT",
   "keywords": [
