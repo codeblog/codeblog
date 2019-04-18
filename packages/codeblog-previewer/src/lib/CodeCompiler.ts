@@ -11,67 +11,55 @@ export class CodeCompiler {
   codeCompiler: Worker;
   codeCompilerStatus: BabelWorkerMessages;
   codeCompilerError: Error;
-  type: "post" | "template";
   onCodeChangeComplete: (value: CompiledPackage) => void | null;
   onCodeChangeError: (error: Error) => void | null;
 
-  constructor({ type }: { type: "post" | "template" }) {
-    this.type = type;
+  constructor() {
     this.codeCompiler = new BabelWorker();
-    this.codeCompilerStatus = null;
-    this.onCodeChangeComplete = null;
-    this.onCodeChangeError = null;
-
-    this.codeCompiler.onmessage = this.handleCodeCompilerMessage;
   }
 
   dispose = () => {
     this.codeCompiler.dispose();
   };
 
-  handleCodeCompilerMessage = (evt: ServiceWorkerMessageEvent) => {
-    if (Object.values(BabelWorkerMessages).includes(evt.data.type)) {
-      this.codeCompilerStatus = evt.data.type;
-      this.codeCompilerError = evt.data.error;
-
-      if (
-        this.codeCompilerStatus === BabelWorkerMessages.compile_finished &&
-        !this.codeCompilerError
-      ) {
-        if (this.onCodeChangeComplete) {
-          this.onCodeChangeComplete(evt.data.value);
-        }
-
-        this.onCodeChangeComplete = null;
-      } else if (
-        this.codeCompilerStatus === BabelWorkerMessages.compile_finished &&
-        this.codeCompilerError
-      ) {
-        if (this.onCodeChangeError) {
-          this.onCodeChangeError(evt.data.error);
-        }
-
-        this.onCodeChangeError = null;
-      }
-    } else {
-      console.warn("Unknown message", evt);
-    }
-  };
-
-  onChangeCode = (originalCode: RawPackage) => {
+  onChangeCode = (originalCode: RawPackage, type: "post" | "template") => {
     return new Promise((resolve, reject) => {
       const data: BabelWorkerMessageData = {
         type: BabelWorkerMessages.compile_start,
         error: null,
-        packageType: this.type,
+        packageType: type,
         pkg: originalCode,
         value: null
       };
 
-      this.codeCompiler.postMessage(data);
+      const onMessage = (_evt: ServiceWorkerMessageEvent) => {
+        const data = _evt.data;
+        const responseType = data.type;
+        const packageType = data.packageType;
+        const error = data.error;
 
-      this.onCodeChangeComplete = resolve;
-      this.onCodeChangeError = reject;
+        if (packageType !== type) {
+          return;
+        }
+
+        if (Object.values(BabelWorkerMessages).includes(responseType)) {
+          if (responseType === BabelWorkerMessages.compile_finished && !error) {
+            resolve(data.value);
+            this.codeCompiler.removeEventListener("message", onMessage);
+          } else if (
+            responseType === BabelWorkerMessages.compile_finished &&
+            error
+          ) {
+            reject(error);
+            this.codeCompiler.removeEventListener("message", onMessage);
+          }
+        } else {
+          console.warn("Unknown message", _evt);
+        }
+      };
+
+      this.codeCompiler.addEventListener("message", onMessage);
+      this.codeCompiler.postMessage(data);
     });
   };
 }

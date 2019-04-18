@@ -6,6 +6,8 @@ const browserfs = require("browserfs");
 const fs = require("fs");
 const _ = require("lodash");
 const sha256file = require("sha256-file");
+const BUNDLED_DEPENDENCIES = require("./src/lib/BUNDLED_DEPENDENCIES.json");
+const WorkboxPlugin = require("workbox-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -98,6 +100,7 @@ module.exports = {
                 "@babel/preset-typescript"
               ],
               plugins: [
+                "@babel/plugin-syntax-dynamic-import",
                 [
                   "@babel/plugin-transform-runtime",
                   {
@@ -146,6 +149,9 @@ module.exports = {
         '"' +
         sha256file(path.join(__dirname, "src/lib/BUNDLED_DEPENDENCIES.json")) +
         '"',
+      BUNDLED_DEPENDENCY_NAMES: JSON.stringify(
+        BUNDLED_DEPENDENCIES.dependencies.map(({ name }) => name)
+      ),
       "process.env.NODE_ENV": "'development'",
       "typeof window !== 'undefined'": "false"
     }),
@@ -169,7 +175,8 @@ module.exports = {
       // Options similar to the same options in webpackOptions.output
       // both options are optional
       filename: "[name].[contenthash].css"
-    })
+    }),
+    new WorkboxPlugin.GenerateSW()
   ],
   // DISABLE Webpack's built-in process and Buffer polyfills!
   node: {

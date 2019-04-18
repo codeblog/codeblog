@@ -7,12 +7,8 @@ import Bluebird from "bluebird";
 import { isEqual, omit, get, isEmpty, toPairs, truncate } from "lodash";
 import * as BrowserFS from "browserfs";
 import localForage from "localforage";
-import BUNDLED_DEPENDENCIES from "./BUNDLED_DEPENDENCIES.json";
 import { reportLoadingStatus, dismissLoading } from "../components/ErrorBar";
-
-const BUNDLED_DEPENDENCY_NAMES = BUNDLED_DEPENDENCIES.dependencies.map(
-  ({ name }) => name
-);
+import RENDER_CODEBLOG_POST_FILE from "!!raw-loader!../eval/renderCodeblogPost.js";
 
 const PREINSTALLED_LIST = [
   ...BUNDLED_DEPENDENCY_NAMES,
@@ -28,11 +24,9 @@ window.REQUIRE_MAPPINGS = {
 //   BrowserFS.FileSystem.LocalStorage.Create
 // );
 // debugger;
+
 const createIDBFS = Bluebird.promisify(BrowserFS.FileSystem.IndexedDB.Create);
 const createMemoryFS = Bluebird.promisify(BrowserFS.FileSystem.InMemory.Create);
-// const createMountableFS = Bluebird.promisify(
-//   BrowserFS.FileSystem.MountableFileSystem.Create
-// );
 const createAsyncMirrorFS = Bluebird.promisify(
   BrowserFS.FileSystem.AsyncMirror.Create
 );
@@ -43,133 +37,6 @@ const LAST_INSTALLED_DEPENDENCIES_FILEPATH = `/${BUNDLED_DEPENDENCIES_VERSION}-l
 const LAST_INSTALLED_DEPENDENCIES_MANIFEST_FILEPATH = `/${BUNDLED_DEPENDENCIES_VERSION}-last-installed-dependencies.manifest.json`;
 
 // const configureBrowserFS = Bluebird.promisify(BrowserFS.configure);
-
-const RENDER_CODEBLOG_POST_FILE = `
-const origRequire = module.constructor.prototype.require;
-
-module.constructor.prototype.require = function(moduleName) {
-  if (window.REQUIRE_MAPPINGS[moduleName]) {
-
-    return window.REQUIRE_MAPPINGS[moduleName];
-  } else {
-    return origRequire.call(this, moduleName);
-  }
-}
-
-const React = require("react");
-const ReactDOM = require("@hot-loader/react-dom");
-const MDXJS = require("@mdx-js/react");
-const AppContainer = require("react-hot-loader").AppContainer;
-
-
-const mdx = MDXJS.mdx;
-const MDXProvider = MDXJS.MDXProvider;
-
-
-const Codeblog = require("codeblog");
-window.React = React;
-window.mdx = mdx;
-window.ReactDOM = ReactDOM;
-
-
-
-const CodeblogPreviewer = ({props, Blog, BlogPost, Post, Components}) => (
-  React.createElement(
-    AppContainer,
-    {},
-    React.createElement(
-      Codeblog.CodeblogRoot,
-      Object.assign({
-        BlogComponent: Blog,
-        BlogPostComponent: BlogPost,
-        environment: 'client',
-      }, props),
-      React.createElement(
-        MDXProvider,
-        {components: Components},
-        React.createElement(Post, {components: Components})
-      )
-    )
-  )
-)
-
-let hasRenderedOnce = true;
-module.exports = function renderCodeblog({props, paths, lastBuild}) {
-  return new Promise(async (resolve, reject) => {
-    const rootElement = document.querySelector("#codeblog");
-
-
-    const reload = require("require-reload")(require);
-    let error = null;
-
-    try {
-      paths.forEach(file => reload(file))
-    } catch(exception) {
-      console.error(exception)
-      error = exception;
-    }
-
-
-    let Blog, BlogPost, Post, Components;
-
-    const pr = new Promise((_resolve) => {
-      window.requestIdleCallback(() => {
-        try {
-          const Template = reload("codeblog-template");
-          Blog = Template.Blog;
-          BlogPost = Template.BlogPost;
-          Components = Template.Components;
-          Post = reload("./post").default;
-        } catch(exception) {
-          error = exception;
-        }
-        _resolve();
-      }, {timeout: 500}
-      );
-    });
-    await pr;
-
-
-    if (!error) {
-      const pr = new Promise((_resolve) => {
-        window.requestIdleCallback(() => {
-          try {
-            const codeblog = React.createElement(CodeblogPreviewer, {props, Blog, BlogPost, Post, Components});
-            ReactDOM.render(codeblog, document.querySelector("#codeblog-fake-hidden-box"))
-          } catch(exception) {
-            error = exception;
-
-          }
-
-
-          if (!error) {
-            const codeblog = React.createElement(CodeblogPreviewer, {props, Blog, BlogPost, Post, Components});
-            ReactDOM.render(codeblog, rootElement);
-            hasRenderedOnce = true;
-            ReactDOM.unmountComponentAtNode(document.querySelector("#codeblog-fake-hidden-box"))
-          }
-
-          _resolve();
-        })
-      }, {timeout: 500})
-
-      await pr;
-    }
-
-
-    if (error) {
-      console.error(error)
-    }
-
-    ReactDOM.render(
-      React.createElement(renderCodeblog.ErrorBoundaryComponent, {error, level: 'runtime', hasRenderedOnce}),
-      document.querySelector("#codeblog-runtime-error-box")
-    )
-
-    resolve(true);
-  });
-
-}`;
 
 let _isFSInitialized = false;
 
@@ -186,38 +53,21 @@ export class DependencyManager {
 
     this.status = ServerStatus.fs_init;
 
-    reportLoadingStatus("Starting development environment", this.status);
     const inMemory = await createMemoryFS();
-    const idbfs = await createIDBFS({
-      storeName: `codeblog-previewer-${BUNDLED_DEPENDENCIES_VERSION}`
-    });
 
-    const mirrorFS = await createAsyncMirrorFS({
-      sync: inMemory,
-      async: idbfs
-    });
-
-    BrowserFS.initialize(mirrorFS);
-    _isFSInitialized = true;
-
+    BrowserFS.initialize(inMemory);
     BrowserFS.install(window);
 
-    const lastInstalledDepsManifest = await localForage.getItem(
-      LAST_INSTALLED_DEPENDENCIES_MANIFEST_FILEPATH
-    );
+    reportLoadingStatus("Fetching dependencies...", this.status);
+    const dynamicImporter = await import(/* webpackChunkName: "dependencies-bundle" */
+    `./importDependencyBundle`);
 
-    if (!lastInstalledDepsManifest) {
-      this.installer = new Installer({
-        rootDir: "/",
-        fs: BrowserFS.BFSRequire("fs"),
-        dependencies: Object.assign({}, BUNDLED_DEPENDENCIES.contents),
-        logger: function() {}
-      });
+    await dynamicImporter.run();
 
-      await this.installer.install();
-    }
+    reportLoadingStatus("Installing dependencies...", this.status);
 
-    dismissLoading();
+    _isFSInitialized = true;
+
     this.status = ServerStatus.fs_finished;
   };
 

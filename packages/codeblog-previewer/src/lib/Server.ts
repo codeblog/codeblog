@@ -9,36 +9,37 @@ import {
 import { CodeLoader } from "./CodeLoader";
 import { isEqual, throttle } from "lodash";
 import { reportBuildError, dismissError } from "../components/ErrorBar";
+import Queue from "queue";
 
-const VERBOSE_LOGGING = false;
+window.VERBOSE_LOGGING = true;
 
 const vlog = (...args) => {
-  if (VERBOSE_LOGGING) {
-    console.log.call(this, args);
+  if (window.VERBOSE_LOGGING) {
+    console.log.apply(this, args);
   } else {
     return;
   }
 };
 
 const vwarn = (...args) => {
-  if (VERBOSE_LOGGING) {
-    console.warn.call(this, args);
+  if (window.VERBOSE_LOGGING) {
+    console.warn.apply(this, args);
   } else {
     return;
   }
 };
 
 const vtime = (...args) => {
-  if (VERBOSE_LOGGING) {
-    console.time.call(this, args);
+  if (window.VERBOSE_LOGGING) {
+    console.time.apply(this, args);
   } else {
     return;
   }
 };
 
 const vtimeEnd = (...args) => {
-  if (VERBOSE_LOGGING) {
-    console.timeEnd.call(this, args);
+  if (window.VERBOSE_LOGGING) {
+    console.timeEnd.apply(this, args);
   } else {
     return;
   }
@@ -52,8 +53,7 @@ const sendMessage = ({ type, value, error }: ServerCommandMessageEventData) => {
 };
 
 export class Server {
-  postCompiler: CodeCompiler;
-  templateCompiler: CodeCompiler;
+  compiler: CodeCompiler;
   dependencyManager: DependencyManager;
   status: ServerStatus;
   startedLoadingPostAt: Date | null;
@@ -62,17 +62,27 @@ export class Server {
   lastTemplate: any;
   lastCompiledTemplate: any;
   hasBuildError: boolean = false;
+  queue: Queue;
+  isQueueReady: boolean = false;
 
   constructor() {
     this.status = ServerStatus.init;
 
-    this.postCompiler = new CodeCompiler({ type: "post" });
-    this.templateCompiler = new CodeCompiler({ type: "template" });
+    this.queue = Queue({
+      autostart: false,
+      concurrency: 1,
+      timeout: 60000
+    });
+    this.compiler = new CodeCompiler();
     this.dependencyManager = new DependencyManager();
   }
 
   startListening = () => {
     window.addEventListener("message", this.listenForCommands);
+    this.initializeFS().then(() => {
+      this.isQueueReady = true;
+      this.queue.start();
+    });
   };
 
   _handleError = (error: Error, status: ServerStatus) => {
@@ -120,7 +130,7 @@ export class Server {
     try {
       vtime("[Server] Compile post");
       this.status = ServerStatus.compiling_post;
-      const compiledPost = await this.postCompiler.onChangeCode(post);
+      const compiledPost = await this.compiler.onChangeCode(post, "post");
       vtimeEnd("[Server] Compile post");
       this.sendStatusUpdate(ServerStatus.compiling_template_finished);
       return compiledPost;
@@ -138,8 +148,9 @@ export class Server {
     try {
       vtime("[Server] Compile template");
       this.status = ServerStatus.compiling_template;
-      const compiledTemplate = await this.templateCompiler.onChangeCode(
-        template
+      const compiledTemplate = await this.compiler.onChangeCode(
+        template,
+        "template"
       );
       vtimeEnd("[Server] Compile template");
       this.sendStatusUpdate(ServerStatus.compiling_template_finished);
@@ -168,19 +179,22 @@ export class Server {
     }
   };
 
-  _handleLoadPost = async (post: any, template: any, props: any) => {
-    if (
-      !this.hasBuildError &&
-      this.startedLoadingPostAt &&
-      (new Date().getTime() - this.startedLoadingPostAt.getTime()) / 1000 < 10
-    ) {
-      return;
-    }
+  initializeFS = () => {
+    return new Promise((resolve, reject) => {
+      self.requestIdleCallback(
+        async () => {
+          await this.handleInitializeFS();
+          resolve();
+        },
+        {
+          timeout: 1000
+        }
+      );
+    });
+  };
 
-    if (this.hasBuildError) {
-      this.hasBuildError = false;
-      dismissError();
-    }
+  __handleLoadPost = async (post: any, template: any, props: any) => {
+    dismissError();
 
     console.time("[Server] Load post");
 
@@ -215,25 +229,12 @@ export class Server {
 
       dismissError();
 
-      const handleFS = new Promise((resolve, reject) => {
-        self.requestIdleCallback(
-          async () => {
-            await this.handleInitializeFS();
-            resolve();
-          },
-          {
-            timeout: 100
-          }
-        );
-      });
-
-      promises.push(handleFS);
-
       const result = await Promise.all(promises);
       compiledPost = result[0];
       compiledTemplate = result[1];
     } catch ({ error, status, ...other }) {
       this.handleError(error, status);
+      console.timeEnd("[Server] Load post");
       return;
     }
 
@@ -264,6 +265,7 @@ export class Server {
       this.sendStatusUpdate();
     } catch (error) {
       this.handleError(error, ServerStatus.installing_dependencies_error);
+      console.timeEnd("[Server] Load post");
       return;
     }
 
@@ -285,6 +287,8 @@ export class Server {
       vtimeEnd("[Server] Load code");
     } catch (error) {
       this.handleError(error, ServerStatus.loading_code_error);
+      vtimeEnd("[Server] Load code");
+      console.timeEnd("[Server] Load post");
       return;
     }
 
@@ -304,10 +308,19 @@ export class Server {
     this.lastCompiledTemplate = compiledTemplate;
   };
 
-  handleLoadPost = throttle(this._handleLoadPost, 150, {
-    trailing: true,
-    leading: false
-  });
+  handleLoadPost = (post: any, template: any, props: any) => {
+    if (this.queue.length > 1) {
+      this.queue.splice(1, this.queue.length - 2);
+    }
+
+    this.queue.push(cb => {
+      return this.__handleLoadPost(post, template, props);
+    });
+
+    if (this.isQueueReady && typeof this.queue.start === "function") {
+      this.queue.start();
+    }
+  };
 
   handleLoadTemplate = (template: any, props: any) => {};
   handleSendHTML = () => {
