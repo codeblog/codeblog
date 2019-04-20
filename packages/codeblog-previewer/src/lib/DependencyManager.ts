@@ -3,7 +3,6 @@ import {
   Installer
 } from "codeblog-packager";
 import { CompiledPackage, ServerStatus } from "./messages";
-import Bluebird from "bluebird";
 import { isEqual, omit, get, isEmpty, toPairs, truncate } from "lodash";
 import * as BrowserFS from "browserfs";
 import localForage from "localforage";
@@ -25,12 +24,6 @@ window.REQUIRE_MAPPINGS = {
 // );
 // debugger;
 
-const createIDBFS = Bluebird.promisify(BrowserFS.FileSystem.IndexedDB.Create);
-const createMemoryFS = Bluebird.promisify(BrowserFS.FileSystem.InMemory.Create);
-const createAsyncMirrorFS = Bluebird.promisify(
-  BrowserFS.FileSystem.AsyncMirror.Create
-);
-
 let LAST_MANIFEST = null;
 
 const LAST_INSTALLED_DEPENDENCIES_FILEPATH = `/${BUNDLED_DEPENDENCIES_VERSION}-last-installed-dependencies.json`;
@@ -39,6 +32,24 @@ const LAST_INSTALLED_DEPENDENCIES_MANIFEST_FILEPATH = `/${BUNDLED_DEPENDENCIES_V
 // const configureBrowserFS = Bluebird.promisify(BrowserFS.configure);
 
 let _isFSInitialized = false;
+
+const setupBrowserFS = () =>
+  new Promise((resolve, reject) => {
+    BrowserFS.configure(
+      {
+        fs: "InMemory"
+      },
+      e => {
+        if (e) {
+          reject(e);
+          return;
+        }
+
+        BrowserFS.install(window);
+        resolve();
+      }
+    );
+  });
 
 export class DependencyManager {
   templatePkg: CompiledPackage | null;
@@ -53,10 +64,7 @@ export class DependencyManager {
 
     this.status = ServerStatus.fs_init;
 
-    const inMemory = await createMemoryFS();
-
-    BrowserFS.initialize(inMemory);
-    BrowserFS.install(window);
+    await setupBrowserFS();
 
     reportLoadingStatus("Fetching dependencies...", this.status);
     const dynamicImporter = await import(/* webpackChunkName: "dependencies-bundle" */
@@ -68,6 +76,11 @@ export class DependencyManager {
 
     _isFSInitialized = true;
 
+    this.installer = new Installer({
+      dependencies: {},
+      fs: BrowserFS.BFSRequire("fs"),
+      rootDir: "/"
+    });
     this.status = ServerStatus.fs_finished;
   };
 

@@ -12,7 +12,11 @@
     "dev": "webpack-dev-server --config webpack.config.js --mode development --watch",
     "prebuild": "rimraf dist",
     "build": "webpack --config webpack.config.js --mode production",
-    "deploy": "gsutil -m rsync -r -c -d dist/ gs://previewer.codeblog.com"
+    "deploy": "gsutil -m rsync -r -c -d dist/ gs://previewer.codeblog.com",
+    "deploy-set-caching-index": "gsutil setmeta -h \"Cache-Control: max-age=0,no-cache,no-store,must-revalidate\" gs://previewer.codeblog.com/*.html",
+    "deploy-set-caching-sw": "gsutil setmeta -h \"Cache-Control: max-age=0,no-cache,no-store,must-revalidate\" gs://previewer.codeblog.com/service-worker.js",
+    "deploy-set-caching": "yarn --silent deploy-set-caching-index && yarn --silent deploy-set-caching-sw",
+    "postdeploy": "yarn --silent deploy-set-caching"
   },
   "files": [
     "dist",
@@ -31,6 +35,7 @@
     "@babel/preset-typescript": "^7.3.3",
     "@types/classnames": "^2.2.7",
     "@types/react": "^16.8.4",
+    "autodll-webpack-plugin": "^0.4.2",
     "babel-loader": "^8.0.5",
     "copy-webpack-plugin": "^5.0.0",
     "css-loader": "^2.1.0",

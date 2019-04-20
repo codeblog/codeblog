@@ -681,38 +681,54 @@ const COLORS = {
   }
 };
 
+// Object.keys(RAW_COLOR_SCHEMES)
+//   .filter(colorName => {
+//     const colors = lodash.sortBy(RAW_COLOR_SCHEMES[colorName], color =>
+//       isDarkColor(color)
+//     );
+
+//     const ratio = getContrast.ratio(colors[0], colors[3]);
+//     console.log(ratio);
+//     return ratio > 5;
+//   })
+//   .forEach(colorName => {
+//     const colors = RAW_COLOR_SCHEMES[colorName];
+
+//     CSS_COLORS[slugify(colorName).toLowerCase()] = {
+//       "--page-background": colors[0],
+//       "--page-background-offset": colors[1],
+//       "--color-primary": colors[2],
+//       "--text-color": colors[3],
+//       "--text-dark-color": colors[4]
+//     };
+//   });
+
+// const COLOR_SCHEME_CSS = Object.keys(CSS_COLORS)
+//   .map(colorName => {
+//     return `.Codeblog-ColorScheme-${colorName} {
+// ${Object.keys(COLORS[colorName])
+//   .map(property => {
+//     return `    ${property}: ${COLORS[colorName][property]};`;
+//   })
+//   .join("\n")}
+// }`;
+//   })
+//   .join("\n\n");
+
+// console.log(COLOR_SCHEME_CSS);
+
+const colorList = [];
 Object.keys(RAW_COLOR_SCHEMES)
-  .filter(colorName => {
-    const colors = lodash.sortBy(RAW_COLOR_SCHEMES[colorName], color =>
-      isDarkColor(color)
-    );
+.forEach(colorName => {
+  const colors = RAW_COLOR_SCHEMES[colorName];
 
-    const ratio = getContrast.ratio(colors[0], colors[3]);
-    console.log(ratio);
-    return ratio > 5;
-  })
-  .forEach(colorName => {
-    const colors = RAW_COLOR_SCHEMES[colorName];
-
-    CSS_COLORS[slugify(colorName).toLowerCase()] = {
-      "--page-background": colors[0],
-      "--page-background-offset": colors[1],
-      "--color-primary": colors[2],
-      "--text-color": colors[3],
-      "--text-dark-color": colors[4]
-    };
+  colorList.push({
+    "--page-background": colors[0],
+    "--page-background-offset": colors[1],
+    "--color-primary": colors[2],
+    "--text-color": colors[3],
+    "--text-dark-color": colors[4]
   });
+});
 
-const COLOR_SCHEME_CSS = Object.keys(CSS_COLORS)
-  .map(colorName => {
-    return `.Codeblog-ColorScheme-${colorName} {
-${Object.keys(COLORS[colorName])
-  .map(property => {
-    return `    ${property}: ${COLORS[colorName][property]};`;
-  })
-  .join("\n")}
-}`;
-  })
-  .join("\n\n");
-
-console.log(COLOR_SCHEME_CSS);
+console.log(colorList);

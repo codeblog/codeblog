@@ -40,13 +40,13 @@ const insertRemoteStylesheet = (url: string) => {
   document.head.appendChild(element);
 };
 
-const getCSSFiles = (pkg: CompiledPackage) => {
+export const getCSSFiles = (pkg: CompiledPackage) => {
   return Object.keys(pkg)
     .filter(file => extname(file) === ".css")
     .sort();
 };
 
-const getJSFiles = (pkg: CompiledPackage) => {
+export const getJSFiles = (pkg: CompiledPackage) => {
   return Object.keys(pkg)
     .filter(file => extname(file) === ".js")
     .sort();
@@ -59,7 +59,8 @@ export class CodeLoader {
     styleURLs: Array<string>,
     props: any,
     isTemplateChanged: boolean,
-    isPostChanged: boolean
+    isPostChanged: boolean,
+    isPropsChanged: boolean
   ) => {
     styleURLs.forEach(insertRemoteStylesheet);
     getCSSFiles(template).forEach((cssFile, index) => {
@@ -89,10 +90,13 @@ export class CodeLoader {
     }
 
     renderCodeblog.ErrorBoundaryComponent = ErrorBar;
-    return renderCodeblog({
-      props,
-      lastBuild: new Date().getTime(),
-      paths
-    });
+    // False when just changing CSS
+    if (isPostChanged || isTemplateChanged || isPropsChanged) {
+      renderCodeblog({
+        props,
+        lastBuild: new Date().getTime(),
+        paths
+      });
+    }
   };
 }

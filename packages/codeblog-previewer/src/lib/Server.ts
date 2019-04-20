@@ -6,12 +6,19 @@ import {
   ServerCommandType,
   ServerCommandMessageEventData
 } from "./messages";
-import { CodeLoader } from "./CodeLoader";
-import { isEqual, throttle } from "lodash";
+import { extname } from "path";
+import { CodeLoader, getCSSFiles } from "./CodeLoader";
+import { isEqual, throttle, debounce, pick, omit } from "lodash";
 import { reportBuildError, dismissError } from "../components/ErrorBar";
 import Queue from "queue";
 
-window.VERBOSE_LOGGING = true;
+export const getCompilableFiles = pkg => {
+  return Object.keys(pkg)
+    .filter(file => [".js", ".mdx", ".json"].includes(extname(file)))
+    .sort();
+};
+
+window.VERBOSE_LOGGING = false;
 
 const vlog = (...args) => {
   if (window.VERBOSE_LOGGING) {
@@ -61,6 +68,7 @@ export class Server {
   lastCompiledPost: any;
   lastTemplate: any;
   lastCompiledTemplate: any;
+  lastProps: any;
   hasBuildError: boolean = false;
   queue: Queue;
   isQueueReady: boolean = false;
@@ -85,7 +93,7 @@ export class Server {
     });
   };
 
-  _handleError = (error: Error, status: ServerStatus) => {
+  _handleError = (error: Error, status: ServerStatus, message?: string) => {
     console.group("[Server]", status);
     console.error(error);
     console.groupEnd();
@@ -112,8 +120,7 @@ export class Server {
     });
   };
 
-  handleError = throttle(this._handleError, 2000, {
-    leading: true,
+  handleError = debounce(this._handleError, 2000, {
     trailing: true
   });
 
@@ -142,6 +149,11 @@ export class Server {
         status: ServerStatus.compiling_post_error
       });
     }
+  };
+
+  handleDismissError = () => {
+    this.handleError.cancel();
+    dismissError();
   };
 
   handleCompileTemplate = async (template: any) => {
@@ -194,7 +206,7 @@ export class Server {
   };
 
   __handleLoadPost = async (post: any, template: any, props: any) => {
-    dismissError();
+    this.handleDismissError();
 
     console.time("[Server] Load post");
 
@@ -207,27 +219,80 @@ export class Server {
     try {
       const promises = [];
 
+      const compilableJSPost = pick(post.files, getCompilableFiles(post.files));
+      const compilableLastPost = this.lastPost
+        ? pick(this.lastPost.files, getCompilableFiles(this.lastPost.files))
+        : null;
+
       if (
         !this.lastPost ||
-        (!isEqual(post, this.lastPost) && this.lastCompiledPost)
+        (!isEqual(compilableJSPost, compilableLastPost) &&
+          this.lastCompiledPost)
       ) {
         promises.push(this.handleCompilePost(post));
       } else {
         isPostChanged = false;
+
+        const cssFiles = getCSSFiles(post.files);
+        const cssPost = pick(post.files, cssFiles);
+        const cssLastPost = pick(
+          this.lastPost,
+          getCSSFiles(this.lastPost.files)
+        );
+
+        if (!isEqual(cssPost, cssLastPost)) {
+          this.lastCompiledPost = omit(
+            Object.assign({}, this.lastCompiledPost),
+            getCSSFiles(this.lastCompiledPost)
+          );
+
+          cssFiles.forEach(name => {
+            this.lastCompiledPost[name] = post.files[name];
+          });
+        }
+
         promises.push(this.lastCompiledPost);
       }
 
+      const compilableJSTemplate = pick(
+        template.files,
+        getCompilableFiles(template.files)
+      );
+      const compilableLastTemplate =
+        this.lastTemplate &&
+        pick(
+          this.lastTemplate.files,
+          getCompilableFiles(this.lastTemplate.files)
+        );
+
       if (
         !this.lastTemplate ||
-        (!isEqual(template, this.lastTemplate) && this.lastCompiledTemplate)
+        (!isEqual(compilableJSTemplate, compilableLastTemplate) &&
+          this.lastCompiledTemplate)
       ) {
         promises.push(this.handleCompileTemplate(template));
       } else {
+        const cssFiles = getCSSFiles(template.files);
+        const cssTemplate = pick(template.files, cssFiles);
+        const cssLastTemplate = pick(
+          this.lastTemplate.files,
+          getCSSFiles(this.lastTemplate)
+        );
+
+        if (!isEqual(cssTemplate, cssLastTemplate)) {
+          this.lastCompiledTemplate = omit(
+            Object.assign({}, this.lastCompiledTemplate),
+            getCSSFiles(this.lastCompiledTemplate)
+          );
+
+          cssFiles.forEach(name => {
+            this.lastCompiledTemplate[name] = template.files[name];
+          });
+        }
+
         promises.push(this.lastCompiledTemplate);
         isTemplateChanged = false;
       }
-
-      dismissError();
 
       const result = await Promise.all(promises);
       compiledPost = result[0];
@@ -282,7 +347,8 @@ export class Server {
         this.dependencyManager.installer.styleURLs(),
         props,
         isTemplateChanged,
-        isPostChanged
+        isPostChanged,
+        !isEqual(this.lastProps, props)
       );
       vtimeEnd("[Server] Load code");
     } catch (error) {
@@ -306,6 +372,7 @@ export class Server {
     this.lastTemplate = template;
     this.lastCompiledPost = compiledPost;
     this.lastCompiledTemplate = compiledTemplate;
+    this.lastProps = props;
   };
 
   handleLoadPost = (post: any, template: any, props: any) => {

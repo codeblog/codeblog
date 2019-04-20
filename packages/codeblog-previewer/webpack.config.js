@@ -8,6 +8,7 @@ const _ = require("lodash");
 const sha256file = require("sha256-file");
 const BUNDLED_DEPENDENCIES = require("./src/lib/BUNDLED_DEPENDENCIES.json");
 const WorkboxPlugin = require("workbox-webpack-plugin");
+const AutoDllPlugin = require("autodll-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -176,7 +177,36 @@ module.exports = {
       // both options are optional
       filename: "[name].[contenthash].css"
     }),
-    new WorkboxPlugin.GenerateSW()
+    new AutoDllPlugin({
+      filename: "[name].[hash].dll.js",
+      inject: true,
+      entry: {
+        vendor: [
+          "codeblog",
+          "codeblog-packager",
+          "iframe-resizer",
+          "queue",
+          "react",
+          "react-dom",
+          "react-portal",
+          "browserfs",
+          "raf",
+          "stacktrace-js",
+          "localforage",
+          "codeblog-template-simple"
+        ]
+      }
+    }),
+    new WorkboxPlugin.GenerateSW({
+      maximumFileSizeToCacheInBytes: 15 * 1024 * 1024,
+      cacheId: "codeblog-previewer",
+      importWorkboxFrom: "local",
+      skipWaiting: true,
+      clientsClaim: true,
+      runtimeCaching: [],
+      exclude: [/\.map$/, /^manifest.*\.js(?:on)?$/, /service-worker.js/],
+      include: [/.js$/, /.css$/]
+    })
   ],
   // DISABLE Webpack's built-in process and Buffer polyfills!
   node: {

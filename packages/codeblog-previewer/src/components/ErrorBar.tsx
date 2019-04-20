@@ -192,7 +192,8 @@ const ERROR_DIV_SELECTOR = "#__codeblog-error-bar";
 export const reportBuildError = (
   error: Error,
   isFatal: boolean,
-  status: ServerStatus
+  status: ServerStatus,
+  message?: string
 ) => {
   if (!document.querySelector(ERROR_DIV_SELECTOR)) {
     const el = document.createElement("div");
@@ -201,7 +202,7 @@ export const reportBuildError = (
   }
 
   ReactDOM.render(
-    <ErrorBar error={error} level="build" status={status} />,
+    <ErrorBar error={error} message={message} level="build" status={status} />,
     document.querySelector(ERROR_DIV_SELECTOR)
   );
 };
