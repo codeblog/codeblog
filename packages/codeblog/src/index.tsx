@@ -22,8 +22,8 @@ type CodeblogPostProps = CodeblogContextInterface & {
 export const CodeblogRoot = (props: CodeblogPostProps) => {
   if (props.pageType === "show") {
     return <CodeblogPost {...props} />;
-  } else if (props.pageType === "preview") {
-    return <PreviewCodeblogPost {...props} />;
+  } else if (props.pageType === "editor") {
+    return <CodeblogPostEditor {...props} />;
   } else if (props.pageType === "index") {
     return <CodeblogIndexPage {...props} />;
   } else {
@@ -88,13 +88,13 @@ export const CodeblogIndexPage = (props: CodeblogPostProps) => {
   );
 };
 
-export const PreviewCodeblogPost = (props: CodeblogPostProps) => {
+export const CodeblogPostEditor = (props: CodeblogPostProps) => {
   const { BlogComponent, BlogPostComponent } = props;
 
   return (
     <HeadProvider headTags={props.headTags}>
       <CodeblogProvider
-        pageType="preview"
+        pageType="editor"
         environment={props.environment}
         post={{ ...props.post, body: props.children }}
         blog={props.blog}

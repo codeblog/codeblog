@@ -1,5 +1,5 @@
 import * as React from "react";
-export declare type PageType = "index" | "show" | "preview" | null;
+export declare type PageType = "index" | "show" | "editor" | null;
 export declare type EnvironmentType = "server" | "client";
 export declare type Blog = {
     id: string;
@@ -15,6 +15,7 @@ export declare type Post = {
     url: string;
     title: string;
     body: React.ReactNode;
+    text: string;
     photoURL: string | null;
     summary: string;
     code: string;

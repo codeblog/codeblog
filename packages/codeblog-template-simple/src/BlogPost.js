@@ -12,19 +12,23 @@ const BlogPost = ({ pageType, post, children, environment }) => (
     className={classNames("BlogPost", {
       "BlogPost--index": pageType === "index",
       "BlogPost--show": pageType === "show",
-      "BlogPost--preview": pageType === "preview"
+      "BlogPost--editor": pageType === "editor"
     })}
   >
     <SEOTags post={post} />
 
-    <BlogPostHeader environment={environment} post={post} pageType={pageType}>
-      <h1 itemProp="headline" className="BlogPost-Title">
-        <a href={post.url}>{post.title}</a>
-      </h1>
-    </BlogPostHeader>
+    <div className="BlogPost-Body">
+      {pageType !== "editor" && (
+        <BlogPostHeader
+          environment={environment}
+          post={post}
+          pageType={pageType}
+        />
+      )}
 
-    {/* This is where your post content goes! */}
-    <div className="BlogPost-Body">{children}</div>
+      {/* This is where your post content goes! */}
+      {children}
+    </div>
   </article>
 );
 

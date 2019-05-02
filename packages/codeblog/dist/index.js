@@ -350,6 +350,7 @@ var normalizePost = function normalizePost(post, blog) {
 
   return _objectSpread({}, post, {
     blog: blog,
+    text: post.text || "",
     publishedAt: publishedAt,
     photoURL: photoURL,
     editedAt: editedAt,
@@ -449,7 +450,7 @@ var SEOTags = __webpack_require__(3);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CodeblogRoot", function() { return src_CodeblogRoot; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CodeblogPost", function() { return src_CodeblogPost; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CodeblogIndexPage", function() { return src_CodeblogIndexPage; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PreviewCodeblogPost", function() { return src_PreviewCodeblogPost; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CodeblogPostEditor", function() { return src_CodeblogPostEditor; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Codeblog", function() { return Codeblog; });
 /* concated harmony reexport CodeblogContext */__webpack_require__.d(__webpack_exports__, "CodeblogContext", function() { return CodeblogContext["CodeblogContext"]; });
 /* concated harmony reexport CodeblogContextInterface */__webpack_require__.d(__webpack_exports__, "CodeblogContextInterface", function() { return CodeblogContext["CodeblogContextInterface"]; });
@@ -478,8 +479,8 @@ function src_defineProperty(obj, key, value) { if (key in obj) { Object.definePr
 var src_CodeblogRoot = function CodeblogRoot(props) {
   if (props.pageType === "show") {
     return external_react_["createElement"](src_CodeblogPost, props);
-  } else if (props.pageType === "preview") {
-    return external_react_["createElement"](src_PreviewCodeblogPost, props);
+  } else if (props.pageType === "editor") {
+    return external_react_["createElement"](src_CodeblogPostEditor, props);
   } else if (props.pageType === "index") {
     return external_react_["createElement"](src_CodeblogIndexPage, props);
   } else {
@@ -524,13 +525,13 @@ var src_CodeblogIndexPage = function CodeblogIndexPage(props) {
     }));
   })));
 };
-var src_PreviewCodeblogPost = function PreviewCodeblogPost(props) {
+var src_CodeblogPostEditor = function CodeblogPostEditor(props) {
   var BlogComponent = props.BlogComponent,
       BlogPostComponent = props.BlogPostComponent;
   return external_react_["createElement"](external_react_head_["HeadProvider"], {
     headTags: props.headTags
   }, external_react_["createElement"](Codeblog_CodeblogProvider, {
-    pageType: "preview",
+    pageType: "editor",
     environment: props.environment,
     post: src_objectSpread({}, props.post, {
       body: props.children

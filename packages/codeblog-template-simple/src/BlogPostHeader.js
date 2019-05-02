@@ -33,38 +33,34 @@ export const PublishedTimetamp = ({ publishedAt, status, environment }) => {
   }
 };
 
-export const BlogPostHeader = ({ environment, post, pageType, children }) => {
+export const BlogPostHeader = ({ environment, post, pageType }) => {
   return (
-    <header>
-      <div className="BlogPost-Subtitle">
-        <a href={post.url}>
-          <PublishedTimetamp
-            publishedAt={post.publishedAt}
-            status={post.status}
-            environment={environment}
-          />
-        </a>
+    <div className="BlogPost-Subtitle">
+      <a href={post.url}>
+        <PublishedTimetamp
+          publishedAt={post.publishedAt}
+          status={post.status}
+          environment={environment}
+        />
+      </a>
 
-        {!!post.files["post.mdx"] && (
-          <>
-            <div className="Separator Separator--small" />
+      {post.text && (
+        <>
+          <div className="Separator Separator--small" />
 
-            <div className="ReadingTime">
-              {readingTime(String(post.files["post.mdx"]).trim()).text}
-            </div>
-          </>
-        )}
+          <div className="ReadingTime">
+            {readingTime(String(post.text).trim()).text}
+          </div>
+        </>
+      )}
 
-        {/* SEO stuff */}
-        <meta itemProp="author.alternateName" content={post.author.subdomain} />
-        <meta itemProp="author.identifier" content={post.author.subdomain} />
-        {post.author.title && (
-          <meta itemProp="author.name" content={post.author.title} />
-        )}
-      </div>
-
-      {children}
-    </header>
+      {/* SEO stuff */}
+      <meta itemProp="author.alternateName" content={post.author.subdomain} />
+      <meta itemProp="author.identifier" content={post.author.subdomain} />
+      {post.author.title && (
+        <meta itemProp="author.name" content={post.author.title} />
+      )}
+    </div>
   );
 };
 

@@ -10,7 +10,7 @@ declare type CodeblogPostProps = CodeblogContextInterface & {
 export declare const CodeblogRoot: (props: CodeblogPostProps) => JSX.Element;
 export declare const CodeblogPost: (props: CodeblogPostProps) => JSX.Element;
 export declare const CodeblogIndexPage: (props: CodeblogPostProps) => JSX.Element;
-export declare const PreviewCodeblogPost: (props: CodeblogPostProps) => JSX.Element;
+export declare const CodeblogPostEditor: (props: CodeblogPostProps) => JSX.Element;
 export declare const Codeblog: React.ExoticComponent<React.ConsumerProps<CodeblogContextInterface>>;
 export default Codeblog;
 export { CodeblogContext, CodeblogContextInterface, Post, Blog, BlogPostComponentType, BlogComponentType, EnvironmentType, PageType, CodeblogProvider };

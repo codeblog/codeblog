@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export type PageType = "index" | "show" | "preview" | null;
+export type PageType = "index" | "show" | "editor" | null;
 export type EnvironmentType = "server" | "client";
 
 export type Blog = {
@@ -18,6 +18,7 @@ export type Post = {
   url: string;
   title: string;
   body: React.ReactNode;
+  text: string;
   photoURL: string | null;
   summary: string;
   code: string;

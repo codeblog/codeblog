@@ -9,7 +9,6 @@ module.exports = {
     index: path.resolve(__dirname, "src/index.js"),
     BlogPost: path.resolve(__dirname, "src/BlogPost.js"),
     Blog: path.resolve(__dirname, "src/Blog.js"),
-    Components: path.resolve(__dirname, "src/Components.js"),
     styles: path.resolve(__dirname, "src/styles.css")
   },
   output: {

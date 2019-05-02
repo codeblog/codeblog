@@ -41,6 +41,7 @@ export const normalizePost = (post: any, blog: any) => {
   return {
     ...post,
     blog: blog,
+    text: post.text || "",
     publishedAt,
     photoURL,
     editedAt,
