@@ -1,0 +1,45 @@
+import styled from "@emotion/styled";
+import HighlightAsset1x from "../../assets/inlines/Highlight.png";
+import HighlightAsset2x from "../../assets/inlines/Highlight@2x.png";
+import HighlightAsset3x from "../../assets/inlines/Highlight@3x.png";
+import { EditableProps } from "../../EditableProps";
+import { CategoryType } from "../../Category";
+
+const PRESET_COLORS = {
+  green: "#99ffcc",
+  pink: "#ffccff",
+  yellow: "#ffffcc"
+};
+
+const HighlightComponent = styled.span`
+  border-radius: 5px;
+  padding-left: 0;
+  padding-right: 0;
+  transition: background-color 0.1s linear;
+
+  background-color: ${props => props.color};
+`;
+
+export const Highlight = {
+  title: "Highlight text",
+  description: "Why bold when you can highlight?",
+  category: CategoryType.text,
+  id: "@codeblog/highlight",
+  screenshot: {
+    "1x": HighlightAsset1x,
+    "2x": HighlightAsset2x,
+    "3x": HighlightAsset3x
+  },
+  editableProps: {
+    color: EditableProps.color({
+      label: "Color",
+      presets: Object.values(PRESET_COLORS)
+    })
+  },
+  defaultProps: {
+    color: PRESET_COLORS.green
+  },
+  Component: HighlightComponent
+};
+
+export default Highlight;

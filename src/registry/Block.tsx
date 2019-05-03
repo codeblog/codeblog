@@ -1,0 +1,1 @@
+import { registerBlock } from "./Registry";

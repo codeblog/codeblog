@@ -1,0 +1,23 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "modules": "umd"
+      }
+    ],
+    "@babel/react",
+    "@babel/typescript"
+  ],
+  "plugins": [
+    "babel-plugin-emotion",
+    [
+      "transform-assets-import-to-string",
+      {
+        "baseDir": "",
+        "baseUri": "http://codeblog-public.storage.googleapis.com"
+      }
+    ],
+    "@babel/plugin-proposal-class-properties"
+  ]
+}
