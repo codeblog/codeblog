@@ -1,20 +1,20 @@
+import * as React from "react";
 import moment from "moment";
 import readingTime from "reading-time";
 
-const formatDateForEnvironment = (date, environment) => {
+const formatDateForEnvironment = date => {
   return moment(date).fromNow();
 };
 
-export const PublishedTimetamp = ({ publishedAt, status, environment }) => {
+export const PublishedTimetamp = ({ publishedAt, status }) => {
   if (status === "published" && publishedAt) {
     return (
-      <span
-        datetime={publishedAt.toISOString()}
-        itemProp="datePublished"
-        className="Subtitle-datePublished Text--muted Subtitle-status Subtitle-status--published"
-      >
-        {formatDateForEnvironment(publishedAt, environment)}
-      </span>
+      <>
+        <meta content={publishedAt.toISOString()} itemProp="datePublished" />
+        <span className="Subtitle-datePublished Text--muted Subtitle-status Subtitle-status--published">
+          {formatDateForEnvironment(publishedAt)}
+        </span>
+      </>
     );
   } else if (status === "published") {
     return null;
@@ -33,14 +33,13 @@ export const PublishedTimetamp = ({ publishedAt, status, environment }) => {
   }
 };
 
-export const BlogPostHeader = ({ environment, post, pageType }) => {
+export const BlogPostSubtitle = ({ post }) => {
   return (
     <div className="BlogPost-Subtitle">
       <a href={post.url}>
         <PublishedTimetamp
           publishedAt={post.publishedAt}
           status={post.status}
-          environment={environment}
         />
       </a>
 
@@ -64,4 +63,4 @@ export const BlogPostHeader = ({ environment, post, pageType }) => {
   );
 };
 
-export default BlogPostHeader;
+export default BlogPostSubtitle;

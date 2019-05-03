@@ -3,9 +3,22 @@ import FancyHeadingAsset2x from "../../assets/blocks/FancyHeading@2x.png";
 import FancyHeadingAsset3x from "../../assets/blocks/FancyHeading@3x.png";
 import styled from "@emotion/styled";
 import { EditableProps } from "../../EditableProps";
-import { CategoryType } from "../../Category";
+import {
+  CategoryType,
+  BackgroundProp,
+  ColorProp,
+  AlignProp
+} from "../../../registry";
 
-const FancyHeadingComponent = styled.div`
+type FancyHeadingProps = {
+  background?: BackgroundProp;
+  color?: ColorProp;
+  align: AlignProp;
+};
+
+const FancyHeadingComponent: React.ComponentType<
+  FancyHeadingProps
+> = styled.div`
   box-sizing: content-box;
   margin-left: calc((100vw - var(--blog-post-width)) / -2);
   margin-right: calc((100vw - var(--blog-post-width)) / -2);
@@ -15,9 +28,11 @@ const FancyHeadingComponent = styled.div`
   font-size: 1.75em;
   font-family: var(--headings-font);
   text-align: center;
-  background: ${props => props.background || "var(--text-color)"};
+  background: ${(props: FancyHeadingProps) =>
+    props.background || "var(--text-color)"};
   width: 100%;
-  color: ${props => (props.color ? props.color : "var(--page-background)")};
+  color: ${(props: FancyHeadingProps) =>
+    props.color ? props.color : "var(--page-background)"};
   margin-block-start: var(--offset-medium);
   padding-top: var(--offset-large);
   padding-bottom: var(--offset-large);

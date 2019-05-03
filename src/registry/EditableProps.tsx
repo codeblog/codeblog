@@ -1,5 +1,4 @@
 import tinycolor from "tinycolor2";
-import { fromPairs } from "lodash";
 
 type ImageSource = string;
 
@@ -108,8 +107,8 @@ export class EditableProps {
 
 export const requiredProps = (editingProps: EditablePropMap) =>
   Object.entries(editingProps)
-    .filter(([key, prop]) => prop.required)
-    .map(([key, prop]) => key);
+    .filter(([_key, prop]) => prop.required)
+    .map(([key, _prop]) => key);
 
 export const getDefaultEditingProp = (
   editingProps: EditablePropMap,

@@ -3,7 +3,7 @@ import HighlightAsset1x from "../../assets/inlines/Highlight.png";
 import HighlightAsset2x from "../../assets/inlines/Highlight@2x.png";
 import HighlightAsset3x from "../../assets/inlines/Highlight@3x.png";
 import { EditableProps } from "../../EditableProps";
-import { CategoryType } from "../../Category";
+import { CategoryType } from "../../../registry";
 
 const PRESET_COLORS = {
   green: "#99ffcc",

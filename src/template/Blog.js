@@ -1,5 +1,5 @@
-import { BlogSEOTags } from "codeblog/components/SEOTags";
-import { BlogPost } from "codeblog/template/BlogPost";
+import { BlogSEOTags } from "../components/SEOTags";
+import { BlogPost } from "./BlogPost";
 import Headroom from "react-headroom";
 
 const title = "";

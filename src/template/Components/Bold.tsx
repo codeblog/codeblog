@@ -2,7 +2,7 @@ import BoldAsset1x from "../../assets/inlines/Bold.png";
 import BoldAsset2x from "../../assets/inlines/Bold@2x.png";
 import BoldAsset3x from "../../assets/inlines/Bold@3x.png";
 import styled from "@emotion/styled";
-import { CategoryType } from "../../Category";
+import { CategoryType } from "../../registry";
 
 const BoldComponent = styled.strong`
   font-weight: 600;

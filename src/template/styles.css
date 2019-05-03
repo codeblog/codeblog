@@ -159,32 +159,6 @@ h6 {
     margin-block-end: 0;
 }
 
-.HeaderAnchorLink {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-color);
-    cursor: pointer;
-    display: none;
-    opacity: 0;
-    transition: opacity 0.1s linear;
-}
-
-.HeaderAnchorLink:hover {
-    opacity: 1;
-}
-
-h1:hover .HeaderAnchorLink,
-h2:hover .HeaderAnchorLink,
-h3:hover .HeaderAnchorLink,
-h4:hover .HeaderAnchorLink,
-h5:hover .HeaderAnchorLink,
-h6:hover .HeaderAnchorLink {
-    display: inline-block;
-    opacity: 0.35;
-}
-
 .BlogPost-Title,
 h1,
 h2,
@@ -225,34 +199,6 @@ a:visited {
     padding-right: calc((100vw - var(--blog-post-width)) / 2);
     width: 100%;
     word-wrap: break-word;
-}
-
-.BlogPost-Body > section {
-    box-sizing: content-box;
-    margin-left: calc((100vw - var(--blog-post-width)) / -2);
-    margin-right: calc((100vw - var(--blog-post-width)) / -2);
-    padding-left: calc((100vw - var(--blog-post-width)) / 2);
-    padding-right: calc((100vw - var(--blog-post-width)) / 2);
-    background-size: 100vw auto;
-    background: var(--page-background);
-    width: 100%;
-    color: var(--text-color);
-    margin-block-start: var(--offset-medium);
-    padding-top: var(--offset-large);
-    padding-bottom: var(--offset-large);
-    margin-block-end: var(--offset-medium);
-    overflow-x: hidden;
-    max-width: 100vw;
-}
-
-.BlogPost-Body > section > *:first-child {
-    margin-top: 0;
-    padding-top: 0;
-}
-
-.BlogPost-Body > section > *:last-child {
-    margin-bottom: 0;
-    padding-bottom: 0;
 }
 
 .BlogHeader {
@@ -336,17 +282,6 @@ ul li:last-of-type {
     font-size: 0.7em;
 }
 
-.BlogPost-Title a,
-.BlogPost-Subtitle a {
-    text-decoration: none;
-    color: inherit;
-}
-
-.BlogPost-Title a:hover,
-.BlogPost-Subtitle a:hover {
-    text-decoration: underline;
-}
-
 .Separator {
     background-color: currentColor;
     border-radius: 50%;
@@ -396,12 +331,6 @@ kbd {
     .BlogPost-Body {
         padding-left: var(--offset-normal);
         padding-right: var(--offset-normal);
-    }
-
-    .BlogPost-Body > section {
-        margin-left: calc(var(--offset-normal) * -1);
-        margin-right: calc(var(--offset-normal) * -1);
-        width: 100%;
     }
 }
 

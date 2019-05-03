@@ -3,18 +3,18 @@ import LinkAsset1x from "../../assets/inlines/Link.png";
 import LinkAsset2x from "../../assets/inlines/Link@2x.png";
 import LinkAsset3x from "../../assets/inlines/Link@3x.png";
 import LinkIconAsset2x from "../../assets/inlines/LinkIcon@2x.png";
-import { EditableProps } from "../../EditableProps";
-import { CategoryType } from "../../Category";
+import { EditableProps } from "../../registry/EditableProps";
+import { CategoryType } from "../../registry";
 
 const LinkComponent = styled.a`
-  color: ${props => props.color || "var(--primary-color)"};
+  color: ${props => props.color || "currentColor"};
   text-decoration: underline;
 `;
 
 export default {
   title: "Link",
   description: "Send readers to a different webpage",
-  id: "@codeblog/link",
+  id: "@codeblog-template/link",
   category: CategoryType.text,
   screenshot: {
     "1x": LinkAsset1x,

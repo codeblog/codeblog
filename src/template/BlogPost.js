@@ -1,8 +1,6 @@
 import classNames from "classnames";
 import { Codeblog } from "codeblog";
-import { BlogPostSEOTags as SEOTags } from "codeblog/components/SEOTags";
-
-import BlogPostHeader from "./BlogPostHeader";
+import { BlogPostSEOTags as SEOTags } from "../components/SEOTags";
 
 const BlogPost = ({ pageType, post, children, environment }) => (
   <article
@@ -20,14 +18,6 @@ const BlogPost = ({ pageType, post, children, environment }) => (
     <SEOTags post={post} />
 
     <div className="BlogPost-Body">
-      {pageType !== "editor" && (
-        <BlogPostHeader
-          environment={environment}
-          post={post}
-          pageType={pageType}
-        />
-      )}
-
       {/* This is where your post content goes! */}
       {children}
     </div>

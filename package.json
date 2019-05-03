@@ -7,7 +7,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "predev": "rimraf dist",
-    "dev-js": "NODE_ENV=development babel src -x .js,.tsx,.ts -d dist --watch",
+    "dev-js": "NODE_ENV=development babel src -x .js,.tsx,.ts -d dist --watch --verbose",
     "dev-css": "NODE_ENV=development postcss --config . src/template/styles.css -o dist/template/styles.css --watch",
     "dev": "concurrently 'yarn dev-js' 'yarn dev-css'",
     "build-js": "NODE_ENV=production babel src -x .js,.tsx,.ts -d dist -D",
@@ -34,7 +34,8 @@
     "react": "^16.8.6",
     "react-head": "^3.1.0",
     "react-headroom": "^2.2.8",
-    "reading-time": "^1.2.0"
+    "reading-time": "^1.2.0",
+    "tinycolor2": "^1.4.1"
   },
   "gitHead": "e5add848f1d0d6d88e05d0ec16660f07bd2a77d6",
   "devDependencies": {

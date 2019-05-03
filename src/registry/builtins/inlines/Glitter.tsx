@@ -2,7 +2,7 @@ import GlitterAsset1x from "../../assets/inlines/Glitter.png";
 import GlitterAsset2x from "../../assets/inlines/Glitter@2x.png";
 import GlitterAsset3x from "../../assets/inlines/Glitter@3x.png";
 import styled from "@emotion/styled";
-import { CategoryType } from "../../Category";
+import { CategoryType } from "../../../registry";
 
 const GlitterComponent = styled.span`
   background: linear-gradient(transparent, transparent),
