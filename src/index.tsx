@@ -76,12 +76,22 @@ export const CodeblogIndexPage = (props: CodeblogPostProps) => {
             <BlogComponent {...contextProps}>
               {React.Children.map(props.children, (child, index) => {
                 return (
-                  <BlogPostComponent
-                    {...contextProps}
+                  <CodeblogProvider
+                    pageType="index"
+                    environment={props.environment}
                     post={contextProps.posts[index]}
+                    posts={[]}
+                    blog={props.blog}
+                    BlogComponent={BlogComponent}
+                    BlogPostComponent={BlogPostComponent}
                   >
-                    {child}
-                  </BlogPostComponent>
+                    <BlogPostComponent
+                      {...contextProps}
+                      post={contextProps.posts[index]}
+                    >
+                      {child}
+                    </BlogPostComponent>
+                  </CodeblogProvider>
                 );
               })}
             </BlogComponent>

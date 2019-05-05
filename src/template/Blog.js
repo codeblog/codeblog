@@ -1,3 +1,4 @@
+import React from "react";
 import { BlogSEOTags } from "../components/SEOTags";
 import { BlogPost } from "./BlogPost";
 import Headroom from "react-headroom";

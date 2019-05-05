@@ -7,10 +7,11 @@
       }
     ],
     "@babel/react",
-    "@babel/typescript"
+    "@babel/typescript",
+    "@emotion/babel-preset-css-prop"
   ],
   "plugins": [
-    "babel-plugin-emotion",
+    "babel-plugin-transform-css-import-to-string",
     [
       "transform-assets-import-to-string",
       {
