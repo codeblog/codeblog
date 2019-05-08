@@ -1,15 +1,17 @@
 {
-  "ignore": ["./cli", "./dist", "./assets", "./boilerplate"],
+  "ignore": ["boilerplate"],
   "presets": [
     [
       "@babel/preset-env",
       {
-        "modules": "umd"
+        "modules": "commonjs",
+        "targets": {
+          "node": "8"
+        }
       }
     ],
     "@babel/react",
-    "@babel/typescript",
-    "@emotion/babel-preset-css-prop"
+    "@babel/typescript"
   ],
   "plugins": [
     [
