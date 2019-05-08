@@ -53,6 +53,7 @@ const getPackages = () => {
     const _registration = {
       ...packages[pkgID].registration,
       isRemote: true,
+      isDevelopment: true,
       id,
       name: id,
       src

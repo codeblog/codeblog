@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { AlignProp } from "../../registry";
+import { AlignProp } from "../../cli/registry";
 import {
   CodeblogContext,
   PageType,
@@ -31,6 +31,18 @@ const H1: React.ComponentType<Partial<TitleProps>> = styled.h1`
   &:first-of-type {
     margin-block-start: 0;
   }
+`;
+
+export const H3: React.ComponentType<Partial<TitleProps>> = styled.h3`
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 1.35;
+  word-wrap: break-word;
+  font-family: var(--headings-font);
+  text-align: ${props => props.align || "left"};
+
+  margin-block-start: var(--offset-big);
+  margin-block-end: var(--offset-normal);
 `;
 
 const Header = styled.header`

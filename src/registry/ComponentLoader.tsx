@@ -52,6 +52,9 @@ export class ComponentLoader extends React.Component<Props, State> {
 
   componentDidCatch(error: Error) {
     console.error(`[${this.props.moduleName}]`, error);
+    this.setState({
+      status: "error"
+    });
   }
 
   static getDerivedStateFromError(_error: Error) {

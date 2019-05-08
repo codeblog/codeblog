@@ -2,6 +2,7 @@ import { EditablePropMap } from "./registry/EditableProps";
 
 export enum BlockTypes {
   title = "@codeblog/title",
+  header = "@codeblog/header",
   paragraph = "@codeblog/paragraph",
   blockquote = "@codeblog/blockquote"
 }
@@ -33,4 +34,21 @@ export type CodeblogPackageJSON = {
     defaultProps?: { [key: string]: string };
   };
   dependencies: { [key: string]: string };
+};
+
+export type ComponentManifest = {
+  title: string;
+  description: string;
+  screenshot: string | null;
+  category: CategoryType;
+  placeholder: string | null;
+  isDevelopment?: boolean;
+  src: string | null;
+  isRemote: boolean;
+  isVoid?: boolean;
+  Component: React.ComponentType<any> | null;
+  EditorComponent: React.ComponentType<any> | null;
+  editableProps?: EditablePropMap;
+  defaultProps?: { [key: string]: string };
+  id: string;
 };

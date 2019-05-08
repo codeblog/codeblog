@@ -30,11 +30,11 @@ export default {
     }),
     color: EditableProps.color({
       label: "Color",
-      presets: ["blue", "green", "orange", "purple", "pink"]
+      presets: ["var(--text-color)", "green", "orange", "purple", "pink"]
     })
   },
   defaultProps: {
     target: "_blank",
-    color: "blue"
+    color: "var(--text-color)"
   }
 };

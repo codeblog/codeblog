@@ -4,13 +4,16 @@ import BlockQuoteAsset3x from "codeblog/registry/assets/blocks/BlockQuote@3x.png
 import H1Asset1x from "codeblog/registry/assets/blocks/H1.png";
 import H1Asset2x from "codeblog/registry/assets/blocks/H1@2x.png";
 import H1Asset3x from "codeblog/registry/assets/blocks/H1@3x.png";
+import H3Asset1x from "codeblog/registry/assets/blocks/H3.png";
+import H3Asset2x from "codeblog/registry/assets/blocks/H3@2x.png";
+import H3Asset3x from "codeblog/registry/assets/blocks/H3@3x.png";
 import ParagraphAsset1x from "codeblog/registry/assets/blocks/Paragraph.png";
 import ParagraphAsset2x from "codeblog/registry/assets/blocks/Paragraph@2x.png";
 import ParagraphAsset3x from "codeblog/registry/assets/blocks/Paragraph@3x.png";
 import { BlockTypes, CategoryType } from "../registry";
 import { Paragraph } from "./Components/Paragraph";
 import { BlockQuote } from "./Components/Quote";
-import { Title, EditorTitle } from "./Components/Title";
+import { Title, EditorTitle, H3 } from "./Components/Title";
 import Link from "./Components/Link";
 import Bold from "./Components/Bold";
 
@@ -61,6 +64,22 @@ export const Blocks = {
     defaultProps: {
       align: "left",
       itemProp: "headline"
+    }
+  },
+  [BlockTypes.header]: {
+    id: BlockTypes.header,
+    title: "Header",
+    category: CategoryType.header,
+    placeholder: "A new section",
+    description: "Normal section header",
+    screenshot: {
+      "1x": H3Asset1x,
+      "2x": H3Asset2x,
+      "3x": H3Asset3x
+    },
+    Component: H3,
+    defaultProps: {
+      align: "left"
     }
   }
 };
