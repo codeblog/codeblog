@@ -8,6 +8,8 @@ export enum BlockTypes {
 }
 
 export enum CategoryType {
+  inline = "text",
+  block = "block",
   header = "header",
   text = "text",
   media = "media",

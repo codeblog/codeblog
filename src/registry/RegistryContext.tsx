@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ComponentManifest, CategoryType } from "../registry";
+import { ComponentManifest, CategoryType, BlockTypes } from "../registry";
 import { fromPairs } from "lodash";
 
 export type ComponentManifestMap = { [key: string]: ComponentManifest };
@@ -12,18 +12,12 @@ type MiniSlateSchema = {
   inlines: { [id: string]: SchemaValue };
 };
 
-type SearchFunctionType = (
-  query: string,
-  category: CategoryType
-) => Array<ComponentManifest>;
-
 type OnChangeFunction = (components: ComponentManifestMap) => void;
 
 export type RegistryContextType = {
   Inlines: ComponentManifestMap;
   Blocks: ComponentManifestMap;
   schema: MiniSlateSchema;
-  search: SearchFunctionType;
   onChangeBlocks: OnChangeFunction;
   onChangeInlines: OnChangeFunction;
   onChangeDevelopmentComponents: (
@@ -52,8 +46,7 @@ export const RegistryContext = React.createContext<RegistryContextType>({
   onChange: (
     _blocks: ComponentManifestMap,
     _inlines: ComponentManifestMap
-  ) => {},
-  search: (_query: string, _category: CategoryType) => []
+  ) => {}
 });
 
 type Props = {
@@ -101,7 +94,6 @@ const computeSchema = (
 
 const makeContextValue = (
   { inlines: Inlines, blocks: Blocks, schema }: StateWithoutContext,
-  search: SearchFunctionType,
   onChangeBlocks: OnChangeFunction,
   onChangeInlines: OnChangeFunction,
   onChange: (
@@ -117,7 +109,6 @@ const makeContextValue = (
     Inlines,
     Blocks,
     schema,
-    search,
     onChangeBlocks,
     onChangeInlines,
     onChange,
@@ -159,6 +150,7 @@ export function normalizeBlock({
     title,
     description,
     screenshot,
+    category,
     src,
     isRemote,
     isDevelopment,
@@ -233,7 +225,6 @@ export class RegistryProvider extends React.PureComponent<Props, State> {
     this.state = Object.assign(stateWithoutContext, {
       contextValue: makeContextValue(
         stateWithoutContext,
-        this.handleSearch,
         this.handleChangeBlocks,
         this.handleChangeInlines,
         this.handleChange,
@@ -241,10 +232,6 @@ export class RegistryProvider extends React.PureComponent<Props, State> {
       )
     });
   }
-
-  handleSearch = (_query: string, _category: CategoryType) => {
-    return [];
-  };
 
   handleChangeBlocks = (blocks: ComponentManifestMap) => {
     const stateWithoutContext = {
@@ -257,7 +244,6 @@ export class RegistryProvider extends React.PureComponent<Props, State> {
       Object.assign(stateWithoutContext, {
         contextValue: makeContextValue(
           stateWithoutContext,
-          this.handleSearch,
           this.handleChangeBlocks,
           this.handleChangeInlines,
           this.handleChange,
@@ -304,7 +290,6 @@ export class RegistryProvider extends React.PureComponent<Props, State> {
       Object.assign(stateWithoutContext, {
         contextValue: makeContextValue(
           stateWithoutContext,
-          this.handleSearch,
           this.handleChangeBlocks,
           this.handleChangeInlines,
           this.handleChange,
@@ -328,7 +313,6 @@ export class RegistryProvider extends React.PureComponent<Props, State> {
       Object.assign(stateWithoutContext, {
         contextValue: makeContextValue(
           stateWithoutContext,
-          this.handleSearch,
           this.handleChangeBlocks,
           this.handleChangeInlines,
           this.handleChange,
@@ -349,7 +333,6 @@ export class RegistryProvider extends React.PureComponent<Props, State> {
       Object.assign(stateWithoutContext, {
         contextValue: makeContextValue(
           stateWithoutContext,
-          this.handleSearch,
           this.handleChangeBlocks,
           this.handleChangeInlines,
           this.handleChange,
