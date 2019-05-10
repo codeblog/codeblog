@@ -1,10 +1,10 @@
 {
   "name": "codeblog",
-  "version": "3.0.0",
+  "version": "3.1.3",
   "browser": "dist/index.js",
   "main": "dist/index.js",
   "bin": {
-    "codeblog": "./dist/cli/index.js"
+    "codeblog": "dist/cli-bin/index.js"
   },
   "license": "MIT",
   "scripts": {
@@ -18,9 +18,8 @@
     "build-css": "NODE_ENV=production postcss --config . src/template/styles.css -o dist/template/styles.css",
     "build": "yarn build-js && yarn build-css && yarn build-assets",
     "build-typescript": "yarn tsc -p tsconfig.json",
-    "postbuild": "yarn build-typescript",
+    "postbuild": "chmod +x dist/cli/index.js && ncc build dist/cli/index.js -o dist/cli-bin --minify && yarn build-typescript",
     "deploy": "yarn build && yarn publish",
-    "postpublish": "cnpm sync codeblog",
     "copy-assets-folder": "find src -name '*.png' | xargs -I{} cp -v {} ./assets",
     "upload-assets-folder": "gsutil -m rsync  -r assets gs://codeblog-public",
     "build-assets": "yarn --silent copy-assets-folder && yarn --silent upload-assets-folder"
@@ -99,6 +98,7 @@
     "@types/tar-stream": "^1.6.0",
     "@types/webpack": "^4.4.30",
     "@types/yargs": "^13.0.0",
+    "@zeit/ncc": "^0.18.3",
     "babel-loader": "^8.0.5",
     "babel-plugin-emotion": "^10.0.9",
     "babel-plugin-module-resolver": "^3.2.0",
