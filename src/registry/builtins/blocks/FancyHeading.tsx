@@ -39,6 +39,16 @@ const FancyHeadingComponent: React.ComponentType<
   margin-block-end: var(--offset-medium);
   overflow-x: hidden;
   max-width: 100vw;
+
+  @media (max-width: 670px) {
+    & {
+      margin-left: calc(-1 * var(--offset-normal));
+      margin-right: calc(-1 * var(--offset-normal));
+      padding-left: 0;
+      padding-right: 0;
+      width: 100vw;
+    }
+  }
 `;
 
 export default {
