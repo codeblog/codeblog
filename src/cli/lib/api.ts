@@ -10,8 +10,8 @@ import streamLength from "stream-length";
 
 const fetchWrapper = (jar: CookieJar) => fetchCookie(_fetch, jar);
 
-const DEVELOPMENT_HOSTNAME = "http://localhost:3001/api/v1";
-const PRODUCTION_HOSTNAME = "https://codeblog.com/api/v1";
+// const DEVELOPMENT_HOSTNAME = "http://localhost:3001/api/v1";
+const HOSTNAME = "https://codeblog.com/api/v1";
 
 const HOSTNAME =
   process.env.NODE_ENV === "production"
@@ -27,25 +27,32 @@ const COOKIE_STORE_PATH = path.join(
 
 const loadCookieJar = () => new CookieJar(new CookieStore(COOKIE_STORE_PATH));
 
-const fetch = (path, options = {}) => {
-  let headers;
-  if (!options.file) {
-    headers = new Headers(options.headers || {});
+const fetch = (
+  route,
+  { headers: _headers = {}, body: _body, file = false, ...otherOptions } = {}
+) => {
+  let headers = _headers;
+  let body = _body;
+
+  if (!file) {
+    headers = new Headers(Object.entries(headers || {}));
 
     headers.append("Content-Type", "application/json");
 
-    if (options.body && typeof options.body === "object") {
-      options.body = JSON.stringify(options.body);
+    if (body && typeof body === "object") {
+      body = JSON.stringify(body);
     }
   } else {
-    headers = new Headers(options.headers || {});
+    headers = new Headers(Object.entries(headers || {}));
   }
 
-  return fetchWrapper(loadCookieJar())(path, {
-    ...options,
+  const jar = loadCookieJar();
+  return fetchWrapper(jar)(route, {
+    ...otherOptions,
     credentials: "same-origin",
     compress: true,
     redirect: "follow",
+    body,
     headers
   }).then(
     (response: Response) => {
@@ -121,14 +128,14 @@ export const uploadPackage = async ({
   component: Object;
 }) => {
   const data = new FormData();
-  data.append("tarball", tgz);
+  data.append("tarball", tgz, {
+    knownLength: await streamLength(tgz)
+  });
   data.append("package_json", component);
 
   return post(`/publish`, {
     ...options,
-    headers: {
-      ...data.getHeaders()
-    },
+    headers: { ...data.getHeaders() },
     file: true,
     body: data
   });
