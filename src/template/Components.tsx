@@ -21,7 +21,7 @@ export const Blocks = {
   [BlockTypes.paragraph]: {
     id: BlockTypes.paragraph,
     title: "Paragraph",
-    category: CategoryType.text,
+    category: CategoryType.block,
     placeholder: "Type '/' for commands",
     description: "The classic.",
     screenshot: {
@@ -34,7 +34,7 @@ export const Blocks = {
 
   [BlockTypes.blockquote]: {
     id: BlockTypes.blockquote,
-    category: CategoryType.text,
+    category: CategoryType.block,
     title: "Quote",
     placeholder: "",
     description: "Add a quote",

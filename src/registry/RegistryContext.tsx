@@ -1,6 +1,51 @@
 import * as React from "react";
-import { ComponentManifest, CategoryType, BlockTypes } from "../registry";
-import { fromPairs } from "lodash";
+import { ComponentManifest, CategoryType } from "../registry";
+import { fromPairs, isArrayLike, last, isUndefined, isNull } from "lodash";
+
+type ImageURLInputShape =
+  | string
+  | Array<string>
+  | {
+      ["1x"]?: string | null;
+      ["2x"]?: string | null;
+      ["3x"]?: string | null;
+    };
+
+type ImageURLShape = {
+  ["1x"]: string;
+  ["2x"]: string;
+  ["3x"]: string;
+};
+
+const normalizeImageURL = (input: ImageURLInputShape): ImageURLShape | null => {
+  if (typeof input === "string") {
+    return {
+      "1x": input,
+      "2x": input,
+      "3x": input
+    };
+  } else if (isArrayLike(input)) {
+    const _input = [2, 1, 0].map(index => {
+      return last(
+        input.slice(0, index).filter(row => !isNull(row) && !isUndefined(row))
+      );
+    });
+
+    return {
+      "1x": _input[0],
+      "2x": _input[2],
+      "3x": _input[3]
+    };
+  } else if (input["1x"] || input["2x"] || input["3x"]) {
+    return {
+      "1x": input["1x"],
+      "2x": input["2x"],
+      "3x": input["3x"]
+    };
+  } else {
+    return null;
+  }
+};
 
 export type ComponentManifestMap = { [key: string]: ComponentManifest };
 type SchemaValue = {
@@ -149,9 +194,9 @@ export function normalizeBlock({
   return {
     title,
     description,
-    screenshot,
     category,
     src,
+    screenshot: normalizeImageURL(screenshot),
     isRemote,
     isDevelopment,
     isVoid: !!(
@@ -198,7 +243,7 @@ export function normalizeInline({
   return {
     title,
     description,
-    screenshot,
+    screenshot: normalizeImageURL(screenshot),
     isDevelopment,
     placeholder,
     Component,

@@ -2,7 +2,7 @@ import express from "express";
 import fg from "fast-glob";
 import path from "path";
 import cors from "cors";
-import { buildConfig, outputPath, NODE_MODULES } from "./rollup";
+import { buildConfig, NODE_MODULES } from "./rollup";
 import * as rollup from "rollup";
 import fs from "fs";
 import {
@@ -11,7 +11,7 @@ import {
   savePackageJS,
   savePackageJSON
 } from "./createPackagejSON";
-import { packageJSFilePath } from "./packageUtils";
+import { packageJSFilePath, clearOutputPath, outputPath } from "./packageUtils";
 import localtunnel from "localtunnel";
 import getPort from "get-port";
 import { CategoryType } from "codeblog/dist/registry";
@@ -19,6 +19,7 @@ import { clearDevServer, setDevServer } from "./api";
 import SocketIO from "socket.io";
 import { memoize } from "lodash";
 import { runYarnInstall } from "./publishPackage";
+import rimraf from "rimraf";
 
 export enum ErrorCodes {
   compile_package_js_error = "compile_package_js_error",
@@ -39,7 +40,8 @@ let socket;
 
 const server = express();
 server.use(cors());
-const packages = {};
+const _packages = {};
+const packageStore = () => _packages;
 
 const getPackages = () => {
   const list = {
@@ -47,11 +49,11 @@ const getPackages = () => {
     Blocks: {}
   };
 
-  Object.keys(packages).map(pkgID => {
-    const { src, registration, id } = packages[pkgID];
+  Object.keys(packageStore()).map(pkgID => {
+    const { src, registration = {}, id } = packageStore()[pkgID];
 
     const _registration = {
-      ...packages[pkgID].registration,
+      ...registration,
       isRemote: true,
       isDevelopment: true,
       id,
@@ -59,7 +61,7 @@ const getPackages = () => {
       src
     };
 
-    if (registration.category === CategoryType.text) {
+    if (_registration.category === CategoryType.text) {
       list.Inlines[id] = _registration;
     } else {
       list.Blocks[id] = _registration;
@@ -95,14 +97,18 @@ const processPackageJS = async (
 ) => {
   let packageJSCode, packageJSON, _packageJSON;
 
+  if (!packageStore()[packageName]) {
+    packageStore()[packageName] = {};
+  }
+
   try {
     packageJSCode = await compilePackageJSFile(
       packageJSFilePath(packageName, packagePath)
     );
   } catch (exception) {
-    packages[packageName].packageJSErrorCode =
+    packageStore()[packageName].packageJSErrorCode =
       ErrorCodes.compile_package_js_error;
-    packages[packageName].packageJSError = exception;
+    packageStore()[packageName].packageJSError = exception;
   }
 
   await savePackageJS(packageName, packagePath, "dev", packageJSCode);
@@ -111,16 +117,16 @@ const processPackageJS = async (
     packageJSON = await convertPackageJSToJSON(packageJSCode, packageName);
     _packageJSON = JSON.parse(packageJSON);
   } catch (exception) {
-    packages[packageName].packageJSErrorCode =
+    packageStore()[packageName].packageJSErrorCode =
       ErrorCodes.package_js_to_json_error;
-    packages[packageName].packageJSError = exception;
+    packageStore()[packageName].packageJSError = exception;
   }
 
-  if (packages[packageName]) {
-    packages[packageName].id = _packageJSON.name;
-    packages[packageName].packageJSError = null;
-    packages[packageName].packageJSErrorCode = null;
-    packages[packageName].registration = _packageJSON.codeblog;
+  if (packageStore()[packageName]) {
+    packageStore()[packageName].id = _packageJSON.name;
+    packageStore()[packageName].packageJSError = null;
+    packageStore()[packageName].packageJSErrorCode = null;
+    packageStore()[packageName].registration = _packageJSON.codeblog;
   }
 
   await savePackageJSON(packageName, packagePath, "dev", packageJSON);
@@ -140,7 +146,7 @@ const watchPackageJS = (packageName: string, packagePath: string) => {
       await runYarnInstall(outputPath(packageName, packagePath, "dev"));
 
       console.log("Updated", packageName);
-      socket.emit(packages[packageName].id, getPackages());
+      socket.emit(packageStore()[packageName].id, getPackages());
     }
   );
 };
@@ -149,27 +155,48 @@ export async function loadComponentDevServer(
   packageName: string,
   packagePath: string
 ) {
-  if (packages[packageName]) {
+  if (packageStore()[packageName]) {
     return;
   }
 
+  const _outputPath = outputPath(packageName, packagePath, "dev");
+  await clearOutputPath(packageName, packagePath, "dev");
+
   const packageJSON = await processPackageJS(packageName, packagePath, "dev");
 
-  await runYarnInstall(outputPath(packageName, packagePath, "dev"));
+  if (!packageJSON || !packageJSON.name || !packageJSON.codeblog) {
+    console.error(`[${packageName}] Fatal error! :(`);
+    console.log(`Check that:`);
+    console.log(`1. ${packageJSFilePath(packageName, packagePath)} exists`);
+    console.log(`2. It should be valid JavaScript.`);
+    console.log(
+      `3. The above file should export default (or module.exports =) a valid package.json manifest`
+    );
+    console.log(`4. This directory is writable: ${_outputPath}`);
+    console.log(`5. You have some free disk space (doesn't need much)`);
+    console.log(`Feel free to reach out for help.`);
+    process.exit();
+    return;
+  }
 
-  packages[packageName] = {
+  await runYarnInstall(_outputPath);
+
+  packageStore()[packageName] = {
     id: packageJSON.name,
     registration: packageJSON.codeblog
   };
 
-  packages[packageName].manifest = watchPackageJS(packageName, packagePath);
+  packageStore()[packageName].manifest = watchPackageJS(
+    packageName,
+    packagePath
+  );
 
   const componentConfig = buildConfig(
     packageName,
     packagePath,
     "dev",
     packageJSON.name,
-    Object.keys(packageJSON.dependencies)
+    Object.keys(packageJSON.dependencies || {})
   );
 
   const watcher = rollup.watch([componentConfig]);
@@ -177,23 +204,20 @@ export async function loadComponentDevServer(
   watcher.on("event", async (event, ...other) => {
     console.log(event);
     if (event.code === "BUNDLE_END") {
-      packages[packageName].src = `${
+      packageStore()[packageName].src = `${
         tunnel.url
       }/components/${packageName}/${path.basename(event.output[0])}.js`;
       console.log("Updated", packageName);
 
-      socket.emit(packages[packageName].id, getPackages());
+      socket.emit(packageStore()[packageName].id, getPackages());
     }
   });
 
-  packages[packageName].component = watcher;
+  packageStore()[packageName].component = watcher;
 
   console.log(`Loaded ${packageName} in ${packagePath}`);
 
-  server.use(
-    `/components/${packageName}`,
-    express.static(outputPath(packageName, packagePath, "dev"))
-  );
+  server.use(`/components/${packageName}`, express.static(_outputPath));
 
   return packageName;
 }

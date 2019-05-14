@@ -8,7 +8,8 @@ import {
   jsFileName,
   jsFilePath,
   packageJSFilename,
-  packageJSFilePath
+  packageJSFilePath,
+  outputPath
 } from "./packageUtils";
 import commonjs from "rollup-plugin-commonjs";
 
@@ -66,20 +67,20 @@ const GLOBAL_MODULES = {
 
 const BABEL_RC = {
   plugins: [
-    path.join(NODE_MODULES, "babel-plugin-transform-node-env-inline"),
-    path.join(NODE_MODULES, "@babel/plugin-proposal-class-properties")
+    require("babel-plugin-transform-node-env-inline"),
+    require("@babel/plugin-proposal-class-properties")
   ],
   presets: [
     [
-      path.join(NODE_MODULES, "@babel/preset-env"),
+      require("@babel/preset-env"),
       {
         targets: {
           browsers: "last 2 versions"
         }
       }
     ],
-    path.join(NODE_MODULES, "@babel/preset-react"),
-    path.join(NODE_MODULES, "@emotion/babel-preset-css-prop")
+    require("@babel/preset-react"),
+    require("@emotion/babel-preset-css-prop")
   ]
 };
 
@@ -111,12 +112,6 @@ const validatePackage = (packageName: string, packagePath: string) => {
 
   return true;
 };
-
-export const outputPath = (
-  packageName: string,
-  _packagePath: string,
-  mode: "dev" | "release"
-) => path.join(process.env.HOME, `.codeblog-${mode}`, packageName);
 
 export function buildConfig(
   packageName: string,

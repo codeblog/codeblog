@@ -16,9 +16,11 @@ import {
   jsFilePath,
   packageJSFilename,
   packageJSFilePath,
-  tgzFilePath
+  tgzFilePath,
+  tgzFileName,
+  outputPath
 } from "./packageUtils";
-import { buildConfig, outputPath, NODE_MODULES } from "./rollup";
+import { buildConfig, NODE_MODULES } from "./rollup";
 import { exec } from "child_process";
 
 const _fs = fs.promises;
@@ -27,12 +29,18 @@ type FileMap = {
   [filepath: string]: Stream | string;
 };
 
-export const runYarnInstall = (cwd: string) => {
-  const YARN_PATH = path.resolve(NODE_MODULES, "yarn", "lib", "cli.js");
+const getYarnPath = () => {
+  if (process.env.NODE_ENV === "production") {
+    return __non_webpack_require__.resolve("yarn/lib/cli");
+  } else {
+    return require.resolve("yarn/lib/cli");
+  }
+};
 
+export const runYarnInstall = (cwd: string) => {
   return new Promise((resolve, reject) => {
     exec(
-      `cd ${cwd} && node ${YARN_PATH} install --no-lockfile --non-interactive --no-bin-links --ignore-engines --skip-integrity-check`,
+      `cd ${cwd} && node ${getYarnPath()} install --no-lockfile --non-interactive --no-bin-links --ignore-engines --skip-integrity-check`,
       err => {
         if (err) {
           reject(
@@ -60,11 +68,13 @@ export const buildPackage = async (
   const files: FileMap = {
     "package.json": packageJSON,
     [`dist/${packageJSFilename(packageName)}`]: packageJSCode,
-    [`src/${packageJSFilename(packageName)}`]: fs.createReadStream(
-      packageJSFilePath(packageName, packagePath)
+    [`src/${packageJSFilename(packageName)}`]: fs.readFileSync(
+      packageJSFilePath(packageName, packagePath),
+      "utf8"
     ),
-    [`src/${jsFileName(packageName)}`]: fs.createReadStream(
-      jsFilePath(packageName, packagePath)
+    [`src/${jsFileName(packageName)}`]: fs.readFileSync(
+      jsFilePath(packageName, packagePath),
+      "utf8"
     )
   };
 
@@ -102,7 +112,7 @@ export const buildPackage = async (
     packagePath,
     "release",
     metadata.name,
-    JSON.parse(packageJSON).dependencies
+    Object.keys(metadata.dependencies || {})
   );
 
   const { output: outputs, ..._rollupConfig } = rollupConfig;
@@ -124,9 +134,8 @@ export const buildPackage = async (
     )
   );
 
-  Object.assign(files, bundles);
-
-  return { files, metadata: packageJSON };
+  const _files = Object.assign(files, bundles);
+  return { files: _files, metadata: packageJSON };
 };
 
 export const buildTGZ = async (files: FileMap) => {
@@ -141,6 +150,7 @@ export const buildTGZ = async (files: FileMap) => {
         return new Bluebird((resolve, reject) => {
           pack.entry({ name: filePath }, content, err => {
             if (err) {
+              console.error(err);
               reject(err);
             } else {
               resolve();
@@ -148,24 +158,23 @@ export const buildTGZ = async (files: FileMap) => {
           });
         });
       } else {
-        return new Bluebird(async (resolve, reject) => {
-          const size = await streamLength(content);
-
-          const entry = pack.entry({ name: filePath, size }, err => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve();
-            }
+        return new Bluebird((resolve, reject) => {
+          return streamLength(content).then(size => {
+            const entry = pack.entry({ name: filePath, size }, (err, ...a) => {
+              if (err) {
+                reject(err);
+              } else {
+                console.error(a);
+                resolve();
+              }
+            });
+            content.pipe(entry);
           });
-
-          content.pipe(entry);
         });
       }
     },
     { concurrency: 1 }
   );
-
   pack.finalize();
   return pack;
 };
@@ -176,7 +185,10 @@ export const saveTGZ = (
   packagePath: string
 ): Promise<Stream> => {
   return new Promise((resolve, reject) => {
-    const _tgzPath = tgzFilePath(packageName, packagePath);
+    const _tgzPath = path.join(
+      outputPath(packageName, packagePath, "release"),
+      tgzFileName(packageName)
+    );
     const writeStream = fs.createWriteStream(_tgzPath);
 
     const gzip = zlib.createGzip();

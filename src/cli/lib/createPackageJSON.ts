@@ -2,7 +2,8 @@ import { transformFileAsync } from "@babel/core";
 import path from "path";
 import fs from "fs";
 import vm from "vm";
-import { NODE_MODULES, outputPath } from "./rollup";
+import { NODE_MODULES } from "./rollup";
+import { outputPath } from "./packageUtils";
 
 const PACKAGE_BABEL_RC = {
   plugins: [

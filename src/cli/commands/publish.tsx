@@ -13,6 +13,7 @@ import {
 } from "../lib/publishPackage";
 import { tgzFilePath } from "../lib/packageUtils";
 import fs from "fs";
+import { requireLogin } from "./login";
 
 enum PublishStep {
   building_package = "building_package",
@@ -55,38 +56,33 @@ class PublishComponent extends React.Component<Props> {
   }
 }
 
-export async function publishCommand(names: Array<string>, cwd: string) {
-  await Promise.all(
-    names.map(async name => {
-      const { files, metadata } = await buildPackage(name, cwd);
-      const tgzFile = await buildTGZ(files);
-      const tgzStream = await saveTGZ(tgzFile, name, cwd);
+const doPublishPackage = async (name: string, cwd: string) => {
+  console.log("Building....");
+  const { files, metadata } = await buildPackage(name, cwd);
+  const tgzFile = await buildTGZ(files);
+  const tgzStream = await saveTGZ(tgzFile, name, cwd);
+  console.log("Uploading....");
+  try {
+    const pkg = await uploadPackage({
+      tgz: tgzStream,
+      component: metadata,
+      options: {}
+    });
 
-      return uploadPackage({
-        tgz: tgzStream,
-        component: metadata,
-        options: {}
-      });
+    console.log("Uploaded!");
+
+    return pkg;
+  } catch (exception) {
+    console.error(exception);
+  }
+};
+
+export async function publishCommand(names: Array<string>, cwd: string) {
+  await requireLogin();
+
+  return Promise.all(
+    names.map(name => {
+      return doPublishPackage(name, cwd);
     })
   );
 }
-
-export const requireLogin = () => {
-  return new Promise(async (resolve, _reject) => {
-    const _isLoggedIn = await isLoggedIn();
-
-    if (_isLoggedIn) {
-      resolve();
-      return;
-    }
-
-    const { unmount } = render(
-      <LoginComponent
-        onSuccess={() => {
-          unmount();
-          resolve();
-        }}
-      />
-    );
-  });
-};

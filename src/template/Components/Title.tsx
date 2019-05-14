@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { AlignProp } from "../../cli/registry";
+import { AlignProp } from "../../registry";
 import {
   CodeblogContext,
   PageType,

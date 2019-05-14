@@ -1,5 +1,6 @@
 import filenamify from "filenamify";
 import path from "path";
+import rimraf from "rimraf";
 
 export const packageJSFilename = (name: string) =>
   filenamify(`${name}.package.js`, { replacement: "-" });
@@ -18,3 +19,35 @@ export const tgzFileName = (name: string) =>
 export const tgzFilePath = (packageName: string, packagePath: string) => {
   return path.join(packagePath, tgzFileName(packageName));
 };
+
+export const clearOutputPath = (
+  packageName: string,
+  packagePath: string,
+  mode: "dev" | "release"
+) => {
+  return new Promise((resolve, reject) => {
+    const dest = outputPath(packageName, packagePath, mode);
+
+    if (!dest.includes(".codeblog")) {
+      console.error(
+        "Tried to delete the wrong directory... out of an abundance of caution, gonna just go ahead and quit"
+      );
+      process.exit();
+      return;
+    }
+
+    rimraf(dest, err => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
+};
+
+export const outputPath = (
+  packageName: string,
+  _packagePath: string,
+  mode: "dev" | "release"
+) => path.join(process.env.HOME, `.codeblog-${mode}`, packageName);
