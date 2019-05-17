@@ -3,6 +3,7 @@ import FancyHeadingAsset2x from "../../assets/blocks/FancyHeading@2x.png";
 import FancyHeadingAsset3x from "../../assets/blocks/FancyHeading@3x.png";
 import styled from "@emotion/styled";
 import { EditableProps } from "../../EditableProps";
+import tinycolor from "tinycolor2";
 import {
   CategoryType,
   BackgroundProp,
@@ -32,7 +33,9 @@ const FancyHeadingComponent: React.ComponentType<
     props.background || "var(--text-color)"};
   width: 100%;
   color: ${(props: FancyHeadingProps) =>
-    props.color ? props.color : "var(--page-background)"};
+    tinycolor(props.background).isDark()
+      ? "var(--color-white)"
+      : "var(--color-black)"};
   margin-block-start: var(--offset-medium);
   padding-top: var(--offset-large);
   padding-bottom: var(--offset-large);

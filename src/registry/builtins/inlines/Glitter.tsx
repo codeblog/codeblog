@@ -9,7 +9,7 @@ const GlitterComponent = styled.span`
     url(https://storage.googleapis.com/codeblog-public/Glitter.gif) repeat 100px
       20px;
 
-  color: ${props => props.color || "blue"};
+  color: ${props => props.color || "pink"};
   background-clip: text !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;

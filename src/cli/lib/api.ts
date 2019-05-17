@@ -13,10 +13,10 @@ const fetchWrapper = (jar: CookieJar) => fetchCookie(_fetch, jar);
 // const DEVELOPMENT_HOSTNAME = "http://localhost:3001/api/v1";
 const HOSTNAME = "https://codeblog.com/api/v1";
 
-const HOSTNAME =
-  process.env.NODE_ENV === "production"
-    ? PRODUCTION_HOSTNAME
-    : DEVELOPMENT_HOSTNAME;
+// const HOSTNAME =
+//   process.env.NODE_ENV === "production"
+//     ? PRODUCTION_HOSTNAME
+//     : DEVELOPMENT_HOSTNAME;
 
 export const buildUrl = (path: string) => `${HOSTNAME}${path}`;
 

@@ -22,7 +22,7 @@ export const Blocks = {
     id: BlockTypes.paragraph,
     title: "Paragraph",
     category: CategoryType.block,
-    placeholder: "Type '/' for commands",
+    placeholder: "Type '/' for magic",
     description: "The classic.",
     screenshot: {
       "1x": ParagraphAsset1x,

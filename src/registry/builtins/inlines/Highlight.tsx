@@ -4,6 +4,7 @@ import HighlightAsset2x from "../../assets/inlines/Highlight@2x.png";
 import HighlightAsset3x from "../../assets/inlines/Highlight@3x.png";
 import { EditableProps } from "../../EditableProps";
 import { CategoryType } from "../../../registry";
+import tinycolor from "tinycolor2";
 
 const PRESET_COLORS = {
   green: "#99ffcc",
@@ -18,6 +19,7 @@ const HighlightComponent = styled.span`
   transition: background-color 0.1s linear;
 
   background-color: ${props => props.color};
+  color: ${props => (tinycolor(props.color).isDark() ? "white" : "#333")};
 `;
 
 export const Highlight = {
