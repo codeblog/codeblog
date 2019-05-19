@@ -1,25 +1,25 @@
 {
   "name": "codeblog",
-  "version": "3.1.23",
+  "version": "3.1.24",
   "browser": "dist/index.js",
   "main": "dist/index.js",
   "bin": {
-    "codeblog": "dist/cli/index.js"
+    "codeblog": "dist/cli.js"
   },
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
     "predev": "rimraf dist",
-    "dev-cli": "NODE_ENV=development webpack --config src/cli/webpack.config.js --watch",
-    "dev-js": "NODE_ENV=development babel src -x .js,.tsx,.ts -d dist --watch --verbose --ignore src/cli",
+    "dev-cli": "NODE_ENV=development webpack --config cli/webpack.config.js --watch",
+    "dev-js": "NODE_ENV=development -d dist --watch --verbose --ignore cli",
     "dev-css": "NODE_ENV=development postcss --config . src/template/styles.css -o dist/template/styles.css --watch",
     "dev": "concurrently 'yarn dev-js' 'yarn dev-css' 'yarn dev-cli'",
-    "build-cli": "NODE_ENV=production webpack --config src/cli/webpack.config.js",
-    "build-js": "NODE_ENV=production babel src -x .js,.tsx,.ts -d dist -D",
+    "build-cli": "NODE_ENV=production node --max_old_space_size=4096 ./node_modules/.bin/webpack --config cli/webpack.config.js",
+    "build-js": "NODE_ENV=development babel src -x .js,.tsx,.ts -d dist --verbose",
     "build-css": "NODE_ENV=production postcss --config . src/template/styles.css -o dist/template/styles.css",
     "build": "yarn build-js && yarn build-css && yarn build-assets && yarn build-cli",
     "build-typescript": "yarn tsc -p tsconfig.json",
-    "postbuild": "chmod +x dist/cli/index.js && yarn build-typescript",
+    "postbuild": "chmod +x dist/cli.js && yarn build-typescript",
     "deploy": "yarn build && yarn publish",
     "copy-assets-folder": "find src -name '*.png' | xargs -I{} cp -v {} ./assets",
     "upload-assets-folder": "gsutil -m rsync  -r assets gs://codeblog-public",
@@ -27,7 +27,8 @@
   },
   "files": [
     "dist",
-    "boilerplate"
+    "boilerplate",
+    "cli"
   ],
   "dependencies": {
     "@babel/core": "^7.4.4",
@@ -39,7 +40,6 @@
     "@emotion/jsx": "^0.7.0",
     "@emotion/styled": "^10.0.10",
     "@emotion/styled-base": "^10.0.10",
-    "app-root-path": "^2.2.1",
     "babel-plugin-transform-node-env-inline": "^0.4.3",
     "classnames": "^2.2.6",
     "cors": "^2.8.5",
