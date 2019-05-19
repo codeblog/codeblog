@@ -1,6 +1,6 @@
 {
   "name": "codeblog",
-  "version": "3.1.24",
+  "version": "3.1.25",
   "browser": "dist/index.js",
   "main": "dist/index.js",
   "bin": {
@@ -11,7 +11,7 @@
     "prebuild": "rimraf dist",
     "predev": "rimraf dist",
     "dev-cli": "NODE_ENV=development webpack --config cli/webpack.config.js --watch",
-    "dev-js": "NODE_ENV=development -d dist --watch --verbose --ignore cli",
+    "dev-js": "NODE_ENV=production babel src -x .js,.tsx,.ts -d dist --verbose --watch",
     "dev-css": "NODE_ENV=development postcss --config . src/template/styles.css -o dist/template/styles.css --watch",
     "dev": "concurrently 'yarn dev-js' 'yarn dev-css' 'yarn dev-cli'",
     "build-cli": "NODE_ENV=production node --max_old_space_size=4096 ./node_modules/.bin/webpack --config cli/webpack.config.js",
@@ -27,8 +27,7 @@
   },
   "files": [
     "dist",
-    "boilerplate",
-    "cli"
+    "boilerplate"
   ],
   "dependencies": {
     "@babel/core": "^7.4.4",
@@ -115,6 +114,7 @@
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.5.0",
     "react-dom": "^16.8.6",
+    "requireg": "^0.2.1",
     "rimraf": "^2.6.3",
     "typescript": "^3.4.5",
     "uws": "10.148.1",
