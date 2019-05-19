@@ -1,10 +1,10 @@
 {
   "name": "codeblog",
-  "version": "3.1.20",
+  "version": "3.1.21",
   "browser": "dist/index.js",
   "main": "dist/index.js",
   "bin": {
-    "codeblog": "dist/cli-bin/index.js"
+    "codeblog": "dist/cli/index.js"
   },
   "license": "MIT",
   "scripts": {
@@ -18,8 +18,7 @@
     "build-css": "NODE_ENV=production postcss --config . src/template/styles.css -o dist/template/styles.css",
     "build": "yarn build-js && yarn build-css && yarn build-assets",
     "build-typescript": "yarn tsc -p tsconfig.json",
-    "build-ncc": "ncc build dist/cli/index.js -o dist/cli-bin --external yarn",
-    "postbuild": "chmod +x dist/cli/index.js && yarn build-ncc && yarn build-typescript",
+    "postbuild": "chmod +x dist/cli/index.js && yarn build-typescript",
     "deploy": "yarn build && yarn publish",
     "copy-assets-folder": "find src -name '*.png' | xargs -I{} cp -v {} ./assets",
     "upload-assets-folder": "gsutil -m rsync  -r assets gs://codeblog-public",
