@@ -1,6 +1,6 @@
 {
   "name": "codeblog",
-  "version": "3.1.22",
+  "version": "3.1.23",
   "browser": "dist/index.js",
   "main": "dist/index.js",
   "bin": {
@@ -10,13 +10,14 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "predev": "rimraf dist",
-    "dev-cli": "NODE_ENV=development babel src/cli -x .js,.tsx,.ts -d dist/cli --watch --verbose",
+    "dev-cli": "NODE_ENV=development webpack --config src/cli/webpack.config.js --watch",
     "dev-js": "NODE_ENV=development babel src -x .js,.tsx,.ts -d dist --watch --verbose --ignore src/cli",
     "dev-css": "NODE_ENV=development postcss --config . src/template/styles.css -o dist/template/styles.css --watch",
     "dev": "concurrently 'yarn dev-js' 'yarn dev-css' 'yarn dev-cli'",
+    "build-cli": "NODE_ENV=production webpack --config src/cli/webpack.config.js",
     "build-js": "NODE_ENV=production babel src -x .js,.tsx,.ts -d dist -D",
     "build-css": "NODE_ENV=production postcss --config . src/template/styles.css -o dist/template/styles.css",
-    "build": "yarn build-js && yarn build-css && yarn build-assets",
+    "build": "yarn build-js && yarn build-css && yarn build-assets && yarn build-cli",
     "build-typescript": "yarn tsc -p tsconfig.json",
     "postbuild": "chmod +x dist/cli/index.js && yarn build-typescript",
     "deploy": "yarn build && yarn publish",
@@ -29,6 +30,7 @@
     "boilerplate"
   ],
   "dependencies": {
+    "@babel/core": "^7.4.4",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
@@ -87,7 +89,6 @@
   "gitHead": "e5add848f1d0d6d88e05d0ec16660f07bd2a77d6",
   "devDependencies": {
     "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.4",
     "@babel/preset-typescript": "^7.3.3",
     "@types/babel__core": "^7.1.1",
     "@types/bluebird": "^3.5.26",
@@ -116,8 +117,13 @@
     "react-dom": "^16.8.6",
     "rimraf": "^2.6.3",
     "typescript": "^3.4.5",
+    "uws": "10.148.1",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.1",
-    "webpack-fix-style-only-entries": "^0.2.0"
+    "webpack-fix-style-only-entries": "^0.2.0",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "resolutions": {
+    "uws": "10.148.1"
   }
 }
