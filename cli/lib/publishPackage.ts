@@ -1,6 +1,5 @@
 import Bluebird from "bluebird";
 import { exec } from "child_process";
-import fs from "fs";
 import { fromPairs } from "lodash";
 import path from "path";
 import { rollup } from "rollup";
@@ -21,8 +20,7 @@ import {
   tgzFileName
 } from "./packageUtils";
 import { buildConfig } from "./rollup";
-
-const _fs = fs.promises;
+import fs from "fs-extra";
 
 type FileMap = {
   [filepath: string]: Stream | string;
@@ -90,22 +88,18 @@ export const buildPackage = async (
   const _outputPath = outputPath(packageName, packagePath, "release");
 
   try {
-    await _fs.mkdir(path.join(_outputPath, "dist"), {
-      recursive: true
-    });
+    await fs.mkdirp(path.join(_outputPath, "dist"));
   } catch (exception) {}
 
   try {
-    await _fs.mkdir(path.join(_outputPath, "src"), {
-      recursive: true
-    });
+    await fs.mkdirp(path.join(_outputPath, "src"));
   } catch (exception) {}
 
   await Bluebird.map(
     Object.keys(files),
     _filePath => {
       const filePath = path.join(_outputPath, _filePath);
-      return _fs.writeFile(filePath, files[_filePath], {
+      return fs.writeFile(filePath, files[_filePath], {
         encoding: "utf8"
       });
     },

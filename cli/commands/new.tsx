@@ -14,10 +14,10 @@ import { requireLogin } from "./login";
 
 type Choice = "block" | "inline";
 
-const BOILERPLATE_PATH = path.join(
-  resolveGlobal("codeblog"),
-  "../../boilerplate"
-);
+const BOILERPLATE_PATH =
+  process.env.NODE_ENV === "production"
+    ? path.join(resolveGlobal("codeblog"), "../../boilerplate")
+    : path.resolve(__dirname, "../boilerplate");
 
 const BLOCK_COMPONENT_BOILERPLATE_PATH = path.join(
   BOILERPLATE_PATH,
@@ -253,9 +253,8 @@ export async function newCommand(
     );
   }
 
-  await devCommand(_destination);
-
   if (autoOpen) {
+    await openInEditor(files[1]);
     await openInEditor(files[0]);
   }
 }

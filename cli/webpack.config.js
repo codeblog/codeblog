@@ -24,7 +24,7 @@ module.exports = {
   node: false,
   target: "node",
   optimization: {
-    minimize: false,
+    minimize: process.env.NODE_ENV === "production",
     namedModules: true,
     namedChunks: true,
     moduleIds: "named",

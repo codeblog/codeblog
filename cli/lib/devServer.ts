@@ -1,26 +1,26 @@
+import { CategoryType } from "codeblog/dist/registry";
+import cors from "cors";
+import debug from "debug";
 import express from "express";
 import fg from "fast-glob";
-import path from "path";
-import cors from "cors";
-import { buildConfig, NODE_MODULES } from "./rollup";
-import * as rollup from "rollup";
 import fs from "fs";
+import getPort from "get-port";
+import localtunnel from "localtunnel";
+import { memoize } from "lodash";
+import path from "path";
+import * as rollup from "rollup";
+import SocketIO from "socket.io";
+import { clearDevServer, setDevServer } from "./api";
 import {
   compilePackageJSFile,
   convertPackageJSToJSON,
+  resolveGlobal,
   savePackageJS,
-  savePackageJSON,
-  resolveGlobal
+  savePackageJSON
 } from "./createPackagejSON";
-import { packageJSFilePath, clearOutputPath, outputPath } from "./packageUtils";
-import localtunnel from "localtunnel";
-import getPort from "get-port";
-import { CategoryType } from "codeblog/dist/registry";
-import { clearDevServer, setDevServer } from "./api";
-import SocketIO from "socket.io";
-import { memoize } from "lodash";
+import { clearOutputPath, outputPath, packageJSFilePath } from "./packageUtils";
 import { runYarnInstall } from "./publishPackage";
-import rimraf from "rimraf";
+import { buildConfig } from "./rollup";
 
 export enum ErrorCodes {
   compile_package_js_error = "compile_package_js_error",
@@ -31,7 +31,7 @@ export enum ErrorCodes {
 const getVersion = memoize(() => {
   const { version } = JSON.parse(
     fs.readFileSync(
-      path.join(resolveGlobal("codeblog"), "../../package.json"),
+      path.join(resolveGlobal("codeblog"), "../package.json"),
       "utf8"
     )
   );
@@ -153,7 +153,7 @@ const watchPackageJS = (packageName: string, packagePath: string) => {
       await processPackageJS(packageName, packagePath, "dev");
       await runYarnInstall(outputPath(packageName, packagePath, "dev"));
 
-      console.log("Updated", packageName);
+      debug("Updated", packageName);
       socket.emit(packageStore()[packageName].id, getPackages());
     }
   );
@@ -173,16 +173,16 @@ export async function loadComponentDevServer(
   const packageJSON = await processPackageJS(packageName, packagePath, "dev");
 
   if (!packageJSON || !packageJSON.name || !packageJSON.codeblog) {
-    console.error(`[${packageName}] Fatal error! :(`);
-    console.log(`Check that:`);
-    console.log(`1. ${packageJSFilePath(packageName, packagePath)} exists`);
-    console.log(`2. It should be valid JavaScript.`);
-    console.log(
+    debug(`[${packageName}] Fatal error! :(`);
+    debug(`Check that:`);
+    debug(`1. ${packageJSFilePath(packageName, packagePath)} exists`);
+    debug(`2. It should be valid JavaScript.`);
+    debug(
       `3. The above file should export default (or module.exports =) a valid package.json manifest`
     );
-    console.log(`4. This directory is writable: ${_outputPath}`);
-    console.log(`5. You have some free disk space (doesn't need much)`);
-    console.log(`Feel free to reach out for help.`);
+    debug(`4. This directory is writable: ${_outputPath}`);
+    debug(`5. You have some free disk space (doesn't need much)`);
+    debug(`Feel free to reach out for help.`);
     process.exit();
     return;
   }
@@ -210,12 +210,12 @@ export async function loadComponentDevServer(
   const watcher = rollup.watch([componentConfig]);
 
   watcher.on("event", async (event, ...other) => {
-    console.log(event);
+    debug(event);
     if (event.code === "BUNDLE_END") {
       packageStore()[packageName].src = `${
         tunnel.url
       }/components/${packageName}/${path.basename(event.output[0])}.js`;
-      console.log("Updated", packageName);
+      debug("Updated", packageName);
 
       socket.emit(packageStore()[packageName].id, getPackages());
     }
@@ -223,7 +223,7 @@ export async function loadComponentDevServer(
 
   packageStore()[packageName].component = watcher;
 
-  console.log(`Loaded ${packageName} in ${packagePath}`);
+  debug(`Loaded ${packageName} in ${packagePath}`);
 
   server.use(`/components/${packageName}`, express.static(_outputPath));
 
@@ -250,32 +250,63 @@ export async function loadComponentDevServerForFolder(folderPath: string) {
   return components;
 }
 
+const connectToLocalTunnel = (port: number) => {
+  return new Promise((resolve, reject) => {
+    localtunnel(port, (err, _tunnel) => {
+      if (err) {
+        reject(err);
+        return;
+      } else {
+        resolve(_tunnel);
+      }
+    });
+  });
+};
+
+const RETRY_DELAY = 50;
+const RETRY_COUNT = 3;
+const connectToLocalTunnelWithRetries = async (
+  port: number,
+  retryCount: number = 0,
+  maxRetryCount = RETRY_COUNT
+) => {
+  let _tunnel;
+  try {
+    return await connectToLocalTunnel(port);
+  } catch (exception) {
+    if (process.env.NODE_ENV === "development") {
+      debug(exception);
+    }
+    return new Promise((resolve, reject) => {
+      setTimeout(
+        () =>
+          resolve(
+            connectToLocalTunnelWithRetries(port, retryCount + 1, maxRetryCount)
+          ),
+        RETRY_DELAY
+      );
+    });
+  }
+};
+
 export async function startServer() {
   const port = await getPort({ port: Number(process.env.PORT || 49374) });
 
-  return await new Promise((resolve, reject) => {
-    const httpServer = server.listen(port, _httpServer => {
-      localtunnel(port, (err, _tunnel) => {
-        tunnel = _tunnel;
+  const httpServer = server.listen(port, async _httpServer => {
+    tunnel = await connectToLocalTunnelWithRetries(port, 0);
 
-        if (err) {
-          reject(err);
-          return;
-        } else {
-          return setDevServer({ url: tunnel.url, options: {} }).then(() => {
-            process.once("beforeExit", () => {
-              clearDevServer({});
-            });
+    await setDevServer({ url: tunnel.url, options: {} });
 
-            console.log("Codeblog dev server started:", tunnel.url);
-            resolve(_tunnel.url);
-          });
-        }
-      });
+    process.once("beforeExit", () => {
+      clearDevServer({});
     });
 
-    socket = SocketIO(httpServer, {
+    debug("Codeblog dev server started:", tunnel.url);
+
+    socket = SocketIO(_httpServer, {
       serveClient: false
     });
   });
+
+  return [httpServer, socket];
 }
