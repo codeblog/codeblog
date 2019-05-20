@@ -64,6 +64,10 @@ export class ComponentLoader extends React.Component<Props, State> {
   }
 
   loadComponent = async (cacheBust: boolean = false) => {
+    if (!this.props.src) {
+      return;
+    }
+
     try {
       this.Component = await loadAndEvalScript(
         cacheBust
