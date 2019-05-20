@@ -1,6 +1,6 @@
 {
   "name": "codeblog",
-  "version": "3.1.29",
+  "version": "3.2.0",
   "browser": "dist/index.js",
   "main": "dist/index.js",
   "bin": {
@@ -109,7 +109,12 @@
     "css-loader": "^2.1.1",
     "cssnano": "^4.1.10",
     "fs-extra": "^8.0.1",
+    "ink-divider": "^2.0.0",
+    "ink-link": "^1.0.0",
     "mini-css-extract-plugin": "^0.5.0",
+    "mobx": "^5.9.4",
+    "mobx-react": "^5.4.4",
+    "node-emoji": "^1.10.0",
     "postcss-cli": "^6.1.2",
     "postcss-css-variables": "^0.11.0",
     "postcss-import": "^12.0.1",
