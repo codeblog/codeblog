@@ -21,6 +21,7 @@ import {
 } from "./packageUtils";
 import { buildConfig } from "./rollup";
 import fs from "fs-extra";
+import chalk from "chalk";
 
 type FileMap = {
   [filepath: string]: Stream | string;
@@ -63,14 +64,48 @@ export const buildPackage = async (
   packageName: string,
   packagePath: string
 ) => {
-  const packageJSCode = await compilePackageJSFile(
-    packageJSFilePath(packageName, packagePath)
-  );
+  const _packageJSPath = packageJSFilePath(packageName, packagePath);
+  const _relativePath = path.relative(process.cwd(), _packageJSPath);
+  const packageJSCode = await compilePackageJSFile(_packageJSPath);
+
+  console.log(chalk.bold.white("compile"), "./" + _relativePath);
+
   const packageJSON = await convertPackageJSToJSON(
     packageJSCode,
     packageName,
     packageJSFilePath(packageName, packagePath)
   );
+
+  console.log(
+    chalk.bold.white("convert"),
+    "./" + _relativePath,
+    "to package.json"
+  );
+
+  const _packageJSON = JSON.parse(packageJSON);
+
+  const strLength = "description:".length;
+  const _logProperty = prop =>
+    chalk.keyword("gray")(prop.padStart(strLength, " "));
+  console.log(chalk.keyword("gray")("---"));
+  console.log(_logProperty("ID:"), chalk.keyword("white")(_packageJSON.name));
+  console.log(_logProperty("public:"), chalk.keyword("white")("yes"));
+
+  console.log(
+    _logProperty("title:"),
+    chalk.keyword("white")(_packageJSON.codeblog.title)
+  );
+
+  console.log(
+    _logProperty("description:"),
+    chalk.keyword("white")(_packageJSON.codeblog.description)
+  );
+
+  console.log(
+    _logProperty("category:"),
+    chalk.keyword("white")(_packageJSON.codeblog.category)
+  );
+  console.log(chalk.keyword("gray")("---"));
 
   const files: FileMap = {
     "package.json": packageJSON,
@@ -108,6 +143,8 @@ export const buildPackage = async (
 
   await runYarnInstall(_outputPath);
 
+  console.log(chalk.bold.white("install"), "dependencies");
+
   const metadata = JSON.parse(packageJSON);
 
   const rollupConfig = buildConfig(
@@ -136,6 +173,8 @@ export const buildPackage = async (
       })
     )
   );
+
+  console.log(chalk.bold.white("bundle"), packageName);
 
   const _files = Object.assign(files, bundles);
   return { files: _files, metadata: packageJSON };

@@ -5,15 +5,19 @@ import Spinner from "ink-spinner";
 import Gradient from "ink-gradient";
 import BigText from "ink-big-text";
 import { login, isLoggedIn, uploadPackage } from "../lib/api";
+import ora from "ora";
 import {
   buildPackage,
   buildTGZ,
   compressTar,
   saveTGZ
 } from "../lib/publishPackage";
-import { tgzFilePath } from "../lib/packageUtils";
+import { tgzFilePath, tgzFileName } from "../lib/packageUtils";
 import fs from "fs";
 import { requireLogin } from "./login";
+import chalk from "chalk";
+import emoji from "node-emoji";
+import moment from "moment";
 
 enum PublishStep {
   building_package = "building_package",
@@ -57,11 +61,11 @@ class PublishComponent extends React.Component<Props> {
 }
 
 const doPublishPackage = async (name: string, cwd: string) => {
-  console.log("Building....");
+  const startTime = new Date();
   const { files, metadata } = await buildPackage(name, cwd);
   const tgzFile = await buildTGZ(files);
   const tgzStream = await saveTGZ(tgzFile, name, cwd);
-  console.log("Uploading....");
+  const spinner = ora(`Uploading ${tgzFileName(name)} (public)`).start();
   try {
     const pkg = await uploadPackage({
       tgz: tgzStream,
@@ -69,10 +73,26 @@ const doPublishPackage = async (name: string, cwd: string) => {
       options: {}
     });
 
-    console.log("Uploaded!");
+    const secondsElapsed = ((new Date() - startTime) / 1000).toFixed(2);
+
+    spinner.stopAndPersist({
+      symbol: chalk.green("√"),
+      text: ` Published ${name} in ${secondsElapsed}s`
+    });
+
+    console.log(
+      emoji.get("sparkles"),
+      chalk.keyword("white")(`Now you can use ${name} in public pads`)
+    );
+
+    console.log(
+      emoji.get("hammer"),
+      chalk.keyword("gray")(`The source is on GitHub: ${pkg.github_url}`)
+    );
 
     return pkg;
   } catch (exception) {
+    spinner.stop();
     console.error(exception);
   }
 };

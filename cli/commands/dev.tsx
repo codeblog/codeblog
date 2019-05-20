@@ -1,14 +1,29 @@
 // import { loadComponentDevServerForFolder, startServer } from "../lib/devServer";
-import { requireLogin } from "./login";
 import { render } from "ink";
-import { DevServerComponent } from "../components/DevServer";
+import { observable } from "mobx";
+import { Provider } from "mobx-react/custom";
 import * as React from "react";
+import { DevServerComponent } from "../components/DevServer";
+import { requireLogin } from "./login";
+
+export function startDevServer(cwd: string) {
+  const stores = {
+    components: observable.array([])
+  };
+
+  const { waitUntilExit } = render(
+    <Provider {...stores}>
+      <DevServerComponent cwd={cwd} />
+    </Provider>
+  );
+
+  return waitUntilExit();
+}
 
 export async function devCommand(cwd: string) {
   await requireLogin();
 
-  render(<DevServerComponent />);
-
+  await startDevServer(cwd);
   // await startServer();
   // await loadComponentDevServerForFolder(cwd);
 }

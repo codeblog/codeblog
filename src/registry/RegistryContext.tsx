@@ -1,6 +1,13 @@
 import * as React from "react";
 import { ComponentManifest, CategoryType } from "../registry";
-import { fromPairs, isArrayLike, last, isUndefined, isNull } from "lodash";
+import {
+  fromPairs,
+  isArrayLike,
+  last,
+  isUndefined,
+  isNull,
+  isEmpty
+} from "lodash";
 
 type ImageURLInputShape =
   | string
@@ -36,14 +43,21 @@ const normalizeImageURL = (input: ImageURLInputShape): ImageURLShape | null => {
       "2x": _input[2],
       "3x": _input[3]
     };
-  } else if (input["1x"] || input["2x"] || input["3x"]) {
+  } else if (
+    typeof input === "object" &&
+    (input["1x"] || input["2x"] || input["3x"])
+  ) {
     return {
       "1x": input["1x"],
       "2x": input["2x"],
       "3x": input["3x"]
     };
   } else {
-    return null;
+    return {
+      "1x": null,
+      "2x": null,
+      "3x": null
+    };
   }
 };
 
@@ -310,18 +324,22 @@ export class RegistryProvider extends React.PureComponent<Props, State> {
       ([_key, inline]) => !inline.isDevelopment
     );
 
+    const requiredKeys = ["title", "src", "category"];
+
     const _inlines = fromPairs([
-      ...Object.entries(inlines).map(([key, inline]) => [
-        key,
-        normalizeInline(inline)
-      ]),
+      ...Object.entries(inlines)
+        .filter(([_, inline]) => {
+          return requiredKeys.every(key => !isEmpty(inline[key]));
+        })
+        .map(([key, inline]) => [key, normalizeInline(inline)]),
       ...inlinesWithoutDevelopment
     ]);
     const _blocks = fromPairs([
-      ...Object.entries(blocks).map(([key, block]) => [
-        key,
-        normalizeBlock(block)
-      ]),
+      ...Object.entries(blocks)
+        .filter(([_, block]) => {
+          return requiredKeys.every(key => !isEmpty(block[key]));
+        })
+        .map(([key, block]) => [key, normalizeBlock(block)]),
       ...blocksWithoutDevelopment
     ]);
 

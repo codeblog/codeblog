@@ -6,23 +6,22 @@ import tinycolor from "tinycolor2"; // This is a popular color library
 
 // This is the React component that is shown your pad.
 // Since this is a Block component, be sure to render children. If you don't, things will break.
-export default ({ children, ...otherProps }) => (
+export default ({ children, background, ...otherProps }) => (
   <div
     {...otherProps}
     // Codeblog uses Emotion (https://emotion.sh) for CSS.
     // This makes it easy to have styles that apply per component instead of to the whole page
-    css={props => css`
-      background-color: ${props.background};
-
+    css={css`
+      background-color: ${background};
       /* The text color should be readable on any background you choose */
       /* So we check if the background is dark and, when it is, we make the text color light */
-      color: ${tinycolor(props.background).isDark()
+      color: ${tinycolor(background).isDark()
         ? "var(--color-white)"
         : "var(--color-black)"};
 
       font-size: 24px;
       text-align: center;
-      font-weight: bold;
+      font-weight: 500;
       width: 100%;
       display: block;
 
@@ -36,5 +35,9 @@ export default ({ children, ...otherProps }) => (
   </div>
 );
 
-// if you want to change how your component appears in search, edit this file:
-// {{packageJSPath}}
+// If you want to...
+// - Supply default props
+// - 🔎 Change how your component appears in search
+// - 🎨 Change the props you can edit from the editor (e.g. accept a URL or a color)
+// Edit this file:
+// 📦{{packageJSPath}}

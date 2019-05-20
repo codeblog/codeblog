@@ -20,14 +20,8 @@ export const tgzFilePath = (packageName: string, packagePath: string) => {
   return path.join(packagePath, tgzFileName(packageName));
 };
 
-export const clearOutputPath = (
-  packageName: string,
-  packagePath: string,
-  mode: "dev" | "release"
-) => {
+export const clearOutputPath = (dest: string) => {
   return new Promise((resolve, reject) => {
-    const dest = outputPath(packageName, packagePath, mode);
-
     if (!dest.includes(".codeblog")) {
       console.error(
         "Tried to delete the wrong directory... out of an abundance of caution, gonna just go ahead and quit"

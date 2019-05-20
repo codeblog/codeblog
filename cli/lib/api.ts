@@ -10,15 +10,15 @@ import streamLength from "stream-length";
 
 const fetchWrapper = (jar: CookieJar) => fetchCookie(_fetch, jar);
 
-const PRODUCTION_HOSTNAME = "https://codeblog.com/api/v1";
-const DEVELOPMENT_HOSTNAME = "http://localhost:3001/api/v1";
+const PRODUCTION_HOSTNAME = "https://codeblog.com";
+const DEVELOPMENT_HOSTNAME = "http://localhost:3001";
 
-const HOSTNAME =
+export const HOSTNAME =
   process.env.NODE_ENV === "production"
     ? PRODUCTION_HOSTNAME
     : DEVELOPMENT_HOSTNAME;
 
-export const buildUrl = (path: string) => `${HOSTNAME}${path}`;
+export const buildUrl = (path: string) => `${HOSTNAME}/api/v1/${path}`;
 
 const COOKIE_STORE_PATH = path.join(
   process.env.HOME || "./",

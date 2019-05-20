@@ -9,15 +9,16 @@ import React from "react";
 import { resolveGlobal } from "../lib/createPackageJSON";
 import { openInEditor } from "../lib/openInEditor";
 import { jsFileName, packageJSFilename } from "../lib/packageUtils";
-import { devCommand } from "./dev";
+import { devCommand, startDevServer } from "./dev";
 import { requireLogin } from "./login";
+import childProcess from "child_process";
 
 type Choice = "block" | "inline";
 
 const BOILERPLATE_PATH =
   process.env.NODE_ENV === "production"
-    ? path.join(resolveGlobal("codeblog"), "../../boilerplate")
-    : path.resolve(__dirname, "../boilerplate");
+    ? path.join(path.dirname(resolveGlobal("codeblog")), "../boilerplate")
+    : path.resolve(__dirname, "./boilerplate");
 
 const BLOCK_COMPONENT_BOILERPLATE_PATH = path.join(
   BOILERPLATE_PATH,
@@ -104,7 +105,7 @@ export function saveBlockComponentBoilerplate(
       flag: "w"
     });
 
-    console.log(chalk.keyword("green")("Wrote"), abs);
+    console.log(chalk.keyword("black").bgGreen("WROTE"), abs);
 
     return abs;
   });
@@ -175,31 +176,48 @@ class BoilerplatePicker extends React.Component<Props, State> {
       return (
         <Box>
           <Text>
-            <Color white>&gt; Enter component name:</Color>{" "}
+            <Color gray>&gt;&nbsp;</Color>
+            <Color white>Enter component name:</Color>&nbsp;
           </Text>
-          <TextInput
-            value={name}
-            placeholder="My cool component"
-            showCursor
-            onSubmit={this.handleSetStepToChoice}
-            onChange={this.handleChangeName}
-          />
+          <Text bold>
+            <TextInput
+              value={name}
+              placeholder="My cool component"
+              showCursor
+              onSubmit={this.handleSetStepToChoice}
+              onChange={this.handleChangeName}
+            />
+          </Text>
         </Box>
       );
     } else if (step === "choice") {
       return (
         <Box flexDirection="column">
-          <Color white>&gt; What kind of component?</Color>{" "}
+          <Box>
+            <Box>
+              <Text>
+                <Color gray>&gt;&nbsp;</Color>
+                <Color gray>Enter component name:</Color>&nbsp;
+              </Text>
+            </Box>
+            <Text bold={false}>{name}</Text>
+          </Box>
+
+          <Text>
+            <Color gray>&gt;&nbsp;</Color>
+            <Text bold>
+              <Color white>What kind?</Color>&nbsp;
+            </Text>
+          </Text>
+
           <SelectInput
             items={[
               {
-                label:
-                  "Block – wraps an entire line. Good for things like headers, textures and embeds",
+                label: "Block  – wraps an entire line.",
                 value: "block"
               },
               {
-                label:
-                  "Inline – applies to text inside a block. Good for text effects",
+                label: "Inline – text inside a line",
                 value: "inline"
               }
             ]}
@@ -218,8 +236,8 @@ const getNameAndChoice = (defaultName: string | null): Promise<any> => {
       <BoilerplatePicker
         defaultName={defaultName || null}
         onSelect={(choice, name) => {
-          resolve([choice, name]);
           unmount();
+          resolve([choice, name]);
         }}
       />
     );
@@ -254,7 +272,25 @@ export async function newCommand(
   }
 
   if (autoOpen) {
-    await openInEditor(files[1]);
-    await openInEditor(files[0]);
+    await Promise.all([openInEditor(files[1]), openInEditor(files[0])]).then(
+      ok => {},
+      _doNothing => {}
+    );
   }
+
+  let cmdName;
+  if (process.env.NODE_ENV === "production") {
+    cmdName = path.join(
+      path.dirname(resolveGlobal("codeblog")),
+      "../dist/cli.js"
+    );
+  } else {
+    cmdName = path.resolve(__dirname, "./codeblog-dev.js");
+  }
+
+  return require("child_process").fork(cmdName, ["dev"], {
+    cwd: _destination,
+    env: process.env,
+    detached: false
+  });
 }
