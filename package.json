@@ -1,6 +1,6 @@
 {
   "name": "codeblog",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "browser": "dist/index.js",
   "main": "dist/index.js",
   "bin": {
@@ -63,6 +63,7 @@
     "node-eval": "^2.0.0",
     "node-fetch": "^2.5.0",
     "open-in-editor": "^2.2.0",
+    "ora": "^3.4.0",
     "react": "^16.8.6",
     "react-head": "^3.1.0",
     "react-headroom": "^2.2.8",
