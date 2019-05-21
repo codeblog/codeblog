@@ -1,6 +1,6 @@
 {
   "name": "codeblog",
-  "version": "3.2.6",
+  "version": "3.2.7",
   "browser": "dist/index.js",
   "main": "dist/index.js",
   "bin": {
