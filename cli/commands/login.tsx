@@ -5,6 +5,7 @@ import Spinner from "ink-spinner";
 import Gradient from "ink-gradient";
 import BigText from "ink-big-text";
 import { login, isLoggedIn, getCurrentUser } from "../lib/api";
+import { CODEBLOG_BIN } from "../lib/paths";
 
 type Props = {
   onSuccess: () => void;
@@ -132,26 +133,35 @@ export class LoginComponent extends React.Component<Props, State> {
 
 export function loginCommand() {
   const { unmount } = render(
-    <LoginComponent onSuccess={() => setTimeout(unmount, 1000)} />
+    <LoginComponent onSuccess={() => setTimeout(unmount, 1)} />
   );
 }
 
 export const requireLogin = () => {
-  return new Promise(async (resolve, _reject) => {
+  return new Promise(async (resolve, reject) => {
     const user = await isLoggedIn();
 
     if (user) {
       resolve(user);
       return;
-    }
+    } else {
+      const child = require("child_process").fork(CODEBLOG_BIN, ["login"], {
+        cwd: process.cwd(),
+        env: process.env,
+        detached: false,
+        encoding: "utf-8"
+      });
 
-    const { unmount } = render(
-      <LoginComponent
-        onSuccess={async () => {
-          unmount();
-          resolve(await getCurrentUser({ options: {} }));
-        }}
-      />
-    );
+      child.on("exit", async () => {
+        const user = await isLoggedIn();
+
+        if (!user) {
+          reject();
+          return;
+        }
+
+        resolve(user);
+      });
+    }
   });
 };

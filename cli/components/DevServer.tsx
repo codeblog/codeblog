@@ -1,23 +1,22 @@
 import { CategoryType } from "codeblog/dist/registry";
+import express from "express";
 import fs from "fs";
 import { Box, Color, Static, Text } from "ink";
-import Divider from "ink-divider";
 import Link from "ink-link";
 import Spinner from "ink-spinner";
-import { memoize, fromPairs, throttle } from "lodash";
+import { memoize, throttle } from "lodash";
 import { inject, observer } from "mobx-react/custom";
 import moment from "moment";
 import path, { join } from "path";
 import * as React from "react";
-import express from "express";
 import {
   BuildStatus,
   CodeblogComponent,
   CodeblogComponentStore,
   LogLevel
 } from "../lib/CodeblogComponent";
-import { resolveGlobal } from "../lib/createPackagejSON";
 import { startServer } from "../lib/devServer";
+import { CODEBLOG_ROOT } from "../lib/paths";
 
 type DevComponentProps = {
   component: CodeblogComponent;
@@ -170,10 +169,7 @@ const DevComponentStatus = observer(_DevComponentStatus);
 
 const getVersion = memoize(() => {
   const { version } = JSON.parse(
-    fs.readFileSync(
-      join(path.dirname(resolveGlobal("codeblog")), "../package.json"),
-      "utf8"
-    )
+    fs.readFileSync(join(CODEBLOG_ROOT, "./package.json"), "utf8")
   );
 
   return version;
@@ -366,7 +362,7 @@ class RawDevServerComponent extends React.Component<{ cwd: string }, State> {
         <Box marginTop={2}>
           {step === DevServerStep.ready && (
             <Box flexGrow={1} flexDirection="column">
-              <Divider titlePadding={0} padding={0} title="Status" />
+              <Text>----</Text>
               {this.props.components.map(component => (
                 <DevComponentStatus
                   log={this.handleLog}
@@ -375,11 +371,7 @@ class RawDevServerComponent extends React.Component<{ cwd: string }, State> {
                   cwd={cwd}
                 />
               ))}
-              <Divider
-                titlePadding={0}
-                padding={0}
-                title={`Editor (${editorURL || HOSTNAME})`}
-              />
+              <Text>----</Text>
               {isEditorConnected ? (
                 <Box flexDirection="column">
                   <Box flexDirection="row">

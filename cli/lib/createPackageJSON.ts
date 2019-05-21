@@ -3,30 +3,7 @@ import fs from "fs";
 import path, { basename } from "path";
 import vm from "vm";
 import { outputPath } from "./packageUtils";
-
-export function resolveGlobal(packageName) {
-  var childProcess = __non_webpack_require__("child_process");
-  var path = __non_webpack_require__("path");
-  var fs = __non_webpack_require__("fs");
-
-  var globalNodeModules = childProcess
-    .execSync("yarn global dir")
-    .toString()
-    .trim();
-  var packageDir = path.join(globalNodeModules, packageName);
-  if (!fs.existsSync(packageDir))
-    packageDir = path.join(globalNodeModules, "node_modules", packageName); //find package required by old npm
-
-  if (!fs.existsSync(packageDir))
-    throw new Error("Cannot find global module '" + packageName + "'");
-
-  var packageMeta = JSON.parse(
-    fs.readFileSync(path.join(packageDir, "package.json")).toString()
-  );
-  var main = path.join(packageDir, packageMeta.main);
-
-  return __non_webpack_require__.resolve(main);
-}
+import { CODEBLOG_ROOT } from "./paths";
 
 const PACKAGE_BABEL_RC = {
   plugins: [
@@ -35,7 +12,7 @@ const PACKAGE_BABEL_RC = {
       {
         root: ["./"],
         alias: {
-          codeblog: path.join(resolveGlobal("codeblog"), "../../")
+          codeblog: CODEBLOG_ROOT
         }
       }
     ],

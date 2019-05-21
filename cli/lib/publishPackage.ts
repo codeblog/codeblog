@@ -22,29 +22,16 @@ import {
 import { buildConfig } from "./rollup";
 import fs from "fs-extra";
 import chalk from "chalk";
+import { YARN_BIN } from "./paths";
 
 type FileMap = {
   [filepath: string]: Stream | string;
 };
 
-const getYarnPath = () => {
-  return new Promise((resolve, reject) => {
-    exec(`which yarn`, (err, yarn) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(yarn.trim());
-      }
-    });
-  });
-};
-
 export const runYarnInstall = async (cwd: string) => {
-  const yarnPath = await getYarnPath();
-
   return new Promise((resolve, reject) => {
     exec(
-      `cd ${cwd} && node ${yarnPath} install --no-lockfile --non-interactive --no-bin-links --ignore-engines --skip-integrity-check`,
+      `cd ${cwd} && node ${YARN_BIN} install --no-lockfile --non-interactive --no-bin-links --ignore-engines --skip-integrity-check`,
       err => {
         if (err) {
           reject(

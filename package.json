@@ -4,7 +4,7 @@
   "browser": "dist/index.js",
   "main": "dist/index.js",
   "bin": {
-    "codeblog": "dist/cli.js"
+    "codeblog": "bin/codeblog"
   },
   "license": "MIT",
   "scripts": {
@@ -19,7 +19,7 @@
     "build-css": "NODE_ENV=production postcss --config . src/template/styles.css -o dist/template/styles.css",
     "build": "yarn build-js && yarn build-css && yarn build-assets && yarn build-cli",
     "build-typescript": "yarn tsc -p tsconfig.json",
-    "postbuild": "chmod +x dist/cli.js && yarn build-typescript",
+    "postbuild": "chmod +x bin/codeblog && yarn build-typescript",
     "deploy": "yarn build && yarn publish",
     "copy-assets-folder": "find src -name '*.png' | xargs -I{} cp -v {} ./assets",
     "upload-assets-folder": "gsutil -m rsync  -r assets gs://codeblog-public",
@@ -27,6 +27,8 @@
   },
   "files": [
     "dist",
+    "bin/yarn-1.16.0.js",
+    "bin/codeblog",
     "boilerplate"
   ],
   "dependencies": {
@@ -83,8 +85,7 @@
     "tinycolor2": "^1.4.1",
     "tough-cookie": "^3.0.1",
     "tough-cookie-file-store": "^1.2.0",
-    "yargs": "^13.2.2",
-    "yarn": "^1.15.2"
+    "yargs": "^13.2.2"
   },
   "gitHead": "e5add848f1d0d6d88e05d0ec16660f07bd2a77d6",
   "devDependencies": {
@@ -129,7 +130,8 @@
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.1",
     "webpack-fix-style-only-entries": "^0.2.0",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-node-externals": "^1.7.2",
+    "webpack-permissions-plugin": "^1.0.3"
   },
   "resolutions": {
     "uws": "10.148.1"

@@ -6,19 +6,15 @@ import TextInput from "ink-text-input";
 import { camelCase, kebabCase, startCase, trim, upperFirst } from "lodash";
 import path from "path";
 import React from "react";
-import { resolveGlobal } from "../lib/createPackageJSON";
 import { openInEditor } from "../lib/openInEditor";
 import { jsFileName, packageJSFilename } from "../lib/packageUtils";
-import { devCommand, startDevServer } from "./dev";
+import { CODEBLOG_BIN, CODEBLOG_ROOT } from "../lib/paths";
 import { requireLogin } from "./login";
-import childProcess from "child_process";
+import { isLoggedIn } from "../lib/api";
 
 type Choice = "block" | "inline";
 
-const BOILERPLATE_PATH =
-  process.env.NODE_ENV === "production"
-    ? path.join(path.dirname(resolveGlobal("codeblog")), "../boilerplate")
-    : path.resolve(__dirname, "./boilerplate");
+const BOILERPLATE_PATH = path.resolve(CODEBLOG_ROOT, "boilerplate");
 
 const BLOCK_COMPONENT_BOILERPLATE_PATH = path.join(
   BOILERPLATE_PATH,
@@ -29,11 +25,6 @@ const INLINE_COMPONENT_BOILERPLATE_PATH = path.join(
   BOILERPLATE_PATH,
   "inline-component"
 );
-
-const BOILERPLATE_BY_CHOICE = {
-  inline: INLINE_COMPONENT_BOILERPLATE_PATH,
-  block: BLOCK_COMPONENT_BOILERPLATE_PATH
-};
 
 type Replacements = { [key: string]: string };
 const stringWithReplacements = (
@@ -119,7 +110,8 @@ export function saveInlineComponentBoilerplate(
   const files = generateBoilerplate(
     _name,
     INLINE_COMPONENT_BOILERPLATE_PATH,
-    username
+    username,
+    destination
   );
 
   return Object.keys(files).map(fileName => {
@@ -278,19 +270,23 @@ export async function newCommand(
     );
   }
 
-  let cmdName;
-  if (process.env.NODE_ENV === "production") {
-    cmdName = path.join(
-      path.dirname(resolveGlobal("codeblog")),
-      "../dist/cli.js"
-    );
-  } else {
-    cmdName = path.resolve(__dirname, "./codeblog-dev.js");
-  }
+  return new Promise((resolve, reject) => {
+    const child = require("child_process").fork(CODEBLOG_BIN, ["dev"], {
+      cwd: process.cwd(),
+      env: process.env,
+      detached: false,
+      encoding: "utf-8"
+    });
 
-  return require("child_process").fork(cmdName, ["dev"], {
-    cwd: _destination,
-    env: process.env,
-    detached: false
+    child.on("exit", async () => {
+      const user = await isLoggedIn();
+
+      if (!user) {
+        reject();
+        return;
+      }
+
+      resolve(user);
+    });
   });
 }

@@ -1,24 +1,19 @@
 const webpack = require("webpack");
 const path = require("path");
 const nodeExternals = require("webpack-node-externals");
+const PermissionsOutputPlugin = require("webpack-permissions-plugin");
 
-let outputPath;
-
-if (process.env.NODE_ENV === "production") {
-  outputPath = path.resolve(__dirname, `../dist`);
-} else {
-  outputPath = path.resolve(__dirname, `../`);
-}
+const fileName =
+  process.env.NODE_ENV === "production" ? "codeblog" : "codeblog-dev";
 
 module.exports = {
   context: path.resolve(__dirname),
   entry: {
-    [process.env.NODE_ENV === "production"
-      ? "cli"
-      : "codeblog-dev"]: path.resolve(__dirname, "./index.tsx")
+    [fileName]: path.resolve(__dirname, "./index.tsx")
   },
   output: {
-    path: outputPath,
+    path: path.resolve(__dirname, `../bin`),
+    filename: "[name]",
     globalObject: "global"
   },
   node: false,
@@ -36,8 +31,15 @@ module.exports = {
     },
     extensions: [".wasm", ".mjs", ".js", ".json", ".tsx", ".ts"]
   },
-  externals: ["yarn"],
   plugins: [
+    new PermissionsOutputPlugin({
+      buildFiles: [
+        {
+          path: path.resolve(__dirname, "../bin", fileName),
+          fileMode: "777"
+        }
+      ]
+    }),
     new webpack.BannerPlugin({
       banner: "#!/usr/bin/env node",
       raw: true,

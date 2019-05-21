@@ -1,19 +1,20 @@
 import fs from "fs";
-import { fromPairs, merge } from "lodash";
-import path, { basename, dirname } from "path";
-import babelPlugin from "rollup-plugin-babel";
-import nodeResolve from "rollup-plugin-node-resolve";
+import { merge } from "lodash";
 import nodeEval from "node-eval";
+import path from "path";
+import babelPlugin from "rollup-plugin-babel";
+import commonjs from "rollup-plugin-commonjs";
+import nodeResolve from "rollup-plugin-node-resolve";
 import {
   jsFileName,
   jsFilePath,
+  outputPath,
   packageJSFilename,
-  packageJSFilePath,
-  outputPath
+  packageJSFilePath
 } from "./packageUtils";
-import commonjs from "rollup-plugin-commonjs";
+import { CODEBLOG_ROOT } from "./paths";
 
-export const NODE_MODULES = path.join(__dirname, "../../../node_modules/");
+export const NODE_MODULES = path.join(CODEBLOG_ROOT, "node_modules");
 
 const BUNDLED_MODULES = [
   "@emotion/core",
