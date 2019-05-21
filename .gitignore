@@ -4,5 +4,5 @@ package-lock.json
 dist
 assets
 .DS_Store
-codeblog-dev
-codeblog-dev.js
+bin/codeblog-dev.js
+bin/codeblog-dev
