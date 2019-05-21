@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ComponentManifest, CategoryType } from "../registry";
+import { ComponentManifest, CategoryType, ImageURLShape } from "../registry";
 import {
   fromPairs,
   isArrayLike,
@@ -18,11 +18,7 @@ type ImageURLInputShape =
       ["3x"]?: string | null;
     };
 
-type ImageURLShape = {
-  ["1x"]: string;
-  ["2x"]: string;
-  ["3x"]: string;
-};
+const REQUIRED_KEYS = ["title", "src", "category"];
 
 const normalizeImageURL = (input: ImageURLInputShape): ImageURLShape | null => {
   if (typeof input === "string") {
@@ -45,6 +41,7 @@ const normalizeImageURL = (input: ImageURLInputShape): ImageURLShape | null => {
     };
   } else if (
     typeof input === "object" &&
+    input !== null &&
     (input["1x"] || input["2x"] || input["3x"])
   ) {
     return {
@@ -83,7 +80,7 @@ export type RegistryContextType = {
     blocks: ComponentManifestMap,
     inlines: ComponentManifestMap
   ) => void;
-  onChange: (
+  onInsert: (
     blocks: ComponentManifestMap,
     inlines: ComponentManifestMap
   ) => void;
@@ -102,7 +99,7 @@ export const RegistryContext = React.createContext<RegistryContextType>({
   ) => {},
   onChangeBlocks: (_blocks: ComponentManifestMap) => {},
   onChangeInlines: (_inlines: ComponentManifestMap) => {},
-  onChange: (
+  onInsert: (
     _blocks: ComponentManifestMap,
     _inlines: ComponentManifestMap
   ) => {}
@@ -155,7 +152,7 @@ const makeContextValue = (
   { inlines: Inlines, blocks: Blocks, schema }: StateWithoutContext,
   onChangeBlocks: OnChangeFunction,
   onChangeInlines: OnChangeFunction,
-  onChange: (
+  onInsert: (
     blocks: ComponentManifestMap,
     inlines: ComponentManifestMap
   ) => void,
@@ -170,7 +167,7 @@ const makeContextValue = (
     schema,
     onChangeBlocks,
     onChangeInlines,
-    onChange,
+    onInsert,
     onChangeDevelopmentComponents
   };
 };
@@ -181,6 +178,7 @@ export function normalizeBlock({
   screenshot,
   category,
   placeholder,
+  author,
   src,
   isRemote,
   isVoid,
@@ -210,6 +208,7 @@ export function normalizeBlock({
     description,
     category,
     src,
+    author,
     screenshot: normalizeImageURL(screenshot),
     isRemote,
     isDevelopment,
@@ -234,6 +233,7 @@ export function normalizeInline({
   src,
   isRemote,
   isDevelopment,
+  author,
   Component,
   EditorComponent: _EditorComponent,
   editableProps = {},
@@ -261,6 +261,7 @@ export function normalizeInline({
     isDevelopment,
     placeholder,
     Component,
+    author,
     src,
     isRemote,
     EditorComponent,
@@ -286,7 +287,7 @@ export class RegistryProvider extends React.PureComponent<Props, State> {
         stateWithoutContext,
         this.handleChangeBlocks,
         this.handleChangeInlines,
-        this.handleChange,
+        this.handleInsert,
         this.handleChangeDevelopmentComponents
       )
     });
@@ -305,7 +306,7 @@ export class RegistryProvider extends React.PureComponent<Props, State> {
           stateWithoutContext,
           this.handleChangeBlocks,
           this.handleChangeInlines,
-          this.handleChange,
+          this.handleInsert,
           this.handleChangeDevelopmentComponents
         )
       })
@@ -324,12 +325,10 @@ export class RegistryProvider extends React.PureComponent<Props, State> {
       ([_key, inline]) => !inline.isDevelopment
     );
 
-    const requiredKeys = ["title", "src", "category"];
-
     const _inlines = fromPairs([
       ...Object.entries(inlines)
         .filter(([_, inline]) => {
-          return requiredKeys.every(key => !isEmpty(inline[key]));
+          return REQUIRED_KEYS.every(key => !isEmpty(inline[key]));
         })
         .map(([key, inline]) => [key, normalizeInline(inline)]),
       ...inlinesWithoutDevelopment
@@ -337,7 +336,7 @@ export class RegistryProvider extends React.PureComponent<Props, State> {
     const _blocks = fromPairs([
       ...Object.entries(blocks)
         .filter(([_, block]) => {
-          return requiredKeys.every(key => !isEmpty(block[key]));
+          return REQUIRED_KEYS.every(key => !isEmpty(block[key]));
         })
         .map(([key, block]) => [key, normalizeBlock(block)]),
       ...blocksWithoutDevelopment
@@ -355,20 +354,42 @@ export class RegistryProvider extends React.PureComponent<Props, State> {
           stateWithoutContext,
           this.handleChangeBlocks,
           this.handleChangeInlines,
-          this.handleChange,
+          this.handleInsert,
           this.handleChangeDevelopmentComponents
         )
       })
     );
   };
 
-  handleChange = (
-    blocks: ComponentManifestMap,
-    inlines: ComponentManifestMap
+  handleInsert = (
+    _blocks: ComponentManifestMap,
+    _inlines: ComponentManifestMap
   ) => {
+    const inlines = fromPairs(
+      Object.entries(_inlines)
+        .filter(([_, inline]) => {
+          return REQUIRED_KEYS.every(key => !isEmpty(inline[key]));
+        })
+        .map(([key, inline]) => [key, normalizeInline(inline)])
+    );
+
+    const blocks = fromPairs(
+      Object.entries(_blocks)
+        .filter(([_, block]) => {
+          return REQUIRED_KEYS.every(key => !isEmpty(block[key]));
+        })
+        .map(([key, block]) => [key, normalizeBlock(block)])
+    );
+
     const stateWithoutContext = {
-      inlines,
-      blocks,
+      inlines: {
+        ...this.state.inlines,
+        ...inlines
+      },
+      blocks: {
+        ...this.state.blocks,
+        ...blocks
+      },
       schema: computeSchema(blocks, inlines)
     };
 
@@ -378,7 +399,7 @@ export class RegistryProvider extends React.PureComponent<Props, State> {
           stateWithoutContext,
           this.handleChangeBlocks,
           this.handleChangeInlines,
-          this.handleChange,
+          this.handleInsert,
           this.handleChangeDevelopmentComponents
         )
       })
@@ -398,7 +419,7 @@ export class RegistryProvider extends React.PureComponent<Props, State> {
           stateWithoutContext,
           this.handleChangeBlocks,
           this.handleChangeInlines,
-          this.handleChange,
+          this.handleInsert,
           this.handleChangeDevelopmentComponents
         )
       })

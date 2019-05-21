@@ -36,7 +36,9 @@ export class ComponentLoader extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.Component = getModule(props.moduleName);
+    if (props.src) {
+      this.Component = getModule(props.moduleName);
+    }
 
     this.state = {
       status: this.Component ? "completed" : "loading",
@@ -47,6 +49,16 @@ export class ComponentLoader extends React.Component<Props, State> {
   componentDidMount() {
     if (this.state.status === "loading") {
       this.loadComponent(false);
+    }
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (
+      prevProps.src !== this.props.src &&
+      this.props.src &&
+      this.state.status !== "completed"
+    ) {
+      this.loadComponent(true);
     }
   }
 

@@ -38,10 +38,17 @@ export type CodeblogPackageJSON = {
   dependencies: { [key: string]: string };
 };
 
+export type ImageURLShape = {
+  ["1x"]: string;
+  ["2x"]: string;
+  ["3x"]: string;
+};
+
 export type ComponentManifest = {
   title: string;
   description: string;
-  screenshot: string | null;
+  screenshot: ImageURLShape | null;
+  author: string | null;
   category: CategoryType;
   placeholder: string | null;
   isDevelopment?: boolean;
