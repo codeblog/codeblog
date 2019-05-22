@@ -6,6 +6,7 @@ import {
   last,
   isUndefined,
   isNull,
+  isEqual,
   isEmpty
 } from "lodash";
 
@@ -124,6 +125,7 @@ type State = StateWithoutContext & {
 export const isVoid = (manifest: ComponentManifest) =>
   !!manifest.isVoid || manifest.category === CategoryType.embed;
 
+let _lastSchema;
 const computeSchema = (
   blocks: ComponentManifestMap,
   inlines: ComponentManifestMap
@@ -145,7 +147,12 @@ const computeSchema = (
     };
   });
 
-  return schema;
+  if (isEqual(_lastSchema, schema)) {
+    return _lastSchema;
+  } else {
+    _lastSchema = schema;
+    return schema;
+  }
 };
 
 const makeContextValue = (
@@ -182,6 +189,7 @@ export function normalizeBlock({
   src,
   isRemote,
   isVoid,
+  multiLine = false,
   Component,
   isDevelopment,
   EditorComponent: _EditorComponent,
@@ -211,6 +219,7 @@ export function normalizeBlock({
     author,
     screenshot: normalizeImageURL(screenshot),
     isRemote,
+    multiLine: multiLine || false,
     isDevelopment,
     isVoid: !!(
       [CategoryType.embed, CategoryType.media].includes(category) || isVoid
@@ -219,7 +228,7 @@ export function normalizeBlock({
     Component,
     EditorComponent,
     editableProps,
-    defaultProps: { ...(defaultProps || {}) },
+    defaultProps: { ...(defaultProps || {}), data: {} },
     id
   };
 }
@@ -268,7 +277,7 @@ export function normalizeInline({
     category,
     id,
     editableProps,
-    defaultProps: { ...(defaultProps || {}) }
+    defaultProps: { ...(defaultProps || {}), data: {} }
   };
 }
 
@@ -326,20 +335,20 @@ export class RegistryProvider extends React.PureComponent<Props, State> {
     );
 
     const _inlines = fromPairs([
+      ...inlinesWithoutDevelopment,
       ...Object.entries(inlines)
         .filter(([_, inline]) => {
           return REQUIRED_KEYS.every(key => !isEmpty(inline[key]));
         })
-        .map(([key, inline]) => [key, normalizeInline(inline)]),
-      ...inlinesWithoutDevelopment
+        .map(([key, inline]) => [key, normalizeInline(inline)])
     ]);
     const _blocks = fromPairs([
+      ...blocksWithoutDevelopment,
       ...Object.entries(blocks)
         .filter(([_, block]) => {
           return REQUIRED_KEYS.every(key => !isEmpty(block[key]));
         })
-        .map(([key, block]) => [key, normalizeBlock(block)]),
-      ...blocksWithoutDevelopment
+        .map(([key, block]) => [key, normalizeBlock(block)])
     ]);
 
     const stateWithoutContext = {
@@ -381,16 +390,20 @@ export class RegistryProvider extends React.PureComponent<Props, State> {
         .map(([key, block]) => [key, normalizeBlock(block)])
     );
 
+    const __inlines = {
+      ...this.state.inlines,
+      ...inlines
+    };
+
+    const __blocks = {
+      ...this.state.blocks,
+      ...blocks
+    };
+
     const stateWithoutContext = {
-      inlines: {
-        ...this.state.inlines,
-        ...inlines
-      },
-      blocks: {
-        ...this.state.blocks,
-        ...blocks
-      },
-      schema: computeSchema(blocks, inlines)
+      inlines: __inlines,
+      blocks: __blocks,
+      schema: computeSchema(__blocks, __inlines)
     };
 
     this.setState(

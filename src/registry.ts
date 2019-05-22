@@ -51,6 +51,7 @@ export type ComponentManifest = {
   author: string | null;
   category: CategoryType;
   placeholder: string | null;
+  multiLine?: boolean;
   isDevelopment?: boolean;
   src: string | null;
   isRemote: boolean;
@@ -58,6 +59,6 @@ export type ComponentManifest = {
   Component: React.ComponentType<any> | null;
   EditorComponent: React.ComponentType<any> | null;
   editableProps?: EditablePropMap;
-  defaultProps?: { [key: string]: string };
+  defaultProps?: { [key: string]: string | Object };
   id: string;
 };

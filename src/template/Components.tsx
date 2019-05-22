@@ -36,6 +36,7 @@ export const Blocks = {
     id: BlockTypes.blockquote,
     category: CategoryType.block,
     title: "Quote",
+    multiLine: true,
     placeholder: "",
     description: "Add a quote",
     screenshot: {

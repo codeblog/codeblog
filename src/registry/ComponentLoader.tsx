@@ -1,18 +1,43 @@
 import React from "react";
 import scriptjs from "scriptjs";
+import * as ReactIs from "react-is";
 
-const getModule = (moduleName: string) => window[moduleName];
+export const getModule = (moduleName: string) => {
+  const mod = window[moduleName];
 
-const loadScript = (url: string) => {
-  return new Promise((resolve, reject) => {
-    scriptjs(url, () => resolve(), () => reject());
-  });
+  if (ReactIs.isValidElementType(mod)) {
+    return mod;
+  } else if (
+    typeof mod === "object" &&
+    ReactIs.isValidElementType(mod.default)
+  ) {
+    return mod.default;
+  } else if (
+    typeof mod === "object" &&
+    ReactIs.isValidElementType(mod[moduleName])
+  ) {
+    return mod[moduleName];
+  } else {
+    return null;
+  }
 };
 
-const loadAndEvalScript = async (url: string, moduleName: string) => {
-  await loadScript(url);
-
-  return getModule(moduleName);
+export const loadScript = (url: string) => {
+  return new Promise((resolve, reject) => {
+    try {
+      scriptjs(url, () => resolve(), () => reject());
+    } catch (exception) {
+      reject(exception);
+    }
+  });
+};
+export const loadAndEvalScript = async (url: string, moduleName: string) => {
+  try {
+    await loadScript(url);
+    return getModule(moduleName);
+  } catch (exception) {
+    return null;
+  }
 };
 
 type Props = {

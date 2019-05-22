@@ -1,6 +1,5 @@
 import fs from "fs";
 import { merge } from "lodash";
-import nodeEval from "node-eval";
 import path from "path";
 import babelPlugin from "rollup-plugin-babel";
 import commonjs from "rollup-plugin-commonjs";
@@ -12,7 +11,9 @@ import {
   packageJSFilename,
   packageJSFilePath
 } from "./packageUtils";
-import { CODEBLOG_ROOT } from "./paths";
+import { CODEBLOG_ROOT, WEBTHING_ENTRY_NORMALIZER } from "./paths";
+import alias from "rollup-plugin-strict-alias";
+import json from "rollup-plugin-json";
 
 export const NODE_MODULES = path.join(CODEBLOG_ROOT, "node_modules");
 
@@ -28,45 +29,6 @@ const BUNDLED_MODULES = [
   "tinycolor2",
   "codeblog"
 ];
-
-export function getModuleExports(id, _paths, nodeEnv: string) {
-  let _require = function(_id: string) {
-    return;
-  };
-
-  Object.assign(_require, __non_webpack_require__);
-
-  const moduleOut = nodeEval(fs.readFileSync(id).toString(), id, {
-    require: _require,
-    process: {
-      env: {
-        NODE_ENV: nodeEnv
-      }
-    },
-    module: {}
-  });
-  let result = [];
-  const excludeExports = /^(default|__)/;
-
-  if (moduleOut && typeof moduleOut === "object") {
-    result = Object.keys(moduleOut).filter(name => !excludeExports.test(name));
-  }
-
-  return result;
-}
-
-export function getNamedExports(moduleIds, paths: Array<string>, mode: string) {
-  const _moduleIds = moduleIds.map(id => {
-    return __non_webpack_require__.resolve(id, {
-      paths
-    });
-  });
-  const result = {};
-  _moduleIds.forEach(id => {
-    result[id] = getModuleExports(id, paths, mode);
-  });
-  return result;
-}
 
 const GLOBAL_MODULES = {
   "@emotion/core": "@emotion/core",
@@ -84,7 +46,8 @@ const GLOBAL_MODULES = {
 const BABEL_RC = {
   plugins: [
     require("babel-plugin-transform-node-env-inline"),
-    require("@babel/plugin-proposal-class-properties")
+    require("@babel/plugin-proposal-class-properties"),
+    require("@babel/plugin-syntax-dynamic-import")
   ],
   presets: [
     [
@@ -168,16 +131,20 @@ export function buildConfig(
     path.join(_outputPath, "node_modules")
   ];
 
-  const namedExports = getNamedExports(
-    dependencies,
-    moduleDirectory,
-    {
-      dev: "development",
-      release: "production"
-    }[mode]
-  );
+  let exportType;
+  try {
+    let file = fs.readFileSync(_jsFilePath, "utf-8");
+    let hasDefault = /\bexport\s*default\s*[a-zA-Z_$]/.test(file);
+    let hasNamed =
+      /\bexport\s*(let|const|var|async|function\*?)\s*[a-zA-Z_$*]/.test(file) ||
+      /^\s*export\s*\{/m.test(file);
+    if (hasDefault && hasNamed) exportType = "default";
+  } catch (e) {}
 
   const pluginsConfig = [
+    alias({
+      __webthing_entry__: _jsFilePath
+    }),
     nodeResolve({
       mainFields: ["module", "jsnext", "main"],
       customResolveOptions: {
@@ -185,18 +152,19 @@ export function buildConfig(
       }
     }),
     commonjs({
-      include: /node_modules/,
-      namedExports
+      include: /node_modules/
     }),
+    json(),
     babelPlugin(BABEL_RC)
   ];
 
   return merge(
     {},
     {
-      input: _jsFilePath,
+      input: exportType ? WEBTHING_ENTRY_NORMALIZER : _jsFilePath,
       plugins: pluginsConfig,
       inlineDynamicImports: true,
+      dynamicImport: true,
       external: BUNDLED_MODULES,
       output: [
         {
@@ -206,7 +174,10 @@ export function buildConfig(
           assetFileNames: "[name].js",
           chunkFileNames: "[name].js",
           dir: _outputPath,
-          globals: GLOBAL_MODULES
+          globals: GLOBAL_MODULES,
+          legacy: true,
+          exports: exportType ? "default" : undefined,
+          freeze: false
         },
         {
           format: "esm",
@@ -215,7 +186,10 @@ export function buildConfig(
           assetFileNames: "[name].js",
           chunkFileNames: "[name].esm.js",
           dir: _outputPath,
-          globals: GLOBAL_MODULES
+          globals: GLOBAL_MODULES,
+          legacy: true,
+          exports: exportType ? "default" : undefined,
+          freeze: false
         }
       ]
     }

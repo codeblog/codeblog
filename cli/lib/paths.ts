@@ -14,3 +14,12 @@ export const CODEBLOG_BIN = __non_webpack_require__("path").join(
   `./bin/`,
   CODEBLOG_BIN_FILENAME
 );
+
+export const STATIC_FOLDER = __non_webpack_require__("path").join(
+  CODEBLOG_ROOT,
+  "static"
+);
+export const WEBTHING_ENTRY_NORMALIZER = __non_webpack_require__("path").join(
+  STATIC_FOLDER,
+  "exportNormalizer.js"
+);
