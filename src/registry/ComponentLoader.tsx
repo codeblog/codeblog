@@ -31,13 +31,11 @@ export const loadScript = (url: string) => {
     }
   });
 };
-export const loadAndEvalScript = async (url: string, moduleName: string) => {
-  try {
-    await loadScript(url);
+
+export const loadAndEvalScript = (url: string, moduleName: string) => {
+  return loadScript(url).then(() => {
     return getModule(moduleName);
-  } catch (exception) {
-    return null;
-  }
+  }, console.error);
 };
 
 type Props = {
@@ -100,23 +98,26 @@ export class ComponentLoader extends React.Component<Props, State> {
     };
   }
 
-  loadComponent = async (cacheBust: boolean = false) => {
+  loadComponent = (cacheBust: boolean = false) => {
     if (!this.props.src) {
       return;
     }
 
-    try {
-      this.Component = await loadAndEvalScript(
-        cacheBust
-          ? this.props.src + `?d=${new Date().getTime()}`
-          : this.props.src,
-        this.props.moduleName
-      );
-      this.setState({ status: "completed", error: null });
-    } catch (exception) {
-      console.error(exception);
-      this.setState({ error: exception, status: "error" });
-    }
+    return loadAndEvalScript(
+      cacheBust
+        ? this.props.src + `?d=${new Date().getTime()}`
+        : this.props.src,
+      this.props.moduleName
+    ).then(
+      Component => {
+        this.Component = Component;
+        this.setState({ status: "completed", error: null });
+      },
+      exception => {
+        console.error(exception);
+        this.setState({ error: exception, status: "error" });
+      }
+    );
   };
 
   render() {
