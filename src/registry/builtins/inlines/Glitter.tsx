@@ -8,11 +8,16 @@ const GlitterComponent = styled.span`
   background: linear-gradient(transparent, transparent),
     url(https://storage.googleapis.com/codeblog-public/Glitter.gif) repeat 100px
       20px;
-
-  color: ${props => props.color || "pink"};
-  background-clip: text !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
+
+  @media not all and (min-resolution: 0.001dpcm) {
+    @media {
+      display: inline-block;
+    }
+  }
+
+  color: ${props => props.color || "pink"};
   letter-spacing: 1px;
   text-decoration: none;
 `;
